@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    @media (max-width:768px) {
+        .h1{
+            font-size: 15px;
+            
+            
+        }
+        h2{
+        font-size: 18px !important;
+        margin-top: 30px !important;
+        }
+        .img-thumbnail{
+            width: 100% !important;
+        }
+        .h5{
+            font-size: 10px ;
+        }
+        .h6{
+            font-size: 8px !important;
+        }
+        #label{
+            font-size: 8px;
+        }
+        #acol{
+            margin-top: 20px !important;
+            margin-left: 3px !important;
+            margin-bottom: 0px !important;
+            padding-bottom:0px !important ;
+            width: 100% !important;
+            margin-top: 50px !important;
+        }
+        #pcol{
+            margin-left: 3px !important;
+            margin-top: 30px !important;
+            padding-top: 0px !important;
+            width: 100% !important;
+            margin-right: 3px !important;
+        }
+        
+    }
+ </style> 
+<body>
+    <div class="body-wrapper">
+        <div class="container-fluid">
+
+            <div class="container p-5" >
+                <div class="row mb-5" style="height: 300px;" >
+                    <div class="col-md-4" >
+                        {% if details.company.profile_pic %}
+                        <img   class="img-fluid rounded-5" src="{{ details.company.profile_pic.url }}" style="width: 100%;height: 90%;" alt="img">
+                        {% else %}
+                        <img src="{% static 'registration_login/images/default.png' %}"  style="width: 100%;height: 90%;"
+                        class="img-fluid rounded-5" alt="img">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8" >
+                        <div class="row rounded" style="background-color: rgb(5, 5, 5);color: white;">
+                            <h2 class="h2 text-center pt-3 pb-2 text-white" style="text-transform:uppercase; font-family: 'Times New Roman', Times, serif;padding-left: 5px;">
+                                {{details.company.company_name}}
+                            </h2>
+
+                        </div>
+                        <div class="row mt-3"  style="background-color: rgba(0, 0, 0,);color: rgb(0, 0, 0);"></div>
+                        <div class="row mt-2 pt-4 rounded-top"  style="background-color: rgb(0, 0, 0);color: white;">
+                            <div class="col" id="label">Owner</div>
+                            <div class="col"><h5 class="h5 text-white">: {{details.company.login_details.first_name}} {{details.company.login_details.last_name}}</h5></div>   
+                        </div>
+                        <div class="row" style="background-color: rgb(0, 0, 0);color: white;">
+                            <div class="col pt-3" id="label">Company Code</div>
+                            <div class="col pt-3"><h5 class="h5 text-white">: {{details.company.company_code}}</h5></div>
+                        </div>
+                        <div class="row" style="background-color: rgb(0, 0, 0);color: white;">
+                            <div class="col pt-3" id="label">Company Email</div>
+                            <div class="col pt-3"><h5 class="h5 text-white">: {{details.company.login_details.email}}</h5></div>
+                        </div>
+                        <div class="row rounded-bottom" style="background-color: rgb(0, 0, 0);color: white;">
+                            <div class="col pt-3 pb-3" id="label">Company Contact</div>
+                            <div class="col pt-3"><h5 class="h5 text-white">: {{details.company.contact}}</h5></div>
+                        </div>
+
+                    </div>
+                </div>
+               <hr>
+               <div class="row mt-3">
+                <h2 class="h2 text-white mt-5">PERSONAL DETAILS</h2>
+               </div>
+                <div class="row mt-lg-4"  id="scond_main_row" style="height: 300px;">
+                    <div class="col-md-5 mt-lg-2 m-3"  id="acol">
+                        {% if details.image %}
+                        <img   class="img-fluid rounded-5" src="{{ details.image.url }}" style="width: 90%;height: 70%;" alt="img">
+                        {% else %}
+                        <img src="{% static 'assets/images/profile/user-1.jpg' %}"  style="width: 100%;height: 90%;" class="img-fluid rounded-5" alt="img">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mt-lg-2  mb-3 m-4 rounded" id="pcol"  style="background-color: rgb(0, 0, 0);height: 100%; color: white;">
+                        <div class="row">
+                            <div class="col pt-3 pb-3" id="label">Name</div>
+                            <div class="col pt-3"><h5 class="h5 text-white">: </h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col pt-3 pb-3" id="label">Email</div>
+                            <div class="col pt-3"><h5 class="h5 text-white">: {{details.login_details.email}}</h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col pt-3 pb-3" id="label">Username</div>
+                            <div class="col pt-3"><h5 class="h5 text-white">: {{details.login_details.username}}</h5></div>
+                        </div>
+                        
+                        
+                        <div class="row">
+                            <div class="col pt-3 pb-3" id="label">Contact</div>
+                            <div class="col pt-3"><h5 class="h5 text-white">: {{details.contact}}</h5></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row  mt-5 mt-lg-1">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"><a href="" class="btn btn-outline-warning mt-5 m-3 mx-1 mx-lg-0" style="width: 100%;font-weight: bold;">Edit Profile</a></div>
+                    
+                    <div class="col-md-4"></div>
+                </div>
+            
+            
+            </div>
+        </div>
+    </div>        
+</body>
+
+{% endblock  %}

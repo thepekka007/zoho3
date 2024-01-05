@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+                                    /* form style */
+
+
+*{
+    color: aliceblue;
+    
+}
+input {
+    color: white;
+}
+</style>
+
+
+<section class="container-fluid" style="color: aliceblue; font-size: large; overflow-y: auto;">
+
+    <div class="" style="top: 7rem; margin-left: 20rem; margin-right: 2rem; margin-top: 5%;">
+
+    
+
+        <!-- ADD ITEM FORM -->
+        <div style="background-color: black; border-radius: 10px;" >
+            <form action="{% url 'edititems' item.id %}" method="POST" id="add" style="padding-left: 20px;">
+                {% csrf_token%}
+                <br>  
+                <h3 class="mb-3 text-white mt-4" style="font-size: 2rem;">EDIT ITEM</h3>
+                <br>
+                <fieldset class="form-group" >
+                    <div class="row">
+                        <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Type  &nbsp;&nbsp;<i
+                                class="fa fa-question-circle"></i></label>
+                        <div class="col-12 col-md-10">
+                            <div class="form-check form-check-inline">
+                                <input required class="form-check-input" type="radio" name="type" id="gridRadios1" value="Goods"  {% if item.item_type == "Goods" %}checked{% endif %}>
+                                <label class="form-check-label text-white" for="gridRadios1" >Goods</label>
+                            </div> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                            <div class="form-check form-check-inline ml-md-3">
+                                <input required class="form-check-input" type="radio" name="type" id="gridRadios2" value="Services" {% if item.item_type == "Services" %}checked{% endif %}>
+                                <label class="form-check-label text-white" for="gridRadios2">Services</label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <br>
+                
+                <div class="form-group row">
+                    <label  class="col-sm-2 col-form-label " style="color: aliceblue;">Name *</label>
+                    <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                      <input required type="text" class="form-control" name="name" id="nameInput" style="color: aliceblue;" placeholder="Enter Item Name" value="{{item.item_name}}">  
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" style="color: aliceblue;">Unit <i class="fa fa-question-circle"></i></label>
+                    <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                        <div class="d-flex align-items-center">
+                            <select name="unit" class="form-control" id="unit"  style="background-color: black; color: white;"  >
+                                <option>--Select Unit--</option>
+                              {% for i in units %}
+                                <option value={{i.id}}  {% if item.unit == i.id %}Selected{% endif %} >{{i.unit_name}}</option>
+                              {% endfor %}
+                        
+                            </select>
+                            
+                            <button style="width: 2.5rem; background-color: chocolate; color: black; border-radius: 3px; margin-left: 10px;" class="open-button" onclick="openForm()">+</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" style="color: aliceblue;">HSN Code</label>
+                    <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                        <input required type="text" class="form-control" name="hsn" id="myInputField" style="color: aliceblue;" placeholder="Enter six digit HSN code" value="{{item.hsn_code}}" oninput="validateInput()">
+                        <div id="validationResult"></div>
+                    </div>
+                </div>
+                <br>
+                <fieldset class="form-group" >
+                    <div class="row">
+                        <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Tax Preference: &nbsp;&nbsp;</label>
+                        <div class="col-12 col-md-10">
+                            <div class="form-check form-check-inline">
+                                <input required class="form-check-input" type="radio" name="radio" id="gridRadios1" onclick="showAllSelect()" value="taxable"  {% if item.tax_reference == "taxable" %}checked{% endif %}>
+                                <label class="form-check-label text-white" for="gridRadios1">Taxable</label>
+                            </div> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                            <div class="form-check form-check-inline ml-md-3">
+                                <input required class="form-check-input" type="radio" name="radio" id="gridRadios2"  onclick="hideAllSelect()" value="None-Taxable"  {% if item.tax_reference == "None-Taxable" %}checked{% endif %}>
+                                <label class="form-check-label text-white" for="gridRadios2"> None-Taxable</label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+              
+      <br>
+  
+                  <div class="row">
+                    <div class="col-md-3">
+                  
+                      <div id="select1_div" style="display: none;">
+                        <label for="select1">Intra-State TAX</label><br> <br>
+                        <select name="intra" class="form-control" id="select1" style="background-color: black; color: white;">
+                            <option value="0"  {% if item.intrastate_tax == 0 %}Selected{% endif %} >GST0[0%]</option>
+                            <option value="3" {% if item.intrastate_tax == 3 %}Selected{% endif %}>GST3[3%]</option>
+                            <option value="5" {% if item.intrastate_tax == 5 %}Selected{% endif %}>GST5[5%]</option>
+                            <option value="12" {% if item.intrastate_tax == 12 %}Selected{% endif %}>GST12[12%]</option>
+                            <option value="18" {% if item.intrastate_tax == 18 %}Selected{% endif %}>GST18[18%]</option>
+                            <option value="28" {% if item.intrastate_tax == 28 %}Selected{% endif %}>GST28[28%]</option>
+                        </select>
+                        
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div id="select2_div"  style="display: none;">
+                        <label for="select2">Inter-State TAX</label> <br><br>
+                        <select name="inter" class="form-control " id="select2" style="background-color: black; color: white;">
+                          <option value="0"  {% if item.interstate_tax == 0 %}Selected{% endif %}>IGST0[0%]</option>
+                          <option value="3"  {% if item.interstate_tax == 3 %}Selected{% endif %}>IGST3[3%]</option>
+                          <option value="5"  {% if item.interstate_tax == 5 %}Selected{% endif %}>IGST5[5%]</option>
+                          <option value="12"  {% if item.interstate_tax == 12 %}Selected{% endif %}>IGST12[12%]</option>
+                          <option value="18"  {% if item.interstate_tax == 18 %}Selected{% endif %}>IGST18[18%]]</option>
+                          <option value="28"  {% if item.interstate_tax == 28 %}Selected{% endif %}>IGST28[28%]</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+               
+                  <br>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input  type="checkbox" name="selling" checked> <label >selling  information</label><br><br>
+                      <div class="form-group row">
+                        <br>
+                        <label class="col-sm-2 col-form-label" style="color: aliceblue;">Selling price </label>
+                        <div class="col-sm-12 col-md-7 col-9 ml-5">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text text-white" style="background-color: black;">INR</div>
+                            </div>
+                            <input required type="text" name="sel_price" class="form-control" value="{{item.selling_price}}">
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Account *</label>
+                        <div class="col-sm-10 col-md-7 col-9 ml-5">
+                          <select name="sel_acc" class="form-control " style="background-color: black; color: white;">
+                            <option >--Select Account--</option>
+                            <option value="General Income" {% if item.sales_account == "General Income" %}Selected{% endif %} >General Income</option>
+                            <option value="Interest Income" {% if item.sales_account == "Interest Income" %}Selected{% endif %} >Interest Income</option>
+                            <option value="Late Fee  Income" {% if item.sales_account == "Late Fee  Income" %}Selected{% endif %} >Late Fee  Income</option>  
+                            <option value="Discount Income" {% if item.sales_account == "Discount Income" %}Selected{% endif %} >Discount Income</option>
+                            <option value="Other Charges" {% if item.sales_account == "Other Charges" %}Selected{% endif %} >Other Charges</option>
+                            <option value="Shipping Charge" {% if item.sales_account == "Shipping Charge" %}Selected{% endif %} >Shipping Charge</option>
+                        
+                          </select>                              
+                        </div>
+                      </div>
+                      <br>
+
+                      <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Description </label>
+                        <div class="col-sm-10 col-md-7 col-9 ml-5">
+                          <input  type="text" name="sel_desc" class="form-control " placeholder="Enter Discription" value="{{item.sales_description}}">
+                        </div>
+                      </div>
+                                            
+                    </div>
+                    <div class="col-md-6">
+                      <input type="checkbox" name="purchase" checked> <label for="">Purchase information</label><br><br>
+                      <div class="form-group row">
+                        <br>
+                        <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Cost Price*</label>
+                        <div class="col-sm-10 col-md-7 col-9">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text text-white" style="background-color: black;">INR</div>
+                            </div>
+                            <input required type="text" class="form-control " name="cost_price" value="{{item.purchase_price}}" >
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group row in">
+                        <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account*</label>
+                        <div class="col-sm-10 col-md-7 col-5">
+                            <div class="d-flex align-items-center">
+                                <select name="cost_acc" class="form-control " id="myaccount" >
+                                    <option value="">--Select Account--</option>
+                                   
+                                </select>
+                                <button id="showFormButton" style="width: 40px; background-color: chocolate; color: black; border-radius: 3px; margin-left: 10px;" class="openbutton" onclick="showForm()">+</button>
+                             
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row in">
+                        <label class="col-sm-2 col-form-label" style="color: aliceblue;">Description</label>
+                        <div class="col-sm-10 col-md-7 col-5">
+                            <div class="d-flex align-items-center">
+                                <input  type="text" name="pur_desc" class="form-control " placeholder="Enter Discription" value="{{item.purchase_description}}">
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="form-group row text-center">
+                        <label class="col-sm-2 col-form-label" style="color: aliceblue;">Minimum Stock to maintain :</label>
+                        <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center" style="margin-left: -2.2rem;">
+                          <input type="text" name="minimum_stock" class="form-control mx-auto" placeholder="Enter Minimum Stock" value="{{item.minimum_stock_to_maintain}}">
+                        </div>
+                      </div>
+                      <br>
+                      <fieldset class="form-group" >
+                        <div class="row">
+                            <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Activation tag  &nbsp;&nbsp;<i
+                                    class="fa fa-question-circle"></i></label>
+                            <div class="col-12 col-md-10">
+                                <div class="form-check form-check-inline">
+                                    <input required class="form-check-input" type="radio" name="status" id="gridRadios1" value="Active"  style="margin-left:5px;"  {% if item.activation_tag == "Active" %}checked{% endif %}>
+                                    <label class="form-check-label text-white" for="gridRadios1" >Activate</label>
+                                </div> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                <div class="form-check form-check-inline ml-md-3">
+                                    <input required class="form-check-input" type="radio" name="status" id="gridRadios2" value="Inactive" style="margin-left:50px;"  {% if item.activation_tag == "Inactive" %}checked{% endif %}>
+                                    <label class="form-check-label text-white" for="gridRadios2">Non-Activate</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br><br>
+                    <div class="row" >
+                      <div class="col-md-10">
+                        {% comment %} <label style="color: aliceblue;"><input type="checkbox" value="trackstate" name="trackstate" onclick="toggleForm()" style="display: none;">
+                       Track Inventory for this item</label> {% endcomment %}
+                        {% comment %} <input type="hidden" name="trackState" id="trackState" value="" unchecked> {% endcomment %}
+                        <label style="color: aliceblue;">
+                       
+                          <input type="checkbox" name="trackstate" value="trackstate" class=" "  onclick="toggleFormFields()">
+                          Track Inventory for this item
+                        </label>   <br>   <br>
+                        <div id="formFields" > 
+                          <div class="form-group row" >
+                            <label class="col-sm-2 col-form-label" style="color: aliceblue;">Inventory Account *</label>
+                            <div class="col-sm-10 col-md-7 col-9" style="margin-left: -1rem;">
+                              <select class="form-select form-select-sm mt-3 " name="invacc" style="background-color: black; color: white;">
+                                <option>Choose..</option>
+                                <option value="inventory assets"  {% if item.inventory_account == "inventory assets" %}Selected{% endif %}>Inventory Asset</option>
+                              </select>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="form-group row ">
+                            <label class="col-sm-2 col-form-label" style="color: aliceblue;">Opening Stock</label>
+                            <div class=" col-md-5">
+                              <input  type="number" class="form-control "  name="openstock" value="{{item.opening_stock}}" >
+                            </div>
+                            </div>
+                            <br>
+                            <div class="form-group row ">
+                                <label class="col-sm-2 col-form-label" style="color: aliceblue;">Opening Stock Rate per Unit</label>
+                                <div class=" col-md-5">
+                                    <input type="number" class="form-control" name="rate"  value="{{item.opening_stock_per_unit}}">
+                                </div>
+                                </div>
+                            <!-- <div class="col-md-5  "> -->
+                           
+                          
+                          
+      
+                          </div>
+                        </div>
+                      </div>
+                      
+                    <div class="form-inline " style="margin-bottom: 200px;">
+                        <button type="submit"  class="mr-3 btn" style="background-color: chocolate;color: aliceblue;" value="Save">Save</button>
+                        <button type="button" class="mr-3 btn" onclick="resetForm()" value="Cancel" style="margin-left:10px;background-color: chocolate;color: aliceblue;">Cancel</button>
+                      </div>   
+                      
+                    </div>
+
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- HSN CODE VALIDATION SCRIPT -->
+
+<script>
+    function validateSixDigits(field) {
+        // Define the regular expression pattern for exactly six digits
+        var pattern = /^\d{6}$/;
+
+        // Check if the field matches the pattern
+        return pattern.test(field);
+    }
+
+    function validateInput() {
+        var inputField = document.getElementById("myInputField");
+        var inputValue = inputField.value;
+
+        var validationResultDiv = document.getElementById("validationResult");
+
+        if (validateSixDigits(inputValue)) {
+            validationResultDiv.textContent = "Valid";
+        } else {
+            validationResultDiv.textContent = "Invalid: The field does not contain six digits.";
+        }
+    }
+</script>
+  <!-- HSN CODE VALIDATION SCRIPT END -->
+
+<!-- TAXABLE SCRIPT0 -->
+        <script>
+            function showAllSelect() {
+            var select1_div = document.getElementById("select1_div");
+            var select2_div = document.getElementById("select2_div");
+            select1_div.style.display = "block";
+            select2_div.style.display = "block";
+            }
+  
+            function hideAllSelect() {
+            var select1_div = document.getElementById("select1_div");
+            var select2_div = document.getElementById("select2_div");
+            select1_div.style.display = "none";
+            select2_div.style.display = "none";
+            }
+            </script>
+
+<!-- TAXABLE SCRIPT0  end-->
+
+ <!-- TRACK INVENTORY SCRIPT -->
+ <script>
+    function toggleFormFields() {
+      var formFields = document.getElementById("formFields");
+      var checkbox = document.querySelector("input[name=trackstate]");
+
+      if (checkbox.checked) {
+        formFields.style.display = "block";
+      } else {
+        formFields.style.display = "none";
+      }
+    }
+  </script>
+
+   <!-- TRACK INVENTORY SCRIPT END -->
+
+
+   <!-- FORM RESET SCRIPT -->
+
+   <script>
+    function resetForm() {
+      document.getElementById("add").reset();
+    }
+  </script>
+
+   <!-- FORM RESET SCRIPT END -->
+{% endblock %}

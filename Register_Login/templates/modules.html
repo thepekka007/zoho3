@@ -1,0 +1,284 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ZOHO BOOKS</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'assets/images/logos/favicon.png' %}" />
+        <link rel="stylesheet" href="{% static 'assets/css/styles.min.css' %}" />
+        <!-- Font Awesome CSS CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+        <!-- Font Awesome CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        
+    <style>
+        @media (max-width:768px) {
+            .h1{
+                font-size: 25px;
+            }
+            .h3{
+                font-size: 20px;
+            }
+        }
+    </style>
+
+
+       
+        
+        
+      </head>
+<body style="background-color: #000000;">
+    <div class="body-wrapper ">
+        <div class="container mt-5 mb-5 pl-4 "  style="background-color:rgb(30,30,30);border-radius: 10px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <form action="{% url 'choose_modules' company %}" method="post">
+                {% csrf_token %}
+                <center>
+                    <h1 class="h1 mb-5" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000; font-family: 'Times New Roman', Times, serif;"><b>CHOOSE MODULES</b></h1>
+                </center>
+            
+                <!-- ITEMS Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;"><b>Items</b></h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="items" name="items" value="1">
+                        <b style="color: rgb(255, 255, 255);">Items</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="price_list" name="price_list" value="1">
+                        <b style="color: rgb(255, 255, 255);">Price List</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="stock_adjustment" name="stock_adjustment" value="1">
+                        <b style="color: rgb(255, 255, 255);">Stock Adjustment</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="godown" name="godown" value="1">
+                        <b style="color: rgb(255, 255, 255);">Godown</b>
+                    </div>
+                    <!-- Add other ITEMS Module checkboxes here -->
+            
+                </div>
+            
+                <!-- CASH & BANK Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;">Cash & Bank</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="cash_in_hand" name="cash_in_hand" value="1">
+                        <b style="color: rgb(255, 255, 255);">Cash In Hand</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="offline_banking" name="offline_banking" value="1">
+                        <b style="color: rgb(255, 255, 255);">Offline Banking</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="upi" name="upi" value="1">
+                        <b style="color: rgb(255, 255, 255);">UPI</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="bank_holders" name="bank_holders" value="1">
+                        <b style="color: rgb(255, 255, 255);">Bank Holders</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="cheque" name="cheque" value="1">
+                        <b style="color: rgb(255, 255, 255);">Cheque</b>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="loan_account" name="loan_account" value="1">
+                        <b style="color: rgb(255, 255, 255);">Loan Account</b>
+                    </div>
+                    <!-- Add other CASH & BANK Module checkboxes here -->
+            
+                </div>
+            
+                <!-- SALES MODULE Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;"><b>Sales Module</b></h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="customers" name="customers" value="1">
+                        <b style="color: rgb(255, 255, 255);">Customers</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="invoice" name="invoice" value="1">
+                        <b style="color: rgb(255, 255, 255);">Invoice</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="estimate" name="estimate" value="1">
+                        <b style="color: rgb(255, 255, 255);">Estimate</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="sales_order" name="sales_order" value="1">
+                        <b style="color: rgb(255, 255, 255);">Sales Order</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="recurring_invoice" name="recurring_invoice" value="1">
+                        <b style="color: rgb(255, 255, 255);">Recurring Invoice</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="retainer_invoice" name="retainer_invoice" value="1">
+                        <b style="color: rgb(255, 255, 255);">Retainer Invoice</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="credit_note" name="credit_note" value="1">
+                        <b style="color: rgb(255, 255, 255);">Credit Note</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="payment_received" name="payment_received" value="1">
+                        <b style="color: rgb(255, 255, 255);">Payment Received</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="delivery_challan" name="delivery_challan" value="1">
+                        <b style="color: rgb(255, 255, 255);">Delivery Challan</b>
+                    </div>
+                </div>
+
+
+                <!-- PURCHASE MODULE Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000; ">Purchase Module</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="vendors" name="vendors" value="1">
+                        <b style="color: rgb(255, 255, 255);">Vendors</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="bills" name="bills" value="1">
+                        <b style="color: rgb(255, 255, 255);">Bills</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right:10px ; width: 20px; height: 20px;" id="recurring_bills" name="recurring_bills" value="1">
+                        <b style="color: rgb(255, 255, 255);">Recurring Bills</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="vendor_credit" name="vendor_credit" value="1">
+                        <b style="color: rgb(255, 255, 255);">Vendor Credit</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="purchase_order" name="purchase_order" value="1">
+                        <b style="color: rgb(255, 255, 255);">Purchase Order</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="expenses" name="expenses" value="1">
+                        <b style="color: rgb(255, 255, 255);">Expenses</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="recurring_expenses" name="recurring_expenses" value="1">
+                        <b style="color: rgb(255, 255, 255);">Recurring Expenses</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="payment_made" name="payment_made" value="1">
+                        <b style="color: rgb(255, 255, 255);">Payment Made</b>
+                    </div>
+                    <!-- Add other PURCHASE Module checkboxes here -->
+            
+                </div>
+            
+                <!-- TIME TRACKING Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;">Time Tracking</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="projects" name="projects" value="1">
+                        <b style="color: rgb(255, 255, 255);">Projects</b>
+                    </div>
+                    <!-- Add other TIME TRACKING Module checkboxes here -->
+            
+                </div>
+            
+                <!-- ACCOUNTS Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;">Accounts</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="chart_of_accounts" name="chart_of_accounts" value="1">
+                        <b style="color: rgb(255, 255, 255);">Chart of Accounts</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; width: 20px; height: 20px; margin-right: 10px;" id="manual_journal" name="manual_journal" value="1">
+                        <b style="color: rgb(255, 255, 255);">Manual Journal</b>
+                    </div>
+                    <!-- Add other ACCOUNTS Module checkboxes here -->
+            
+                </div>
+            
+                <!-- E WAY BILL Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;">E Way Bill</h3>
+                <div class="row">
+                    <!-- Add E WAY BILL Module checkboxes here -->
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="ewaybill" name="ewaybill" value="1">
+                        <b style="color: rgb(255, 255, 255);">Eway Bill</b>
+                    </div>
+            
+                </div>
+            
+                <!-- PAYROLL Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;"><b>PAYROLL</b></h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="employees" name="employees" value="1">
+                        <b style="color: rgb(255, 255, 255);">Employees</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="employees_loan" name="employees_loan" value="1">
+                        <b style="color: rgb(255, 255, 255);">Employees Loan</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="holiday" name="holiday" value="1">
+                        <b style="color: rgb(255, 255, 255);">Holiday</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="attendance" name="attendance" value="1">
+                        <b style="color: rgb(255, 255, 255);">Attendance</b>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-bottom: 20px; margin-right: 10px; width: 20px; height: 20px;" id="salary_details" name="salary_details" value="1">
+                        <b style="color: rgb(255, 255, 255);">Salary Details</b>
+                    </div>
+                    <!-- Add other PAYROLL Module checkboxes here -->
+
+                </div>
+
+                <!-- REPORTS Module -->
+                <h3 class="h3 mb-4 mt-4" style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;"><b>REPORTS</b></h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" style="margin-right: 10px; margin-bottom: 20px; width: 20px; height: 20px;" id="reports" name="reports" value="1">
+                        <b style="color: rgb(255, 255, 255);">Reports</b>
+                    </div>
+                    <!-- Add other REPORTS Module checkboxes here -->
+
+                </div>
+
+                <center>
+                    <button type="submit" class="btn btn-warning mt-5 mb-5 w-50 rounded-4" style="background: rgb(218, 164, 48);color: rgb(255, 255, 255);"><strong>SUBMIT</strong></button>
+                </center>
+                
+                    
+            </form>
+          
+        </div>
+    </div>        
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>      
+</body>
+</html>

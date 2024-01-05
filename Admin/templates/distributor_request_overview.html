@@ -1,0 +1,107 @@
+{% extends 'adminbase.html' %}
+{% load static %}
+{% block content %}
+<style>
+  body{
+    background-color:#20201f;
+  }
+</style>
+
+<div class="body-wrapper">
+  <div class="container-fluid">
+      <div class="container mt-5 mr-5 " style="background-color: black;">
+          <h1 class="text-center h1 mb-5 pt-5 text-light" ><b>DISTRIBUTOR
+                  DETAILS</b></h1>
+          <hr>
+
+          <center>
+              {% if data.image %}
+              <img class="img-thumbnail" width="30%" src="{{ data.image.url }}" alt="">
+              {% else %}
+              <img src="{% static 'registration_login/images/default.png' %}" width="20%" wi class="img-thumbnail">
+              {% endif %}
+          </center>
+          <h3 class="h3 text-center py-4 text-light"><b>{{data.login_details.first_name}} {{data.login_details.last_name}}</b></h3>
+
+          <hr>
+          
+          <div class="row p-5 pb-3 pt-3 ">
+              <div class="col-md-6">
+                  <h5 class="h5 text-light" style="margin-right: 10px;"> Distributor Code </h5>
+              </div>
+              <div class="col-md-6">
+                  <h5 class="h5 text-light ">: {{data.distributor_code}}</h5>
+              </div>
+          </div>
+
+          <div class="row p-5 pt-3 pb-3 ">
+              <div class="col">
+                  <h5 class="h5 text-light"  style="margin-right: 10px;">  Email </h5>
+              </div>
+              <div class="col">
+                  <h5 class="h5 text-light">: {{data.login_details.email}}</h5>
+              </div>
+          </div>
+          <div class="row p-5 pt-3 pb-3 ">
+              <div class="col">
+                  <h5 class="h5 text-light"  style="margin-right: 10px;">  User Name</h5>
+              </div>
+              <div class="col">
+                  <h5 class="h5 text-light"> : {{data.login_details.username}}</h5>
+              </div>
+          </div>
+          <div class="row p-5 pt-3 pb-3 ">
+              <div class="col">
+                  <h5 class="h5 text-light"  style="margin-right: 10px;">  Contact </h5>
+              </div>
+              <div class="col">
+                  <h5 class="h5 text-light"> : {{data.contact}}</h5>
+              </div>
+          </div>
+          
+          
+          
+          <div class="row p-5 pt-3 pb-3 ">
+              <div class="col">
+                  <h5 class="h5 text-light"  style="margin-right: 10px;">  Payment Terms </h5>
+              </div>
+              <div class="col">
+                  <h5 class="h5 text-light" > : {{data.payment_term.payment_terms_number}}
+                          {{data.payment_term.payment_terms_value}}</h5>
+              </div>
+          </div>
+          <div class="row p-5 pt-3 pb-3 ">
+              <div class="col">
+                  <h5 class="h5 text-light"  style="margin-right: 10px;">  End Date</h5>
+              </div>
+              <div class="col">
+                  <h5 class="h5 text-light">  : {{data.End_date}}</h5>
+              </div>
+          </div>
+          <hr>
+          
+          <div class="row pb-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <a href="{% url 'admin_distributor_accept' data.id %}" class="btn btn-warning text-light" style="width: 100%;">ACCEPT</a>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'admin_distributor_reject' data.id %}" class="btn text-light"  style="background-color: #585757; width: 100%;">REJECT</a>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+          
+                  
+              
+          </div>
+
+
+
+      </div>
+
+
+
+  </div>
+</div>
+
+{% endblock %}

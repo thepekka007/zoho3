@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<style>
+    /* Style the Select2 search input */
+    .select2-search__field {
+      width: 100%; /* Set the width as needed */
+      padding: 8px; /* Adjust padding as needed */
+      border: 1px solid #92acc6; /* Add border color */
+      border-radius: 4px; /* Add border-radius for rounded corners */
+      outline: none; /* Remove the outline */
+      color: #000;
+    }
+  /*   
+    .select2-container .select2-selection--single{box-sizing:border-box;cursor:pointer;display:block;height:35px;user-select:none;color: black;
+      -webkit-user-select:none;background-color: #fff;} */
+  .select2-container .select2-selection--single .select2-selection__rendered{display:block;padding-left:20px;padding-right:20px; height: 25px;color: rgb(252, 252, 252);background-color: #000000;border-radius: 2px;box-shadow: #fcfcfc;border-color: #f2e8e8;}
+      .select2-dropdown{background-color:rgb(0, 0, 0);color: rgb(253, 253, 253);position:absolute;left:-100000px;width:100%;z-index:1051;color: rgb(255, 255, 255);border-color: #f2e8e8;}
+      .select2-results{display:block;border: #ced4da;border-color: #f2e8e8;}
+      .select2-results__options{list-style:none;margin:0;padding:0;color: rgb(255, 255, 255);background-color: #030303;padding-left: 20px;border-color: #f2e8e8;} 
+      .select2-results__option[aria-selected]{cursor:pointer;color: rgb(251, 251, 251);background-color: #0c0c0c;border-color: #f2e8e8;}
+      .select2-container--open .select2-dropdown{left:0;color: rgb(255, 255, 255);background-color: #000000;border-color: #f2e8e8;}
+  
+      .select2-hidden-accessible{background-color: #000000;border:2px !important;clip:rect(0 0 0 0) !important;-webkit-clip-path:inset(50%) !important;clip-path:inset(50%) !important;height:0px !important;padding:0 !important;position:absolute !important;width:1px !important;white-space:nowrap !important;color: rgb(250, 250, 250)} 
+      .select2-container--default .select2-selection--single{background-color:#000000;border:1px solid #000000;border-radius:4px;color: rgb(0, 0, 0);background-color: #ede4e4;}
+  /* .select2-hidden-accessible{background-color: #fff;border:0 !important;clip:rect(0 0 0 0) !important;-webkit-clip-path:inset(50%) !important;clip-path:inset(50%) !important;height:1px !important;overflow:hidden !important;padding:0 !important;position:absolute !important;width:1px !important;white-space:nowrap !important;color: black}  */
+  .select2-container--default .select2-selection--single:focus, .select2-container--default .select2-selection--single .select2-search__field:focus, .typeahead:focus, .tt-query:focus, .tt-hint:focus {
+      border: 1px solid rgba(250, 250, 250, 0.5);
+      background-color: #f2e8e8;
+  }
+  </style>
+
+
+<section class="container-fluid" style="color: aliceblue; font-size: large; overflow-y: auto;">
+
+    <div class="" style="top: 7rem; margin-left: 20rem; margin-right: 2rem; margin-top: 5%;">
+
+    
+
+        <!-- ADD ITEM FORM -->
+        <div style="background-color: black; border-radius: 10px;">
+            <form action="{% url 'create_account'%}" method="POST" id="add" style="padding-left: 20px;">
+                {% csrf_token%}
+                <br>  
+                <h3 class="mb-3 text-white mt-4" style="font-size: 2rem;">{{user_id}} NEW ACCOUNT</h3>
+                <br>
+               
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="">Account Type:</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="select-box1" onclick="message()">
+                            <div class="select-option1">
+                                <select id="soValue1" class="form-control" name="account_type" style="width: 50%;">
+                                    <option value="" disabled selected>Select</option>
+                                    <optgroup label="Assets">
+                                        <option value="Other Assets">Other Assets</option>
+                                        <option value="Other Current Assets">Other Current Assets</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Bank">Bank</option>
+                                        <option value="Fixed Asset">Fixed Asset</option>
+                                        <option value="Stock">Stock</option>
+                                        <option value="Payment Clearing">Payment Clearing</option>
+                                    </optgroup>
+                    
+                                    <optgroup label="Liability">
+                                        <option value="Other Liability">Other Liability</option>
+                                        <option value="Other Current Liability">Other Current Liability</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Long Term Liability">Long Term Liability</option>
+                                        <option value="Overseas Tax Payable">Overseas Tax Payable</option>
+                                    </optgroup>
+                    
+                                    <optgroup label="Equity">
+                                        <option value="Equity">Equity</option>
+                                    </optgroup>
+                    
+                                    <optgroup label="Income">
+                                        <option value="Income">Income</option>
+                                        <option value="Other Income">Other Income</option>
+                                    </optgroup>
+                    
+                                    <optgroup label="Expense">
+                                        <option value="Expense">Expense</option>
+                                        <option value="Cost Of Goods Sold">Cost Of Goods Sold</option>
+                                        <option value="Other Expense">Other Expense</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <br>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account Name:</label>
+                    <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                        <input type="text" class="form-control " name="account_name" placeholder="Enter Account Name"
+                        id="account_name" required >
+                        <div id="validationResult"></div>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account Code:</label>
+                    <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                        <input type="text" class="form-control " name="account_code" placeholder="Enter Account code"
+                        id="account_code">
+                    
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" style="color: aliceblue;">Description:</label>
+                    <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                        <textarea name="description" class="form-control " id="description"
+                        placeholder="Max. 500 characters"></textarea>
+                    
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-inline " style="margin-bottom: 200px;">
+                    <button type="submit"  class="mr-3 btn" style="background-color: chocolate;color: aliceblue;" value="Save">Save</button>
+                    <button type="button" class="mr-3 btn" onclick="resetForm()" value="Cancel" style="margin-left:10px;background-color: chocolate;color: aliceblue;">Cancel</button>
+                  </div> 
+<br>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- SCRIPT FOR ACCOUNT TYPE Search -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
+<script>
+       $(document).ready(function() {
+      // Initialize select2
+      $('#soValue1').select2();
+       })
+</script>
+
+   <!-- FORM RESET SCRIPT -->
+
+   <script>
+    function resetForm() {
+      document.getElementById("add").reset();
+    }
+  </script>
+
+   <!-- FORM RESET SCRIPT END -->
+{% endblock %}
