@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    div class="row" id="div-to-pdf"
+        style="background-color: #ffddb0;  height: auto; margin-left:1px; margin-right: 1rem; ">
+  
+        <div class="row text-center">
+          <h2 style="color: #000000;"><br>{{selitem.item_name}}
+            <hr>
+          </h2>
+        </div>    
+        <div class="row" id="div-to-print"
+        style="background-color: #ffddb0;  height: auto; margin-left:1px; margin-right: 1rem; ">
+        <div class="row mt-3">
+          <div class="col-md-6">
+              <label class="text-dark bold" for="">Item Name:</label>
+              <p class="bold text-dark d-inline" style="max-width: 15rem; word-wrap: break-word; font-weight: bold;">{{selitem.item_name}}</p>
+          </div>
+          <div class="col-md-6">
+              <label class="text-dark bold text-dark" for="">Selling Price:</label>
+              <p class="bold text-dark d-inline" style="max-width: 15rem; word-wrap: break-word; font-weight: bold;">{{selitem.selling_price}}</p>
+          </div>
+      </div>
+      
+      <div class="row mt-3">
+          <div class="col-md-6">
+              <label class="text-dark" for="">Purchase Price:</label>
+              <p class="bold text-dark d-inline" style="max-width: 15rem; word-wrap: break-word; font-weight: bold;">{{selitem.purchase_price}}</p>
+          </div>
+          <div class="col-md-6">
+              <label class="text-dark" for="">Minimum Stock To Maintain:</label>
+              <p class="bold text-dark d-inline" style="max-width: 15rem; word-wrap: break-word; font-weight: bold;">{{selitem.minimum_stock_to_maintain}}</p>
+          </div>
+      </div>
+      
+      <div class="row mt-3">
+          <div class="col-md-6">
+              <label class="text-dark" for="">Stock Quantity:</label>
+              <p class="bold text-dark d-inline" style="max-width: 15rem; word-wrap: break-word; font-weight: bold;">{{selitem.opening_stock}}</p>
+          </div>
+          <div class="col-md-6">
+              <label class="text-dark" for="">Stock Value:</label>
+              <p class="bold text-dark d-inline" style="max-width: 15rem; word-wrap: break-word; font-weight: bold;">{{stock_value}}</p>
+          </div>
+      </div>
+      
+  
+  <style>
+    .dashed-line {
+      border-top: 1px dashed #000; /* Set color and style */
+      margin: 20px 0; /* Adjust margin for spacing */
+    }
+  </style>
+  
+  <div class="dashed-line"></div>
+
+
+  <br><br>
+  
+  <table class="table table-hover table-bordered" id="table1" style="border-color: #000000;color: rgb(0, 0, 0);">
+    <thead>
+      <tr>
+        <th id="th" style="text-align: center;">Transactions <i class="fas fa-filter m-1" onclick="showFilter('Transactions')"></i></th>
+        <th id="th" style="text-align: center;">Type <i class="fas fa-filter m-1" onclick="showFilter('Type')"></i></th>
+        <th id="th" style="text-align: center;">Name <i class="fas fa-filter m-1" onclick="showFilter('Name')"></i></th>
+        <th id="th" style="text-align: center;">Date <i class="fas fa-filter m-1" onclick="showFilter('Date')"></i></th>
+        <th id="th" style="text-align: center;">Quantity <i class="fas fa-filter m-1" onclick="showFilter('Quantity')"></i></th>
+        <th id="th" style="text-align: center;">Price <i class="fas fa-filter m-1" onclick="showFilter('Price')"></i></th>
+        <th id="th" style="text-align: center;">Status <i class="fas fa-filter m-1" onclick="showFilter('Status')"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="color: black;">
+        <td style="text-align: center;"></td>
+        <td style="text-align: center;"></td>
+        <td style="text-align: center;"></td>
+        <td style="text-align: center;"></td>
+        <td style="text-align: center;">{{selitem.opening_stock}}</td>
+        <td style="text-align: center;"></td>
+        <td style="text-align: center;"></td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+  </div>
+</body>
+</html>

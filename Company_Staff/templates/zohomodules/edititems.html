@@ -61,7 +61,7 @@ input {
                             <select name="unit" class="form-control" id="unit"  style="background-color: black; color: white;"  >
                                 <option>--Select Unit--</option>
                               {% for i in units %}
-                                <option value={{i.id}}  {% if item.unit == i.id %}Selected{% endif %} >{{i.unit_name}}</option>
+                                <option value={{i.id}}  {% if item.unit.unit_name == i.unit_name %}Selected{% endif %} >{{i.unit_name}}</option>
                               {% endfor %}
                         
                             </select>

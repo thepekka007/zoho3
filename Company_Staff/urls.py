@@ -30,6 +30,10 @@ urlpatterns = [
         path('create_item',views.create_item,name='create_item'),
          path('itemsoverview/<int:pk>',views.itemsoverview,name='itemsoverview'),
             path('edititems/<int:pr>',views.edititems,name='edititems'),
+            path('item_status_edit/<int:pv>',views.item_status_edit,name='item_status_edit'),
+             path('shareItemToEmail/<int:pt>',views.shareItemToEmail,name='shareItemToEmail'),
+             path('deleteitem/<int:pl>',views.deleteitem,name='deleteitem'),
+
          
        
   
@@ -39,6 +43,8 @@ urlpatterns = [
          path('create_account',views.create_account,name='create_account'),
           path('chartofaccountsoverview/<int:pk>',views.chartofaccountsoverview,name='chartofaccountsoverview'),
      path('editchartofaccounts/<int:pr>',views.editchartofaccounts,name='editchartofaccounts'),
+        path('deleteaccount/<int:pl>',views.deleteaccount,name='deleteaccount'),
+         path('acc_status_edit/<int:pv>',views.acc_status_edit,name='acc_status_edit'),
     
     
 ]

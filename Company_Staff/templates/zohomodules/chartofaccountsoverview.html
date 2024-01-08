@@ -3,6 +3,34 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ez8n5b/9F3JpKCEY6zIp+Hg7IbU8d7Q5ST78iEiRaP2mNPjkDps8I+1i0fblDOoh" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<style>
+     .modal {
+    z-index: 9999;
+    overflow: scroll;
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
 
@@ -128,13 +156,11 @@
         <a href="{% url 'editchartofaccounts'  selacc.id%}" class="btn btn-outline-warning py-2  text-warning 
         " title="save this draft" ><i class="fas fa-pencil-alt"></i>
     </a>
-  <a href=" " class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2"
-   data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"> </a>
+    <a href="{% url 'acc_status_edit' selacc.id %}" class="btn btn-outline-warning py-2" title="save this draft" style="height: 38px; margin-right: 3px;">{{selacc.status}}</a>
+      
+    <a href="{% url 'deleteaccount'  selacc.id%}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');" style="height: 38px; margin-right: 3px;"></a>
+      
    
-            {% if selacc.Create_status != 'activate' %}
-            <a href="" class="btn btn-outline-warning py-2  text-warning 
-             " title="save this draft" ><i class="fas fa-save"></i></a>
-            {% endif %}
   
      
   
@@ -146,14 +172,24 @@
           <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()">WhatsApp</a>
         </div>
        
-        <a class="  text-dark" onclick="exportToPDF3()">
-          <button class="btn btn-outline-warning" title="Pdf"><i class="fas fa-file-pdf-o"></i></button>
-        </a>
-        <a class=" text-dark" onclick="printSelectedArea2()">
-          <button class="btn btn-outline-warning" title="Print"><i class="fas fa-print"></i>
-          </button>
-        </a>
+        <a class="btn text-center mt-2 btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button" style="margin-left: 0; height: 38px; margin-right: 3px;">
+          <i class="fas fa-file-pdf"></i>
+      </a>
+      <div class="dropdown-menu m-1" style="background-color: rgb(74, 71, 71); color: white;">
         
+      
+        <a class="text-dark" onclick="exportToPDF3()">
+          <button class="btn btn-outline-warning" title="Pdf" style="width: 100px;"><i class="fas fa-file-pdf"></i>PDf</button>
+        </a>
+<br>
+        <a class=" text-dark" onclick="printSelectedArea2()">
+          <button class="btn btn-outline-warning" title="Print" style="width: 100px;"><i class="fas fa-print"></i>PRINT
+          </button>
+        </a>  <br>
+        <a class="btn btn-outline-warning py-2" style="cursor: pointer;" 
+        onclick="exportToExcel()" style="width: 100px;">XLS (Excel)</a>
+        </div>
+
           
                
                     <a href=" " class="btn  btn-outline-warning py-2  fas fa-comment-dots dropdown-toggle text-warning "  
@@ -172,22 +208,13 @@
 
    
        
-            <a href=" " class=" fas fa-paperclip dropdown-toggle btn btn-outline-warning text-warning py-2 "  
-                data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"> 
-            </a>
-
-            <div class="dropdown-menu" aria-labelledby="attachmentDropdown">
-                <a class="dropdown-item" style="cursor: pointer;" data-toggle="modal"
-                    data-target="#files"><i class="fa fa-paperclip"></i> Attach File</a>
-                {% if expense.attachment != "" %}
-                <a class="dropdown-item" href=""><i
-                        class="fa fa-download"></i> Download File</a>
-                {% endif %}
-            </div>
+            
+            <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#history" style="height: 38px; margin-right: 3px;">History</a>
+      
     </div>
     </div><br>
 
-    <div class="row" id="div-to-pdf"
+    <div class="row" id="div-to-print"
       style="background-color: #ffddb0;  height: auto; margin-left:1px; margin-right: 1rem; ">
 
       <div class="row text-center">
@@ -346,4 +373,110 @@
     </script>
     
   
+<!-- print and pdf  and xcel scripts -->
+
+
+<script>
+  function printSelectedArea2(area) {
+    // Get the HTML content of the table
+    var printContents = document.getElementById("table1").innerHTML;
+  
+    // Open a new window
+    var printWindow = window.open('', '_blank');
+  
+    // Add styles to hide specific elements during printing
+    printWindow.document.write('<style>@media print { #searchInput, #filterWindow { display: none; } }</style>');
+  
+    // Add additional styles for the table layout
+    printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }</style>');
+    printWindow.document.write('<style>table, th, td { border: 1px solid black; }</style>');
+  
+    // Write the HTML content to the new window
+    printWindow.document.write('<html><head><title>Print Data</title></head><body>');
+    printWindow.document.write(document.getElementById('div-to-print').innerHTML);
+    printWindow.document.write('</body></html>');
+  
+    // Print the new window
+    printWindow.print();
+  }
+  
+  
+    function exportToPDF3() {
+    var content = document.getElementById('div-to-print');
+    
+
+  
+  // Hide the search input temporarily
+
+    content.style.backgroundColor = 'white';
+    content.style.color = 'black';
+  
+  
+
+    // Apply styles to h1 elements within the content
+    var h1Elements = content.getElementsByTagName('h1');
+    for (var i = 0; i < h1Elements.length; i++) {
+      h1Elements[i].style.color = 'black';
+    }
+  
+    // Generate PDF using html2pdf
+    html2pdf()
+      .from(content)
+      .save('{{selacc.account_name}}' + '.pdf');
+  }
+  function exportToExcel() {
+      var table = document.querySelector('#table1'); // Add # to select by ID
+      var ws = XLSX.utils.table_to_sheet(table);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, 'account.xlsx');
+  }
+  
+  </script>
+
+
+
+<!-- history modal -->
+
+
+<div class="modal fade" id="history">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
+      <div class="modal-header" style="background: rgb(32, 35, 37);">
+        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Transaction History</h5>
+        <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body" style="background: rgb(32, 35, 37);">
+        <div class="card p-3 m-3" style="background-color: #000;">
+        
+          <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
+            <thead class="text-white">
+        
+              <tr>
+                <th style="color: rgb(250, 247, 242);">Action</th>
+                <th style="color: rgb(244, 244, 244);">Date</th>
+                  <th style="color: rgb(250, 247, 242);">Name</th>
+             
+                  
+              </tr>
+          </thead>
+        <tbody style="background-color: black;">
+          
+          {% for i in latest_item_id %}
+        <tr style="background-color: black;" class='clickable-row' data-href=""> 
+          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.action }}</td>            
+          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.Date }}</td>
+          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.logindetails.first_name }}&nbsp;{{ i.logindetails.last_name }}</td>
+       </tr>
+    {% endfor %}
+    
+      
+        </tbody>
+          </table>
+
+
+    </div>
+  </div>
+</div>
 {% endblock %}

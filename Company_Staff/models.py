@@ -58,8 +58,24 @@ class Chart_of_Accounts(models.Model):
     account_name = models.CharField(max_length=255,null=True,blank=True)
     
     account_code = models.CharField(max_length=255,null=True,blank=True)
-    description = models.TextField(null=True,blank=True)
-    attachment=models.ImageField(upload_to="image/", null=True) 
+    description = models.CharField(max_length=255,null=True,blank=True)
+    status=models.CharField(max_length=255,null=True,blank=True,default='Active')
     Create_status = models.CharField(max_length=255,null=True,blank=True,default='added')
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
-    # login_details=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
+    login_details=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
+
+class Chart_of_Accounts_History(models.Model):
+    company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
+    logindetails=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
+    chart_of_accounts=models.ForeignKey(Chart_of_Accounts,on_delete=models.CASCADE)
+    Date=models.DateField(null=True)
+    action=models.CharField(max_length=255,default='Created')
+
+
+
+class chart_of_accounts_comments(models.Model):                                              # new model by tinto
+    company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
+    logindetails=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
+    chart_of_accounts=models.ForeignKey(Chart_of_Accounts,on_delete=models.CASCADE)
+    comments = models.CharField(max_length=255,null=True,blank=True)
+    
