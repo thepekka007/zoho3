@@ -14,7 +14,66 @@ input {
     color: white;
 }
 </style>
+<style>
+  /* Style the Select2 search input */
+  .select2-search__field {
+    width: 100%; /* Set the width as needed */
+    padding: 8px; /* Adjust padding as needed */
+    border: 1px solid #92acc6; /* Add border color */
+    border-radius: 4px; /* Add border-radius for rounded corners */
+    outline: none; /* Remove the outline */
+    color: #000;
+  }
+/*   
+  .select2-container .select2-selection--single{box-sizing:border-box;cursor:pointer;display:block;height:35px;user-select:none;color: black;
+    -webkit-user-select:none;background-color: #fff;} */
+.select2-container .select2-selection--single .select2-selection__rendered{display:block;padding-left:20px;padding-right:20px; height: 25px;color: rgb(252, 252, 252);background-color: #000000;border-radius: 2px;box-shadow: #fcfcfc;border-color: #f2e8e8;}
+    .select2-dropdown{background-color:rgb(0, 0, 0);color: rgb(253, 253, 253);position:absolute;left:-100000px;width:100%;z-index:1051;color: rgb(255, 255, 255);border-color: #f2e8e8;}
+    .select2-results{display:block;border: #ced4da;border-color: #f2e8e8;}
+    .select2-results__options{list-style:none;margin:0;padding:0;color: rgb(255, 255, 255);background-color: #030303;padding-left: 20px;border-color: #f2e8e8;} 
+    .select2-results__option[aria-selected]{cursor:pointer;color: rgb(251, 251, 251);background-color: #0c0c0c;border-color: #f2e8e8;}
+    .select2-container--open .select2-dropdown{left:0;color: rgb(255, 255, 255);background-color: #000000;border-color: #f2e8e8;}
 
+    .select2-hidden-accessible{background-color: #000000;border:2px !important;clip:rect(0 0 0 0) !important;-webkit-clip-path:inset(50%) !important;clip-path:inset(50%) !important;height:0px !important;padding:0 !important;position:absolute !important;width:1px !important;white-space:nowrap !important;color: rgb(250, 250, 250)} 
+    .select2-container--default .select2-selection--single{background-color:#000000;border:1px solid #000000;border-radius:4px;color: rgb(0, 0, 0);background-color: #ede4e4;}
+/* .select2-hidden-accessible{background-color: #fff;border:0 !important;clip:rect(0 0 0 0) !important;-webkit-clip-path:inset(50%) !important;clip-path:inset(50%) !important;height:1px !important;overflow:hidden !important;padding:0 !important;position:absolute !important;width:1px !important;white-space:nowrap !important;color: black}  */
+.select2-container--default .select2-selection--single:focus, .select2-container--default .select2-selection--single .select2-search__field:focus, .typeahead:focus, .tt-query:focus, .tt-hint:focus {
+    border: 1px solid rgba(250, 250, 250, 0.5);
+    background-color: #f2e8e8;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ez8n5b/9F3JpKCEY6zIp+Hg7IbU8d7Q5ST78iEiRaP2mNPjkDps8I+1i0fblDOoh" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<style>
+     .modal {
+    z-index: 9999;
+    overflow: scroll;
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
 
 <section class="container-fluid" style="color: aliceblue; font-size: large; overflow-y: auto;">
 
@@ -65,9 +124,9 @@ input {
                               {% endfor %}
                         
                             </select>
-                            
-                            <button style="width: 2.5rem; background-color: chocolate; color: black; border-radius: 3px; margin-left: 10px;" class="open-button" onclick="openForm()">+</button>
-                        </div>
+                              
+            <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#history" style="height: 38px; margin-right: 3px;">+</a>
+          </div>
                     </div>
                 </div>
                 <br>
@@ -187,12 +246,25 @@ input {
                         <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account*</label>
                         <div class="col-sm-10 col-md-7 col-5">
                             <div class="d-flex align-items-center">
-                                <select name="cost_acc" class="form-control " id="myaccount" >
-                                    <option value="">--Select Account--</option>
-                                   
+                                <select name="cost_acc" class="form-control " id="myaccount" style="color: #fefefe;background-color: #000;">
+                                  <option value="">--Select Account--</option>
+                                  {% for i in accounts %}
+
+                                  {% if i.account_type == 'Expense' %}
+                                  <optgroup label="Expense">
+                                    <option value="i.id">{{i.account_name}}</option>
+                                  </optgroup>
+                                  {% endif %}
+                                  {% if i.account_type == 'Other Expense' %}
+                                  <optgroup label="Other Expense">
+                                    <option value="i.id">{{i.account_name}}</option>
+                                  </optgroup>
+                                  {% endif %}
+                                 
+                                   {% endfor %}
                                 </select>
-                                <button id="showFormButton" style="width: 40px; background-color: chocolate; color: black; border-radius: 3px; margin-left: 10px;" class="openbutton" onclick="showForm()">+</button>
-                             
+                                <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#account" style="height: 38px; margin-right: 3px;">+</a>
+         
                             </div>
                            
                         </div>
@@ -359,4 +431,275 @@ input {
   </script>
 
    <!-- FORM RESET SCRIPT END -->
+
+
+
+   <div class="modal fade" id="history">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
+        <div class="modal-header" style="background: rgb(32, 35, 37);">
+          <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Add Unit</h5>
+          <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body" style="background: rgb(32, 35, 37);">
+          <div class="card p-3 m-3" style="background-color: #000;">
+          
+            <form action="" class="form-container" id="unitForm">
+              {% csrf_token %}
+     
+              <h1 class="text-dark"></h1>
+        
+              <label class="text-dark" for="unit"><b>Unit</b></label>
+              <input type="text" class="form-control text-black" placeholder="Enter unit" id="unitName" name="unit_name" required>
+              <p class="text-white">eg:KL,PCS,BOX,LTR</p>
+        
+              <button type="submit" id="UnitSave2" class="btn add-button text-white">Add</button>
+          </form>
+  
+  
+      </div>
+    </div>
+  </div>
+  </div></div>
+  </div>
+  </div>
+  
+
+  <script>
+    $(document).on("click","#UnitSave2",function(){
+    $.ajax({
+      
+      type : 'POST',
+      url:"{% url 'add_unit' %}",
+  
+      data:{
+     
+          units : $("#unitName").val(),
+   
+   
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+          
+        },
+      
+        success: function(response) {debugger
+             
+            document.getElementById("unitForm").reset();
+            reloadUnit()
+        },
+    });        
+  });
+  
+  
+  
+  
+  </script>
+  
+  <script>
+  
+  
+  
+  function reloadUnit() {
+    debugger
+  $.ajax({
+    url: "{% url 'unit_dropdown' %}",
+    type: "GET",
+    dataType: "json",
+    data: $(this).serialize(),
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+  
+    success: function(data) {debugger
+      var dropdown = $('#unit');
+      dropdown.empty();
+      dropdown.append($('<option></option>').text('Select unit'));
+      $.each(data, function(key, value) {
+          // dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(value[0] + ' ' + value[1]));
+          // dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(key));
+          dropdown.append($('<option></option>').attr('value', key).text(value[0] + ' ' + value[1]+ ' ' + value[2]).val(key));
+      });
+      showTaxSelectors();
+    },
+    error: function(xhr, status, error) {
+    console.error(xhr.responseText);
+    showTaxSelectors();
+    }
+  });
+  }
+  </script>
+
+
+<div class="modal fade" id="account">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
+      <div class="modal-header" style="background: rgb(32, 35, 37);">
+        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">New Account</h5>
+        <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body" style="background: rgb(32, 35, 37);">
+        <div class="card p-3 m-3" style="background-color: #000;">
+        
+          <form action="" class="form-container" id="newaccount">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-sm-4">
+                  <label for="">Account Type:</label>
+              </div>
+              <div class="col-sm-8">
+                  <div class="select-box1" onclick="message()">
+                      <div class="select-option1">
+                          <select id="soValue1" class="form-control" name="account_type" style="width: 50%;color: #ede4e4;background-color: #000;">
+                              <option value="" disabled selected>Select</option>
+                              <optgroup label="Assets">
+                                  <option value="Other Assets">Other Assets</option>
+                                  <option value="Other Current Assets">Other Current Assets</option>
+                                  <option value="Cash">Cash</option>
+                                  <option value="Bank">Bank</option>
+                                  <option value="Fixed Asset">Fixed Asset</option>
+                                  <option value="Stock">Stock</option>
+                                  <option value="Payment Clearing">Payment Clearing</option>
+                              </optgroup>
+              
+                              <optgroup label="Liability">
+                                  <option value="Other Liability">Other Liability</option>
+                                  <option value="Other Current Liability">Other Current Liability</option>
+                                  <option value="Credit Card">Credit Card</option>
+                                  <option value="Long Term Liability">Long Term Liability</option>
+                                  <option value="Overseas Tax Payable">Overseas Tax Payable</option>
+                              </optgroup>
+              
+                              <optgroup label="Equity">
+                                  <option value="Equity">Equity</option>
+                              </optgroup>
+              
+                              <optgroup label="Income">
+                                  <option value="Income">Income</option>
+                                  <option value="Other Income">Other Income</option>
+                              </optgroup>
+              
+                              <optgroup label="Expense">
+                                  <option value="Expense">Expense</option>
+                                  <option value="Cost Of Goods Sold">Cost Of Goods Sold</option>
+                                  <option value="Other Expense">Other Expense</option>
+                              </optgroup>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+              
+          </div>
+          <br>
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account Name:</label>
+              <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                  <input type="text" class="form-control " name="account_name" placeholder="Enter Account Name"
+                  id="account_name" required >
+                  <div id="validationResult"></div>
+              </div>
+          </div>
+        {% for m in messages %}
+        <p>{{m}}</p>
+        {%endfor%}
+          <br>
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account Code:</label>
+              <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                  <input type="text" class="form-control " name="account_code" placeholder="Enter Account code"
+                  id="account_code">
+              
+              </div>
+          </div>
+          <br>
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label" style="color: aliceblue;">Description:</label>
+              <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
+                  <textarea name="description" class="form-control " id="description"
+                  placeholder="Max. 500 characters"></textarea>
+              
+              </div>
+          </div>
+          <br>
+          <br>
+          <div class="form-inline " style="margin-bottom: 200px;">
+              <button type="submit"  class="mr-3 btn" style="background-color: chocolate;color: aliceblue;" value="Save">Save</button>
+              <button type="button" class="mr-3 btn" onclick="resetForm()" value="Cancel" style="margin-left:10px;background-color: chocolate;color: aliceblue;">Cancel</button>
+            </div> 
+<br>
+        </form>
+
+
+    </div>
+  </div>
+</div>
+</div></div>
+</div>
+</div>
+
+
+<script>
+  $(document).on("click","#newaccountsaveUnitSave2",function(){
+  $.ajax({
+    
+    type : 'POST',
+    url:"{% url 'add_account' %}",
+
+    data:{
+   
+        account_type : $("#spValue1").val(),
+        account_name : $("#account_name").val(),
+        account_code : $("#account_code").val(),
+        description : $("#description").val(),
+      
+ 
+ 
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+        
+      },
+    
+      success: function(response) {debugger
+           
+          document.getElementById("newaccount").reset();
+          reloadaccount()
+      },
+  });        
+});
+
+
+
+
+</script>
+
+<script>
+
+
+
+function reloadaccount() {
+  debugger
+$.ajax({
+  url: "{% url 'account_dropdown' %}",
+  type: "GET",
+  dataType: "json",
+  data: $(this).serialize(),
+  csrfmiddlewaretoken: '{{ csrf_token }}',
+
+  success: function(data) {debugger
+    var dropdown = $('#myaccount');
+    dropdown.empty();
+    dropdown.append($('<option></option>').text('Select account'));
+    $.each(data, function(key, value) {
+        // dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(value[0] + ' ' + value[1]));
+        // dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(key));
+        dropdown.append($('<option></option>').attr('value', key).text(value[0] + ' ' + value[1]+ ' ' + value[2]).val(key));
+    });
+    showTaxSelectors();
+  },
+  error: function(xhr, status, error) {
+  console.error(xhr.responseText);
+  showTaxSelectors();
+  }
+});
+}
+</script>
+
+
 {% endblock %}

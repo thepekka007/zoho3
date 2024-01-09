@@ -15,7 +15,7 @@ class Unit(models.Model):
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
 
 class Items(models.Model):
-    # user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
+   
     item_type=models.CharField(max_length=255)
     item_name=models.CharField(max_length=255)
    
@@ -32,11 +32,11 @@ class Items(models.Model):
     purchase_price=models.IntegerField(null=True,blank=True)
     purchase_account=models.CharField(max_length=255)
     purchase_description=models.CharField(max_length=255)
-    # sales=models.ForeignKey(Sales,on_delete=models.CASCADE)
-    minimum_stock_to_maintain=models.IntegerField(blank=True,null=True)  #---------------------> new field
+   
+    minimum_stock_to_maintain=models.IntegerField(blank=True,null=True)  
     activation_tag=models.CharField(max_length=255,default='active')
     inventory_account=models.CharField(max_length=255,null=True)
-    # purchase=models.ForeignKey(Purchase,on_delete=models.CASCADE)
+
     date=models.DateTimeField(auto_now_add=True)
     opening_stock=models.IntegerField(blank=True,null=True,default=0)
     current_stock=models.IntegerField(blank=True,null=True,default=0)
@@ -51,6 +51,11 @@ class Item_Transaction_History(models.Model):
     Date=models.DateField(null=True)
     action=models.CharField(max_length=255,default='Created')
 
+class Items_comments(models.Model):                                              # new model by tinto
+    company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
+    logindetails=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
+    Items=models.ForeignKey(Items,on_delete=models.CASCADE)
+    comments = models.CharField(max_length=255,null=True,blank=True)
 
 class Chart_of_Accounts(models.Model):
     # user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)

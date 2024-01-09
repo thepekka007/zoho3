@@ -4,7 +4,7 @@ from Register_Login.models import *
 from Company_Staff.models import *
 from Register_Login.views import logout
 from django.shortcuts import get_object_or_404
-
+from django.http import JsonResponse
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
@@ -197,7 +197,8 @@ def company_items(request):
 
 def new_items(request):
     units = Unit.objects.all()
-    return render(request, 'zohomodules/newitem.html',{'units':units})
+    accounts=Chart_of_Accounts.objects.all()
+    return render(request, 'zohomodules/newitem.html',{'units':units,'accounts':accounts})
 
 def create_item(request):
     
@@ -282,17 +283,151 @@ def create_item(request):
             return redirect('company_items')
     return redirect('company_items')
 
+def add_unit(request):
+    login_id = request.session['login_id']
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+        company_id = request.session['login_id']
+        if request.method == 'POST':
+            c = CompanyDetails.objects.get(login_details=company_id)
+            unit_name = request.POST['units']
+            unit = Unit(unit_name=unit_name,company=c)  
+            unit.save()  
+            unit_id = unit.id  
+            response_data = {
+            "message": "success",
+            "unit_id":unit_id,
+       
+        }
+
+        return JsonResponse(response_data)
+      
+
+    elif log_user.user_type == 'Staff':
+        staff_id = request.session['login_id']
+        if request.method=='POST':
+         
+            staff = LoginDetails.objects.get(id=staff_id)
+            sf = StaffDetails.objects.get(login_details=staff)
+            c=sf.company
+            
+            unit_name = request.POST['units']
+            unit = Unit(unit_name=unit_name,company=c)  
+            unit.save()  
+            unit_id = unit.id  
+            return JsonResponse({"unit_name": unit_name, "unit_id": unit_id})
+        
+    return redirect('newitem')
+
+def unit_dropdown(request):
 
 
+    options = {}
+    option_objects = Unit.objects.all()
+    for option in option_objects:
+        
+        options[option.id] = [option.unit_name,option.id]
+    return JsonResponse(options)
 
+def add_account(request):
+    login_id = request.session['login_id']
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+        company_id = request.session['login_id']
+        if request.method == 'POST':
+            a=Chart_of_Accounts()
+            b=Chart_of_Accounts_History()
+            c = CompanyDetails.objects.get(login_details=company_id)
+            b.company=c
+            b.logindetails=log_user
+            b.action="Created"
+            b.Date=date.today()
+            a.login_details=log_user
+            a.company=c
+          
+        
+            a.account_type = request.POST.get("account_type",None)
+            a.account_name = request.POST.get("account_name",None)
+            a.account_code = request.POST.get("account_code",None)
+            a.description = request.POST.get("description",None)
+    
+            a.Create_status="active"
+            ac_name=request.POST.get("account_name",None)
+            if Chart_of_Accounts.objects.filter(account_name=ac_name,company=c).exists():
+                error='yes'
+                messages.error(request,'Account with same name exsits')
+                return redirect('addchartofaccounts')
+            else:
+                a.save()
+                t=Chart_of_Accounts.objects.get(id=a.id)
+                b.chart_of_accounts=t
+                b.save()
+                acc_id = a.id  
+                acc_name=a.account_name
+            response_data = {
+            "message": "success",
+            "acc_id":acc_id,
+            "acc_name":acc_name,
+       
+        }
+
+        return JsonResponse(response_data)
+      
+
+    # elif log_user.user_type == 'Staff':
+    #     staff_id = request.session['login_id']
+    #     if request.method=='POST':
+    #         a=Chart_of_Accounts()
+    #         b=Chart_of_Accounts_History()
+    #         staff = LoginDetails.objects.get(id=staff_id)
+    #         sf = StaffDetails.objects.get(login_details=staff)
+    #         a=sf.company
+    #         b.Date=date.today()
+    #         b.company=c
+    #         b.logindetails=log_user
+    #         a.login_details=log_user
+    #         a.company=c
+          
+        
+    #         a.account_type = request.POST.get("account_type",None)
+    #         a.account_name = request.POST.get("account_name",None)
+    #         a.account_code = request.POST.get("account_code",None)
+    #         a.description = request.POST.get("description",None)
+    
+    #         a.Create_status="active"
+    #         a.save()
+    #         t=Chart_of_Accounts.objects.get(id=a.id)
+    #         b.chart_of_accounts=t
+    #         b.save() 
+    #         acc_id = a.id  
+    #         acc_name=a.account_name
+    #         response_data = {
+    #         "message": "success",
+    #         "acc_id":acc_id,
+    #         "acc_name":acc_name,
+       
+    #     }
+       
+    #         return JsonResponse(response_data)
+        
+    # return redirect('chartofaccounts')
+
+def account_dropdown(request):
+    options = {}
+    option_objects = Chart_of_Accounts.objects.all()
+    for option in option_objects:
+        
+        options[option.id] = [option.account_name,option.id]
+    return JsonResponse(options)
 def itemsoverview(request,pk):
     items=Items.objects.all()  
     selitem=Items.objects.get(id=pk)
+    est_comments=Items_comments.objects.filter(Items=pk)
     stock_value=selitem.opening_stock*selitem.purchase_price  
     latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
     filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
 
-    return render(request, 'zohomodules/itemsoverview.html',{'items':items,'selitem':selitem,'stock_value':stock_value,'latest_item_id':filtered_data})
+    return render(request, 'zohomodules/itemsoverview.html',{'items':items,'selitem':selitem,'stock_value':stock_value,'latest_item_id':filtered_data,'est_comments':est_comments})
 
 
 def edititems(request, pr):
@@ -443,6 +578,52 @@ def deleteitem(request,pl):
     
     return redirect(company_items)
 
+def delete_item_comment(request,ph):
+    items=Items_comments.objects.filter(id=ph)
+    items.delete()
+    
+    return redirect(company_items)
+
+
+def add_item_comment(request,pc):
+
+    login_id = request.session['login_id']
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+        company_id = request.session['login_id']
+        if request.method=="POST":
+                    
+                    com=Items_comments()
+                    c = CompanyDetails.objects.get(login_details=company_id)
+            
+                    comment_comments=request.POST['comment']
+                    com.company=c
+                    com.logindetails=log_user
+                    com.comments=comment_comments
+                    item=Items.objects.get(id=pc)
+                    com.Items=item
+                    
+                    com.save()
+                    return redirect('itemsoverview',pc)
+
+    elif log_user.user_type == 'Staff':
+        staff_id = request.session['login_id']
+        if request.method=='POST':
+            com=Items_comments()
+            staff = LoginDetails.objects.get(id=staff_id)
+            sf = StaffDetails.objects.get(login_details=staff)
+            c=sf.company
+            
+            comment_comments=request.POST['comment']
+            com.company=c
+            com.logindetails=log_user
+            com.comments=comment_comments
+            item=Items.objects.get(id=pc)
+            com.Items=item
+                    
+            com.save()
+            return redirect('itemsoverview',pc)
+    return redirect('itemsoverview',pc)
         
 # tinto views chart of accounts
 
@@ -483,11 +664,17 @@ def create_account(request):
             a.description = request.POST.get("description",None)
     
             a.Create_status="active"
-            a.save()
-            t=Chart_of_Accounts.objects.get(id=a.id)
-            b.chart_of_accounts=t
-            b.save()
-            return redirect('chartofaccounts')
+            ac_name=request.POST.get("account_name",None)
+            if Chart_of_Accounts.objects.filter(account_name=ac_name,company=c).exists():
+                error='yes'
+                messages.error(request,'Account with same name exsits')
+                return redirect('addchartofaccounts')
+            else:
+                a.save()
+                t=Chart_of_Accounts.objects.get(id=a.id)
+                b.chart_of_accounts=t
+                b.save()
+                return redirect('chartofaccounts')
     elif log_user.user_type == 'Staff':
         staff_id = request.session['login_id']
         if request.method=='POST':
@@ -509,20 +696,27 @@ def create_account(request):
             a.description = request.POST.get("description",None)
     
             a.Create_status="active"
-            a.save()
-            t=Chart_of_Accounts.objects.get(id=a.id)
-            b.chart_of_accounts=t
-            b.save()
-            return redirect('chartofaccounts')
+            ac_name=request.POST.get("account_name",None)
+            if Chart_of_Accounts.objects.filter(account_name=ac_name,company=c).exists():
+                error='yes'
+                messages.error(request,'Account with same name exsits')
+                return redirect('addchartofaccounts')
+            else:
+                a.save()
+                t=Chart_of_Accounts.objects.get(id=a.id)
+                b.chart_of_accounts=t
+                b.save()
+                return redirect('chartofaccounts')
 
     return redirect('addchartofaccounts')
 
 def chartofaccountsoverview(request,pk):
     acc=Chart_of_Accounts.objects.all()  
     selacc=Chart_of_Accounts.objects.get(id=pk)  
+    est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
     latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
     filtered_data = Chart_of_Accounts_History.objects.filter(Date=latest_date, chart_of_accounts_id=pk)
-    return render(request, 'zohomodules/chartofaccountsoverview.html',{'acc':acc,'selacc':selacc,'latest_item_id':filtered_data})
+    return render(request, 'zohomodules/chartofaccountsoverview.html',{'acc':acc,'selacc':selacc,'latest_item_id':filtered_data,'est_comments':est_comments})
 
 
 from django.shortcuts import render, redirect
@@ -614,3 +808,53 @@ def acc_status_edit(request, pv):
     selacc.save()
 
     return redirect('chartofaccountsoverview',pv)
+
+
+def add_account_comment(request,pc):
+
+    login_id = request.session['login_id']
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+        company_id = request.session['login_id']
+        if request.method=="POST":
+                    
+                    com=chart_of_accounts_comments()
+                    c = CompanyDetails.objects.get(login_details=company_id)
+            
+                    comment_comments=request.POST['comment']
+                    com.company=c
+                    com.logindetails=log_user
+                    com.comments=comment_comments
+                    acc=Chart_of_Accounts.objects.get(id=pc)
+                    com.chart_of_accounts=acc
+                    
+                    com.save()
+                    return redirect('chartofaccountsoverview',pc)
+
+    elif log_user.user_type == 'Staff':
+        staff_id = request.session['login_id']
+        if request.method=='POST':
+            com=chart_of_accounts_comments()
+            staff = LoginDetails.objects.get(id=staff_id)
+            sf = StaffDetails.objects.get(login_details=staff)
+            c=sf.company
+            
+            comment_comments=request.POST['comment']
+            com.company=c
+            com.logindetails=log_user
+            com.comments=comment_comments
+            acc=Chart_of_Accounts.objects.get(id=pc)
+            com.chart_of_accounts=acc
+                    
+            com.save()
+            return redirect('chartofaccountsoverview',pc)
+
+
+def delete_account_comment(request,ph):
+    acc=chart_of_accounts_comments.objects.filter(id=ph)
+    acc.delete()
+    
+    return redirect(chartofaccounts)
+
+
+

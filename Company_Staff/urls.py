@@ -33,8 +33,10 @@ urlpatterns = [
             path('item_status_edit/<int:pv>',views.item_status_edit,name='item_status_edit'),
              path('shareItemToEmail/<int:pt>',views.shareItemToEmail,name='shareItemToEmail'),
              path('deleteitem/<int:pl>',views.deleteitem,name='deleteitem'),
-
-         
+             path('add_item_comment/<int:pc>',views.add_item_comment,name='add_item_comment'),
+              path('delete_item_comment/<int:ph>',views.delete_item_comment,name='delete_item_comment'),
+                  path('add_unit',views.add_unit,name='add_unit'),
+            path('unit_dropdown',views.unit_dropdown,name = 'unit_dropdown'),
        
   
     # Chartof accounts urls
@@ -45,6 +47,10 @@ urlpatterns = [
      path('editchartofaccounts/<int:pr>',views.editchartofaccounts,name='editchartofaccounts'),
         path('deleteaccount/<int:pl>',views.deleteaccount,name='deleteaccount'),
          path('acc_status_edit/<int:pv>',views.acc_status_edit,name='acc_status_edit'),
+    path('add_account_comment/<int:pc>',views.add_account_comment,name='add_account_comment'),
     
+path('delete_account_comment/<int:ph>',views.delete_account_comment,name='delete_account_comment'),
+    path('add_account',views.add_account,name='add_account'),
+            path('account_dropdown',views.account_dropdown,name = 'account_dropdown'),
     
 ]

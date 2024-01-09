@@ -101,6 +101,9 @@
                         <div id="validationResult"></div>
                     </div>
                 </div>
+              {% for m in messages %}
+              <p>{{m}}</p>
+              {%endfor%}
                 <br>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account Code:</label>
@@ -151,4 +154,6 @@
   </script>
 
    <!-- FORM RESET SCRIPT END -->
+
+   <!-- acoount name duplicate validation -->
 {% endblock %}

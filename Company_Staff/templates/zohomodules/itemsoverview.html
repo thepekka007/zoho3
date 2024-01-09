@@ -2,7 +2,7 @@
 {% block content %}
 {% load static %}
 <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
-
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ez8n5b/9F3JpKCEY6zIp+Hg7IbU8d7Q5ST78iEiRaP2mNPjkDps8I+1i0fblDOoh" crossorigin="anonymous">
@@ -439,8 +439,18 @@
             </div>
     
           <!-- Comment Button -->
-          <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning" data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false" style="height: 38px; margin-right: 3px;"></a>
-      
+          <a href=" " class="btn  btn-outline-warning py-2  fas fa-comment-dots dropdown-toggle text-warning "  
+          data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"> 
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="attachmentDropdown">
+          <a class="dropdown-item" style="cursor: pointer;" data-toggle="modal"
+           data-target="#cmnts"><i class="fa-solid fa fa-plus"></i>Add</a>
+          <a class="dropdown-item" style="cursor: pointer;" data-toggle="modal"
+          data-target="#cmt_list"><i class="fas fa-list"></i>&nbsp;View List</a>
+                  
+      </div>
+
           <!-- History Button -->
           <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#history" style="height: 38px; margin-right: 3px;">History</a>
       
@@ -826,45 +836,85 @@ function exportToExcel() {
     </div>
   </div>
 </div>
-
+</div>
+</div>
 <!-- comment modal -->
-
 <div class="modal fade" id="cmnts">
   <div class="modal-dialog modal-xl">
     <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
       <div class="modal-header" style="background: rgb(32, 35, 37);">
-        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Enter Comments</h5>
+        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #fefefe;">Comments</h5>
+        <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body" style="background: rgb(32, 35, 37);">
+        <div class="card p-3 m-3">
+          <form action="{% url 'add_item_comment' selitem.id %}" method="post" class="needs-validation"
+            id="share_to_email_form" autocomplete="off">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="emailIds" style="color: #000;">Enter Comment</label>
+              <textarea class="form-control text-dark"  style="color: #000;" name="comment" id="comment" rows="5"
+                placeholder="MEnter your comment here" required></textarea>
+            </div>
+           
+     
+        </div>
+        <div class="modal-footer d-flex justify-content-center" style="border-top: 1px solid #ffff;">
+          <!-- <button type="submit">submit</button> -->
+          <input type="submit" id="share_with_email"
+            class="submitShareEmailBtn rounded-pill text-grey w-50 my-4 mx-3" value="Save">
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="cmt_list">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
+      <div class="modal-header" style="background: rgb(32, 35, 37);">
+        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Comments</h5>
         <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body" style="background: rgb(32, 35, 37);">
         <div class="card p-3 m-3" style="background-color: #000;">
         
-          <form action="" method="post" id="modalComment">
-            {% csrf_token %}
-            <input type="hidden" value="" id="com_id">
-            <div class="row mt-2">
-                <div class="col-md-6 mt-2">
-                    <textarea class="form-control text-dark bg-light" id="comment1" name="comment" required style="height: 200px; width: 550px;"></textarea>
-                </div>
-            </div>
-            <div class="row mt-5">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <div class="d-flex">
-                        <button type="submit" class="btn save_btn rounded-pill text-grey w-50 my-4 mx-3" id="commentSave">Save</button>
-                        <button type="button" class="close btn save_btn rounded-pill text-grey w-50 my-4" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Cancel</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-4"></div>
-            </div>
-        </form>
+          <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
+            <thead class="text-white">
+        
+              <tr>
+                <th style="color: rgb(250, 247, 242);"></th>
+                <th style="color: rgb(244, 244, 244);"></th>
+         
+             
+                  
+              </tr>
+          </thead>
+        <tbody style="background-color: rgb(225, 195, 195);width: 200px;">
+          
+          {% for i in est_comments %}
+        <tr style="background-color: black;" class='clickable-row' data-href=""> 
+          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;margin-left: 10px;">{{ i.comments }}</td>            
+          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'delete_item_comment' i.id %}"> <span
+            aria-hidden="true">&times;</span></a></td>
+          
+      </tr>
+      <tr></tr>
+    {% endfor %}
+    
+      
+        </tbody>
+          </table>
 
 
     </div>
   </div>
+</div>
+</div>
 </div>
 
   {% endblock %}
