@@ -196,31 +196,69 @@ def staff_profile(request):
 # items llist
     
 def items_list(request):
-    login_id = request.session['login_id']
-    if 'login_id' not in request.session:
-        return redirect('/')
-    log_user = LoginDetails.objects.get(id=login_id)
-    if log_user.user_type == 'Company':
-        company_id = request.session['login_id']
-        c = CompanyDetails.objects.get(login_details=company_id)
-        item=Items.objects.filter(company=c)
-        return render(request, 'zohomodules/items/items_list.html',{'item':item})
-    elif log_user.user_type == 'Staff':
-        staff_id = request.session['login_id']
-        staff = LoginDetails.objects.get(id=staff_id)
-        sf = StaffDetails.objects.get(login_details=staff)
-        c=sf.company
-        item=Items.objects.filter(company=c)
-        return render(request, 'zohomodules/items/items_list.html',{'item':item})
+     if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=login_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                item=Items.objects.filter(company=dash_details.company)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'item':item,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/items/items_list.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            item=Items.objects.filter(company=dash_details)
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            context = {
+                    'details': dash_details,
+                    'item': item,
+                    'allmodules': allmodules,
+            }
+        return render(request,'zohomodules/items/items_list.html',context)
 
-    
+   
    
 # create Items
 
 def new_items(request):
-    units = Unit.objects.all()
-    accounts=Chart_of_Accounts.objects.all()
-    return render(request, 'zohomodules/items/newitem.html',{'units':units,'accounts':accounts})
+    if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+    log_details= LoginDetails.objects.get(id=login_id)
+    if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                item=Items.objects.filter(company=dash_details.company)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                units = Unit.objects.filter(company=dash_details.company)
+                accounts=Chart_of_Accounts.objects.filter(company=dash_details.company)
+                context = {
+                     'details': dash_details,
+                    'units': units,
+                    'allmodules': allmodules,
+                    'accounts':accounts
+                }
+                return render(request,'zohomodules/items/newitem.html',context)
+    if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            item=Items.objects.filter(company=dash_details)
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            units = Unit.objects.filter(company=dash_details)
+            accounts=Chart_of_Accounts.objects.filter(company=dash_details)
+            context = {
+                    'details': dash_details,
+                    'units': units,
+                    'allmodules': allmodules,
+                    'accounts':accounts
+            }
+    
+            return render(request, 'zohomodules/items/newitem.html',context)
 # create Items
 def create_item(request):
     
@@ -448,38 +486,101 @@ def account_dropdown(request):
         options[option.id] = [option.account_name,option.id]
     return JsonResponse(options)
 def itemsoverview(request,pk):
-    items=Items.objects.all()  
-    selitem=Items.objects.get(id=pk)
-    est_comments=Items_comments.objects.filter(Items=pk)
-    stock_value=selitem.opening_stock*selitem.purchase_price  
-    latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
-    filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
 
-    return render(request, 'zohomodules/items/itemsoverview.html',{'items':items,'selitem':selitem,'stock_value':stock_value,'latest_item_id':filtered_data,'est_comments':est_comments})
+    if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+    log_details= LoginDetails.objects.get(id=login_id)
+    if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                item=Items.objects.filter(company=dash_details.company)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+              
+                items=Items.objects.filter(company=dash_details.company)
+                selitem=Items.objects.get(id=pk)
+                est_comments=Items_comments.objects.filter(Items=pk)
+                stock_value=selitem.opening_stock*selitem.purchase_price  
+                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+                context = {
+                     'details': dash_details,
+                
+                    'allmodules': allmodules,
+                    'items':items,
+                    'selitem':selitem,
+                    'stock_value':stock_value,
+                    'latest_item_id':filtered_data,
+                    'est_comments':est_comments
+                }
+                return render(request, 'zohomodules/items/itemsoverview.html',context)
+    if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+       
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            items=Items.objects.filter(company=dash_details)
+            selitem=Items.objects.get(id=pk)
+            est_comments=Items_comments.objects.filter(Items=pk)
+            stock_value=selitem.opening_stock*selitem.purchase_price  
+            latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+            filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+            context = {
+                    'details': dash_details,
+                   
+                    'allmodules': allmodules,
+                    'items':items,
+                    'selitem':selitem,
+                    'stock_value':stock_value,
+                    'latest_item_id':filtered_data,
+                    'est_comments':est_comments
+            }
+    
+            return render(request, 'zohomodules/items/itemsoverview.html',context)
+
+
+    return render(request, 'zohomodules/items/itemsoverview.html')
 
 
 def edititems(request, pr):
+    if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+    
     # Retrieve the chart of accounts entry
     item = get_object_or_404(Items, id=pr)
     units = Unit.objects.all()
 
     # Check if 'company_id' is in the session
-    login_id = request.session['login_id']
+
     log_user = LoginDetails.objects.get(id=login_id)
     if log_user.user_type == 'Company':
-        company_id = request.session['login_id']
+     
+        dash_details = CompanyDetails.objects.get(login_details=log_user)
+       
+        allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+        item = get_object_or_404(Items, id=pr)
+        units = Unit.objects.all()
+        context = {
+                    'item': item,
+                    'units':units,
+                    'details': dash_details,
+                   
+                    'allmodules': allmodules,
+            }
+       
     
         
         if request.method=='POST':
    
             b=Item_Transaction_History()
-            c = CompanyDetails.objects.get(login_details=company_id)
-            b.company=c
+            # c = CompanyDetails.objects.get(login_details=company_id)
+            b.company=dash_details
             b.logindetails=log_user
             b.action="Edited"
             b.Date=date.today()
             item.login_details=log_user
-            item.company=c
+            item.company=dash_details
             item.item_type = request.POST.get("type",None)
             item.item_name = request.POST.get("name",None)
             unit_id = request.POST.get("unit")
@@ -507,14 +608,26 @@ def edititems(request, pr):
             b.save()
             # Redirect to another page after successful update
             return redirect('itemsoverview', pr)
-    elif log_user.user_type == 'Staff':
-        staff_id = request.session['login_id']
+        return render(request, 'zohomodules/items/edititems.html',context)
+    if log_user.user_type == 'Staff':
+        dash_details = StaffDetails.objects.get(login_details=log_user)
+                
+        allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+        item = get_object_or_404(Items, id=pr)
+        units = Unit.objects.all()
+        context = {
+                    'item': item,
+                    'units':units,
+                    'details': dash_details,
+                   
+                    'allmodules': allmodules,
+            }
+ 
         if request.method=='POST':
             a=Items()
             b=Item_Transaction_History()
-            staff = LoginDetails.objects.get(id=staff_id)
-            sf = StaffDetails.objects.get(login_details=staff)
-            c=sf.company
+
+            c=dash_details.company
             b.company=c
             b.logindetails=log_user
             b.action="Edited"
@@ -545,9 +658,9 @@ def edititems(request, pr):
             b.items=t
             b.save()
 
-        return redirect('itemsoverview', pr)
+            return redirect('itemsoverview', pr)
  
-    return render(request, 'zohomodules/items/edititems.html', {'item': item,'units':units})
+        return render(request, 'zohomodules/items/edititems.html', context)
    
 def item_status_edit(request, pv):
     
@@ -829,17 +942,67 @@ def filter_item_view_inActive(request,pk):
 
     
 def addchartofaccounts(request):
-    cur_user = request.user
-    user_id=cur_user.id
-    print(user_id)
-    context={'user_id':user_id}
-    return render(request, 'zohomodules/chartofaccounts/addchartofaccounts.html',context)
+        if 'login_id' in request.session:
+            login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=login_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                item=Items.objects.filter(company=dash_details.company)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                units = Unit.objects.filter(company=dash_details.company)
+                accounts=Chart_of_Accounts.objects.filter(company=dash_details.company)
+                context = {
+                     'details': dash_details,
+        
+                    'allmodules': allmodules,
+         
+                }
+                return render(request,'zohomodules/chartofaccounts/addchartofaccounts.html',context)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            item=Items.objects.filter(company=dash_details)
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            units = Unit.objects.filter(company=dash_details)
+            accounts=Chart_of_Accounts.objects.filter(company=dash_details)
+            context = {
+                    'details': dash_details,
+          
+                    'allmodules': allmodules,
+           
+            }
+    
+            return render(request,'zohomodules/chartofaccounts/addchartofaccounts.html',context)
+
 
 def chartofaccounts(request):
-    acc=Chart_of_Accounts.objects.all()
-    
-
-    return render(request, 'zohomodules/chartofaccounts/chartofaccounts.html',{'acc':acc})
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc=Chart_of_Accounts.objects.filter(company=dash_details)
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+  
 
 def create_account(request):
     login_id = request.session['login_id']
@@ -882,7 +1045,7 @@ def create_account(request):
             b=Chart_of_Accounts_History()
             staff = LoginDetails.objects.get(id=staff_id)
             sf = StaffDetails.objects.get(login_details=staff)
-            a=sf.company
+            c=sf.company
             b.Date=date.today()
             b.company=c
             b.logindetails=log_user
@@ -911,36 +1074,109 @@ def create_account(request):
     return redirect('addchartofaccounts')
 
 def chartofaccountsoverview(request,pk):
-    acc=Chart_of_Accounts.objects.all()  
-    selacc=Chart_of_Accounts.objects.get(id=pk)  
-    est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
-    latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
-    filtered_data = Chart_of_Accounts_History.objects.filter(Date=latest_date, chart_of_accounts_id=pk)
-    return render(request, 'zohomodules/chartofaccounts/chartofaccountsoverview.html',{'acc':acc,'selacc':selacc,'latest_item_id':filtered_data,'est_comments':est_comments})
+       if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=login_id)
+        if log_details.user_type == 'Staff':
+                    dash_details = StaffDetails.objects.get(login_details=log_details)
+
+                    allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                
+                    acc=Chart_of_Accounts.objects.all()  
+                    selacc=Chart_of_Accounts.objects.get(id=pk)  
+                    est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
+                    latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                    filtered_data = Chart_of_Accounts_History.objects.filter(Date=latest_date, chart_of_accounts_id=pk)
+                    context = {
+                        'details': dash_details,
+                    
+                        'allmodules': allmodules,
+                        'acc':acc,
+                        'selacc':selacc,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                    }
+                    return render(request, 'zohomodules/chartofaccounts/chartofaccountsoverview.html',context)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+       
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            acc=Chart_of_Accounts.objects.all()  
+            selacc=Chart_of_Accounts.objects.get(id=pk)  
+            est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
+            latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+            filtered_data = Chart_of_Accounts_History.objects.filter(Date=latest_date, chart_of_accounts_id=pk)
+            context = {
+                        'details': dash_details,
+                    
+                        'allmodules': allmodules,
+                        'acc':acc,
+                        'selacc':selacc,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                    }
+    
+            return render(request, 'zohomodules/chartofaccounts/chartofaccountsoverview.html',context)
+
+
+   
+        
+    # acc=Chart_of_Accounts.objects.all()  
+    # selacc=Chart_of_Accounts.objects.get(id=pk)  
+    # est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
+    # latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+    # filtered_data = Chart_of_Accounts_History.objects.filter(Date=latest_date, chart_of_accounts_id=pk)
+    # return render(request, 'zohomodules/chartofaccounts/chartofaccountsoverview.html',{'acc':acc,'selacc':selacc,'latest_item_id':filtered_data,'est_comments':est_comments})
 
 
 from django.shortcuts import render, redirect
 
 def editchartofaccounts(request, pr):
     # Retrieve the chart of accounts entry
+    
+
+    # Check if 'company_id' is in the session
+    if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+    
+    # Retrieve the chart of accounts entry
     acc = get_object_or_404(Chart_of_Accounts, id=pr)
 
     # Check if 'company_id' is in the session
-    login_id = request.session['login_id']
+
     log_user = LoginDetails.objects.get(id=login_id)
     if log_user.user_type == 'Company':
-        company_id = request.session['login_id']
+     
+        dash_details = CompanyDetails.objects.get(login_details=log_user)
+       
+        allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+   
+        context = {
+                    'acc': acc,
+              
+                    'details': dash_details,
+                   
+                    'allmodules': allmodules,
+            }
+       
+    
+        
+        
 
         if request.method == 'POST':
         
             b=Chart_of_Accounts_History()
-            c = CompanyDetails.objects.get(login_details=company_id)
-            b.company=c
+       
+            b.company=dash_details
             b.logindetails=log_user
             b.action="Edited"
             b.Date=date.today()
             acc.login_details=log_user
-            acc.company=c
+            acc.company=dash_details
             # Update the chart of accounts entry with the form data
             acc.account_type = request.POST['account_type']
             acc.account_name = request.POST['account_name']
@@ -955,14 +1191,25 @@ def editchartofaccounts(request, pr):
 
             # Redirect to another page after successful update
             return redirect('chartofaccountsoverview', pr)
-    elif log_user.user_type == 'Staff':
-        staff_id = request.session['login_id']
+        return render(request, 'zohomodules/chartofaccounts/editchartofaccounts.html', context)
+    if log_user.user_type == 'Staff':
+        dash_details = StaffDetails.objects.get(login_details=log_user)
+                
+        allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+        
+   
+        context = {
+                    'acc': acc,
+              
+                    'details': dash_details,
+                   
+                    'allmodules': allmodules,
+            }
         if request.method=='POST':
          
             b=Chart_of_Accounts_History()
-            staff = LoginDetails.objects.get(id=staff_id)
-            sf = StaffDetails.objects.get(login_details=staff)
-            c=sf.company
+         
+            c=dash_details.company
             b.company=c
             b.logindetails=log_user
             b.action="Edited"
@@ -983,9 +1230,7 @@ def editchartofaccounts(request, pr):
 
             # Redirect to another page after successful update
             return redirect('chartofaccountsoverview', pr)
-
-        return redirect('chartofaccountsoverview', pr)
-    return render(request, 'zohomodules/chartofaccounts/editchartofaccounts.html', {'acc': acc})
+        return render(request, 'zohomodules/chartofaccounts/editchartofaccounts.html', context)
 
 def deleteaccount(request,pl):
     acc=Chart_of_Accounts.objects.filter(id=pl)
