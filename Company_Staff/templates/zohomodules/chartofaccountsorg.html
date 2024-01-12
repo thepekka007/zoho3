@@ -9,7 +9,7 @@
       background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
   .table-striped>tbody>tr:nth-of-type(odd)>* {
-      --bs-table-accent-bg: rgb(0, 0, 0);
+      --bs-table-accent-bg: rgb(20, 19, 19);
       color: var(--bs-table-striped-color);
   }
   a {
@@ -17,22 +17,18 @@
     text-decoration: none; /* Optional: Remove underline if you don't want it */
   }
   </style>
-<body>
-  <BR> 
+<div class="body-wrapper">  
     <div class="container-fluid" >
   
 
         <!-- ADD ITEM FORM -->
-        <div style="background-color: rgb(0, 0, 0); border-radius: 10px; width:80% ;margin-left: 18%;">
-          
-       
-          <div style="margin-top: 90px;">
-            <h4 id="selected_customer_heading" class="text" style="color: white; margin-left: 2%; padding-top: 20px;"><b>CHART OF ACCOUNTS</b></h4>
-          </div>
+        <div style="background-color: rgb(20, 19, 19); border-radius: 10px;">
+        <BR>
+                <h3 class="mb-3 text-white mt-4" style="font-size: 2rem;margin-left: 40PX;"></h3>
        <br>
        <div class="row container-fluid mb-3">
         <div class="col-md-3">
-            <input type="text" id="searchInput" class="form-control text-black" style="border-color: rgb(198, 134, 16);background-color: antiquewhite;" placeholder="Search...">
+            <input type="text" id="searchInput" class="form-control text-white" style="border-color: rgb(198, 134, 16);" placeholder="Search...">
         </div>
         <div class="col-md-2">
             <div class="dropdown">
@@ -70,39 +66,38 @@
                 </a>
             </div>
         </div>
- 
-
+      <br>
+      
 <div class="container-fluid" id="container-to-print" style="width: 100%;"> 
     <section id="selected-area">
   <div class="row pt-5">
       <center>
         <h2 class="text" style="color: white;">{{ company.company_name }}</h2>
-       
+        <h4 id="selected_customer_heading" class="text" style="color: white;">CHART OF ACCOUNTS</h4>
 
       </center>
       <div class="table-responsive"> 
-      <table class="table table-bordered table-striped mt-4" id="data-table" style="width: 100%;background-color:rgb(0, 0, 0) ;">
+      <table class="table table-bordered table-striped mt-4" id="data-table" style="width: 100%;">
         <thead class="text-white" >
           
-            <tr style="border-color:rgba(0, 0, 0, 0.549) rgb(0, 0, 0) rgb(173, 166, 166) rgb(0, 0, 0);text-align: center;">
-              <th style="color: rgb(255, 255, 255);"><b>#</b></th>
-                <th style="color: rgb(249, 249, 249);"><b>ACCOUNT NAME</b></th>
-                <th style="color: rgb(255, 255, 255);"><b>ACCOUNT CODE</b></th>
-                <th style="color: rgb(255, 255, 255);"><b>ACCOUNT TYPE</b></th>
-                <th style="color: rgb(255, 255, 255);"><b>STATUS</b></th>
+            <tr>
+                <th style="color: rgb(255, 255, 255);">ACCOUNT NAME</th>
+                <th style="color: rgb(255, 255, 255);">ACCOUNT CODE</th>
+                <th style="color: rgb(255, 250, 241);">ACCOUNT TYPE</th>
+                <th style="color: rgb(241, 240, 240);">STATUS</th>
                 
             </tr>
         </thead>
       <tbody style="background-color: black;">
         {% for i in acc %}
-        
-    <tr style="background-color: rgb(0, 0, 0);border-color:rgba(0, 0, 0, 0.549) rgb(0, 0, 0) rgb(173, 166, 166) rgb(0, 0, 0);text-align: center;" class='clickable-row' data-href="{% url 'chartofaccountsoverview' i.id%}">         
-      <td class="text-white" style="color: rgb(0, 0, 0); "> {{forloop.counter}}</a></td>
-        <td class="text-white" style="color: rgb(0, 0, 0); "><a href="{% url 'chartofaccountsoverview'  i.id%}"> {{ i.account_name }}</a></td>
-        <td class=" text-white" style="color: rgb(0, 0, 0); "><a href="{% url 'chartofaccountsoverview' i.id%}">{{ i.account_code }}</a></td>
-        <td class=" text-white" style="color: rgb(0, 0, 0); "><a href="{% url 'chartofaccountsoverview' i.id %}">{{ i.account_type }}</a></td>
-        <td class=" text-white" style="color: rgb(0, 0, 0); "><a href="{% url 'chartofaccountsoverview' i.id %}">{{ i.Create_status }}</a></td>
-      
+     
+    <tr style="background-color: black;" class='clickable-row' data-href="{% url 'chartofaccountsoverview' i.id%}">         
+    
+        <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'chartofaccountsoverview'  i.id%}"> {{ i.account_name }}</a></td>
+        <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'chartofaccountsoverview' i.id%}">{{ i.account_code }}</a></td>
+        <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'chartofaccountsoverview' i.id %}">{{ i.account_type }}</a></td>
+        <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'chartofaccountsoverview' i.id %}">{{ i.Create_status }}</a></td>
+
     </tr>
 
 {% endfor %}
@@ -125,7 +120,6 @@
         </div>
     </div>
 </section>
-</div>
 
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -285,6 +279,5 @@
         });
     });
 </script>
-</div>
-</body>
+
 {% endblock %}
