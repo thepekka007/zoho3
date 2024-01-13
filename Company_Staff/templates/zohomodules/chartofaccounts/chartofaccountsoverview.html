@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+<style>
+  .btn-margin {
+      margin-right: 5px;
+  }
+</style>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
@@ -24,6 +29,17 @@
   }
 
 </style>
+<style>
+  .scrollable-container {
+    border-right: 1px solid white;
+    overflow-y: scroll;
+    height: 84vh;
+  }
+
+  .scrollable-container::-webkit-scrollbar {
+    width: 0; /* Set width to 0 to hide the scrollbar */
+  }
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
@@ -33,21 +49,27 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
+<body>
+  <BR> 
+    <br>  <br>  <br>   <br>
+    <div class="container-fluid" >
+  
 
-<div class="body-wrapper" style="margin-left: 0; width: 100%;">
-
-    <div class="container-fluid" style="width: 100%; margin: 0 auto;">
-
+        <!-- ADD ITEM FORM -->
+        <div style="background-color: rgb(0, 0, 0); border-radius: 10px; width:80% ;margin-left: 18%;">
+          
+       
         <div class="col-md-12" style="width: 120%;">
             <div class="row">
-              <div class="col-md-3" style="border-right: 1px solid white; overflow-y: scroll; height: 84vh;">
+              <div class="col-md-3 scrollable-container" style="border-right: 1px solid white; overflow-y: scroll; height: 84vh;width: 25%;">
                 <div class="row">
-                  <a class="text-white" style="font-size: 1.5rem;">All Accounts</a>
+              
+                  <a class="text-white" style="font-size: 1.5rem;color: white; padding-left: 20px; padding-top: 20px;">All Accounts</a>
                
                   <br>      
                   <div class="col-md-2">
                     <div class="dropdown">
-                        <a class="btn text-center mt-2 btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button" style="margin-left: 0; height: 38px;">
+                        <a class="btn text-center mt-2 btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button" style="margin-left: 20px; height: 38px;">
                             <i class="fas fa-sort m-1"></i>
                         </a>
                         
@@ -75,7 +97,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-3" style="padding-left: 40px;">
+                <div class="col-md-3" style="padding-left: 120PX;">
                     <a class="btn btn btn-outline-warning text-right mt-2" style="height: 38px; padding-top: 12px; padding-left: 17px;" href="{% url 'addchartofaccounts'%}">
                         <i class="fa fa-plus"></i>
                     </a>
@@ -86,10 +108,10 @@
     
                 </div>
                 <br>
-                <div class="scrollable-table" style="width: 100%;">
+                <div class="scrollable-table" style="width: 85%;margin-left: 20px;">
                   <div class="row">
                     <div class="col-md-12">
-                      <input type="text"  id="searchInput" class="form-control text-white" style="border-color: rgb(198, 134, 16);" placeholder="Search...">
+                      <input type="text"  id="searchInput" class="form-control text-white" style="border-color: rgb(201, 200, 199);background-color: #fefefe;" placeholder="Search...">
 
 
                     </div>
@@ -99,6 +121,34 @@
               
               <br>
               <!-- Table 2: Billable Projects -->
+
+              <table id="table2" class="table customer-table" style="border: 1px solid black; width: 100%; margin-left: 0;color: #d19d0d;">
+                <tbody>
+                  {% for i in acc %}
+                         <!-- <td>
+                      <a class="text-white"  href="{% url 'itemsoverview'  i.id%}"><b>{{i.item_name}}</b> <span class="d-flex justify-content-end text-warning align-items-start" > {{i.current_stock}}</span> <br>
+                          <span class="d-flex  align-items-start text-warning"> {{i.hsn_code}}</span> <span class="d-flex justify-content-end align-items-start"> {{i.activation_tag}}</span>
+                      </a>   
+                  </td> -->
+                  
+                  <tr class="account-row" data-account-type="{{ i.account_type }}">
+                  <td>   <a href="{% url 'chartofaccountsoverview' i.id %}" style="  text-decoration: none;
+                    color: rgb(255, 254, 252);"> <B>{{i.account_name}}</B></a></td>
+                    <td><a href="{% url 'chartofaccountsoverview' i.id %}" style="  text-decoration: none;
+                      color: rgb(255, 255, 253);">{{i.account_type}}</a></td> 
+                  </tr> 
+                  <tr class="account-row" data-account-type="{{ i.account_type }}">
+                    <td><a href="{% url 'chartofaccountsoverview' i.id %}" style="  text-decoration: none;
+                      color: rgb(245, 245, 245);">{{ i.account_code }}</a> </td>
+                    <td><a href="{% url 'chartofaccountsoverview' i.id %}" style="  text-decoration: none;
+                      color: rgb(255, 255, 254);">{{ i.Create_status }} </a> <hr style="width: 300%;margin-left: -220px;color: #ffffff;"> </td>
+                    
+                  </tr>
+              
+                  {% endfor %}
+                </tbody>
+              </table>
+<!--               
               <table id="table2" class="table customer-table" style="border: 1px solid black; width: 100%; margin-left: 0;">
 
                 <tbody>
@@ -112,7 +162,7 @@
                   </tr>
                   {%endfor%}
                 </tbody>
-              </table>
+              </table> -->
 
     </div>
 </div>
@@ -121,7 +171,8 @@
 <div class="col" style="width: 300%;" id="overviewdiv" >
     <div class="row">
       <div class="col-md-7">
-        <a class="text-white" style="font-size: 1.5rem;">
+        <a class="text-white" style="font-size: 1.5rem;padding-top: 20px;">
+          <br>
           <h2 style="color: aliceblue;">{{selacc.account_name}}</h2>
         </a>
       </div>
@@ -130,61 +181,97 @@
       <div class="col-md-6">
         <a class="btn" style="background-color: chocolate; margin-right: 2vh;color: aliceblue;"><i class="fas fa-eye"></i>
           Overview</a>
-       
+          <a class="btn" style="background-color: chocolate; margin-right: 2vh;color: aliceblue;" onclick="totemplate()"><i class="fas fa-eye"></i>
+            Transaction</a>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                  // Get the elements by ID
+                  var overviewDiv = document.getElementById('overviewdiv');
+                  var transactionDiv = document.getElementById('Transaction');
+          
+                  // Set the initial display state
+                  overviewDiv.style.display = 'block';
+                  transactionDiv.style.display = 'none';
+              });
+          
+              function totemplate() {
+                  // Get the elements by ID
+                  var overviewDiv = document.getElementById('overviewdiv');
+                  var transactionDiv = document.getElementById('Transaction');
+          
+                  // Toggle the display property
+                  if (overviewDiv.style.display === 'block' || overviewDiv.style.display === '') {
+                      overviewDiv.style.display = 'none';
+                      transactionDiv.style.display = 'block';
+                  } else {
+                      overviewDiv.style.display = 'block';
+                      transactionDiv.style.display = 'none';
+                  }
+              }
+              function totemplate2() {
+        // Get the elements by ID
+        var overviewDiv = document.getElementById('overviewdiv');
+        var transactionDiv = document.getElementById('Transaction');
+
+        // Show the overviewDiv and hide the transactionDiv
+        overviewDiv.style.display = 'block';
+        transactionDiv.style.display = 'none';
+    }
+          </script>
+          
 
 
       </div>
-      <div class="col-sm-1 ">
-        <div class="col-md-6 d-flex justify-content-between align-items-center">
+      <!-- <div class="col-sm-1 " style="margin-left: -18%;">
+        <div class="col-md-6 d-flex justify-content-between align-items-center"> -->
     
-            <!-- Edit Button -->
-            <a href="{% url 'editchartofaccounts'  selacc.id%}" class="btn btn-outline-warning py-2 text-warning" title="save this draft"><i class="fas fa-pencil-alt"></i></a>
-    
-            <!-- Item Status Edit Button -->
-            <a href="{% url 'acc_status_edit' selacc.id %}" class="btn btn-outline-warning py-2" title="save this draft" style="height: 38px; margin-right: 3px;">{{selacc.status}}</a>
-            <!-- Delete Button -->
-            <a href="{% url 'deleteaccount'  selacc.id%}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');" style="height: 38px; margin-right: 3px;"></a>
-            <!-- Share Button -->
-            <div class="dropdown px-2 py-4">
-                <a class="btn text-center  btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button" style="margin-left: 4px;">
-                    <i class="fas fa-share"></i>
-                </a>
-                <div class="dropdown-menu m-1" style="background-color: rgb(43, 42, 42); color: white;margin-left: 4px;">
-                    <a class="dropdown-item" data-toggle="modal" data-target="#shareBillEmail" href="#" style="color: #eeeaea;">GMAIL</a>
-                    <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()" style="color: #fefefe;">WhatsApp</a>
-                </div>
-            </div>
-    
-            <a class="text-dark" onclick="exportToPDF3()">
-                <button class="btn btn-outline-warning" title="Pdf" style="width: 50px;margin-left: 4px;"><i class="fas fa-file-pdf" ></i></button>
-            </a>
-    
-            <a class="btn btn-outline-warning py-2" style="cursor: pointer;margin-left: 4px;" onclick="exportToExcel()" style="width: 50px;margin-left: 4px;">XLS</a>
-    
-            <a class="text-dark" onclick="printSelectedArea2()">
-                <button class="btn btn-outline-warning" title="Print" style="width: 50px;margin-left: 4px;"><i class="fas fa-print" ></i></button>
-            </a>
-    
-            <!-- Comment Button -->
-            <div class="dropdown">
-                <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning"
-                    data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 4px;"></a>
-                <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;margin-left: 4px;">
-                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i
-                            class="fa-solid fa fa-plus"></i>Add</a>
-                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i
-                            class="fas fa-list"></i>&nbsp;View List</a>
-                </div>
-            </div>
-    
-            <!-- History Button -->
-            <a class="btn btn-outline-warning py-2" style="cursor: pointer;margin-left: 4px;" data-toggle="modal" data-target="#history" >History</a>
-        </div>
-    </div><br>
-    
+         <!-- Edit Button -->
+<!-- <a href="{% url 'editchartofaccounts' selacc.id %}" class="btn btn-outline-warning py-2 text-warning btn-margin" title="save this draft"><i class="fas fa-pencil-alt"></i></a> -->
 
-    <div class="row" id="div-to-print"
-      style="background-color: #ffddb0;  height: auto; margin-left:1px; margin-right: 1rem; ">
+<!-- Item Status Edit Button -->
+<!-- <a href="{% url 'acc_status_edit' selacc.id %}" class="btn btn-outline-warning py-2 btn-margin" title="save this draft">{{selacc.status}}</a> -->
+
+<!-- Delete Button -->
+<!-- <a href="{% url 'deleteaccount' selacc.id %}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"></a> -->
+
+<!-- Share Button -->
+<!-- <div class="dropdown btn-margin">
+    <a class="btn text-center btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button">
+        <i class="fas fa-share"></i>
+    </a>
+    <div class="dropdown-menu m-1" style="background-color: rgb(43, 42, 42); color: white;">
+        <a class="dropdown-item" data-toggle="modal" data-target="#shareBillEmail" href="#" style="color: #eeeaea;">GMAIL</a>
+        <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()" style="color: #fefefe;">WhatsApp</a>
+    </div>
+</div>
+
+<a class="text-dark btn-margin" onclick="exportToPDF3()">
+    <button class="btn btn-outline-warning" title="Pdf" style="width: 50px;"><i class="fas fa-file-pdf"></i></button>
+</a>
+
+<a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" onclick="exportToExcel()" style="width: 50px;">XLS</a>
+
+<a class="text-dark btn-margin" onclick="printSelectedArea2()">
+    <button class="btn btn-outline-warning" title="Print" style="width: 50px;"><i class="fas fa-print"></i></button>
+</a> -->
+
+<!-- Comment Button -->
+<!-- <div class="dropdown btn-margin">
+    <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning" data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"></a>
+    <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;">
+        <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i class="fa-solid fa fa-plus"></i>Add</a>
+        <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i class="fas fa-list"></i>&nbsp;View List</a>
+    </div>
+</div> -->
+
+<!-- History Button -->
+<!-- <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" data-toggle="modal" data-target="#history">History</a>
+ </div> -->
+    <!-- </div><br> -->
+    
+<br>
+    <div class="row" id=""
+      style="background-color: #c4c1c1fd;  height: auto; margin-left:20px; margin-right: 1rem;width: 75%; margin-top: 10px;">
 
       <div class="row text-center">
         <h2 style="color: #000000;"><br>{{selacc.account_name}}
@@ -196,13 +283,21 @@
         <div class="row mt-3">
           <div class="col-5"><label class="text-black" for="">Account Type:</label></div>
           <div class="col-7">
-            <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{selacc.account_type}}</p>
+            <p class="bold text-black" style="max-width: 15rem;word-wrap: break-word;">{{selacc.account_type}}</p>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-5"><label class="text-black" for="">Description:</label></div>
+          <div class="col-7">
+            <p class="bold text-black" style="max-width: 15rem;word-wrap: break-word;">
+                {{selacc.description}}
+              </p>
           </div>
         </div>
         <div class="row mt-3">
           <div class="col-5"><label class="text-black" for="">Account Code:</label></div>
           <div class="col-7">
-            <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">
+            <p class="bold text-black" style="max-width: 15rem;word-wrap: break-word;">
                 {{selacc.account_code}}
               </p>
           </div>
@@ -210,53 +305,11 @@
         <div class="row mt-3">
           <div class="col-5"><label class="text-black" for="">Description :</label></div>
           <div class="col-7">
-            <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">
-                {{selacc.description}}</p>
+            <p class="bold text-black" style="max-width: 15rem;word-wrap: break-word;">
+                {{selacc.account_description}}</p>
           </div>
         </div>
-        <style>
-            .dashed-line {
-              border-top: 1px dashed #000; /* Set color and style */
-              margin: 20px 0; /* Adjust margin for spacing */
-            }
-          </style>
-          
-          <div class="dashed-line"></div>
-
-          <H3>Recent Transactions</H3>
-          <br>
-          <div></div>
-          <div class="row mt-3">
-            <div class="col-5"><label class="text-dark" for=""></label></div>
-            <div class="col-7">
-              <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;"></p>
-            </div>
-          </div>
-        <table class=" table table-hover table-bordered " id="table1" style="border-color: #000000;color: rgb(0, 0, 0);">
-            <thead>
-                <tr>
-
-                  <th id="th" style="text-align: center;">Date</th>
-                  <th id="th" style="text-align: center;">Type</th>
-                
-                  <th id="th" style="text-align: center;">Debit</th>
-                  <th id="th" style="text-align: center;">Credit</th>
-    
-                
-                </tr>
-              </thead>
-              <tbody>
-             
-                <tr style="color: black;">
-                  <td style="text-align: center;"></td>
-                  <td style="text-align: center;"> </td>
-                
-                  <td style="text-align: center;">  
-                  </td>
-                  <td style="text-align: center;"></td>
-                </tr>
-              </tbody>
-        </table><br><br>
+       
       
         <div class="row mt-3">
           <div class="col-5"><label class="text-dark" for=""></label></div>
@@ -286,7 +339,189 @@
     
 
   </div>
+  <div class="col" style="width: 300%;" id="Transaction" style="display: none;">
+    <div class="row">
+      <div class="col-md-7">
+        <a class="text-white" style="font-size: 1.5rem;">
+          <br>
+          <h2 style="color: aliceblue;">{{selitem.item_name}}</h2>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <a class="btn" style="background-color: chocolate; margin-right: 2vh;color: aliceblue;" onclick="totemplate2()"><i class="fas fa-eye"></i>
+          Overview</a>
+          <a class="btn" style="background-color: chocolate; margin-right: 2vh;color: aliceblue;" onclick="totemplate()"><i class="fas fa-eye"></i>
+            Transaction</a>
+ 
 
+
+      </div>
+      <div class="col-sm-1 " style="margin-left: -18%;">
+        <div class="col-md-6 d-flex justify-content-between align-items-center">
+    
+            <!-- Edit Button -->
+            <a href="{% url 'editchartofaccounts' selacc.id %}" class="btn btn-outline-warning py-2 text-warning btn-margin" title="save this draft"><i class="fas fa-pencil-alt"></i></a>
+
+            <!-- Item Status Edit Button -->
+            <a href="{% url 'acc_status_edit' selacc.id %}" class="btn btn-outline-warning py-2 btn-margin" title="save this draft">{{selacc.status}}</a>
+            
+            <!-- Delete Button -->
+            <a href="{% url 'deleteaccount' selacc.id %}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"></a>
+            
+            <!-- Share Button -->
+            <div class="dropdown btn-margin">
+                <a class="btn text-center btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button">
+                    <i class="fas fa-share"></i>
+                </a>
+                <div class="dropdown-menu m-1" style="background-color: rgb(43, 42, 42); color: white;">
+                    <a class="dropdown-item" data-toggle="modal" data-target="#shareBillEmail" href="#" style="color: #eeeaea;">GMAIL</a>
+                    <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()" style="color: #fefefe;">WhatsApp</a>
+                </div>
+            </div>
+            
+            <a class="text-dark btn-margin" onclick="exportToPDF3()">
+                <button class="btn btn-outline-warning" title="Pdf" style="width: 50px;"><i class="fas fa-file-pdf"></i></button>
+            </a>
+            
+            <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" onclick="exportToExcel()" style="width: 50px;">XLS</a>
+            
+            <a class="text-dark btn-margin" onclick="printSelectedArea2()">
+                <button class="btn btn-outline-warning" title="Print" style="width: 50px;"><i class="fas fa-print"></i></button>
+            </a>
+            
+            <!-- Comment Button -->
+            <div class="dropdown btn-margin">
+                <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning" data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"></a>
+                <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;">
+                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i class="fa-solid fa fa-plus"></i>Add</a>
+                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i class="fas fa-list"></i>&nbsp;View List</a>
+                </div>
+            </div>
+            
+            <!-- History Button -->
+            <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" data-toggle="modal" data-target="#history">History</a>
+             </div>
+    </div><br>
+    <br>
+    <br>
+    <div class="row" id="div-to-pdf"
+    style="background-color: #c4c1c1fd;  height: 31rem; margin-left:20px; margin-right: 1rem; width: 75%; ">
+
+    <div class="row text-center">
+      <h2 style="color: #000000;"><br>{{selacc.account_name}}
+        <hr>
+      </h2>
+    </div>    
+    <div class="row" id="div-to-print"
+    style="background-color: #c4c1c1fd;  height: auto; margin-left:1px; margin-right: 1rem;width: 100%; ">
+ 
+<style>
+.dashed-line {
+  border-top: 1px dashed #000; /* Set color and style */
+  margin: 20px 0; /* Adjust margin for spacing */
+}
+</style>
+
+
+
+<H3>Recent Transactions</H3>
+<table class=" table table-hover table-bordered " id="table1" style="border-color: #000000;color: rgb(0, 0, 0); width: 100%;">
+  <thead>
+      <tr>
+
+        <th id="th" style="text-align: center;">Date</th>
+        <th id="th" style="text-align: center;">Type</th>
+      
+        <th id="th" style="text-align: center;">Debit</th>
+        <th id="th" style="text-align: center;">Credit</th>
+
+      
+      </tr>
+    </thead>
+    <tbody>
+   
+      <tr style="color: black;">
+        <td style="text-align: center;"></td>
+        <td style="text-align: center;"> </td>
+      
+        <td style="text-align: center;">  
+        </td>
+        <td style="text-align: center;"></td>
+      </tr>
+    </tbody>
+</table><br><br>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+
+    <!-- <div class="row" id="div-to-pdf"
+      style="background-color: #c4c1c1fd;  height: auto; margin-left:20px; margin-right: 1rem; width: 75%; ">
+
+      <div class="row text-center">
+        <h2 style="color: #000000;"><br>{{selacc.account_name}}
+          <hr>
+        </h2>
+      </div>    
+      <div class="row" id="div-to-print"
+      style="background-color: #c4c1c1fd;  height: auto; margin-left:1px; margin-right: 1rem;width: 200%; ">
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <style>
+            .dashed-line {
+              border-top: 1px dashed #000; /* Set color and style */
+              margin: 20px 0; /* Adjust margin for spacing */
+            }
+          </style>
+          
+          <div class="dashed-line"></div>
+
+       
+          <br>
+          <div></div>
+          <div class="row mt-3">
+            <div class="col-5"><label class="text-dark" for=""></label></div>
+            <div class="col-7">
+              <p class="bold text-black" style="max-width: 15rem;word-wrap: break-word;"></p>
+            </div>
+          </div>
+        <table class=" table table-hover table-bordered " id="table1" style="border-color: #000000;color: rgb(0, 0, 0); width: 100%;">
+            <thead>
+                <tr>
+
+                  <th id="th" style="text-align: center;">Date</th>
+                  <th id="th" style="text-align: center;">Type</th>
+                
+                  <th id="th" style="text-align: center;">Debit</th>
+                  <th id="th" style="text-align: center;">Credit</th>
+    
+                
+                </tr>
+              </thead>
+              <tbody>
+             
+                <tr style="color: black;">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"> </td>
+                
+                  <td style="text-align: center;">  
+                  </td>
+                  <td style="text-align: center;"></td>
+                </tr>
+              </tbody>
+        </table><br><br>
+</div>
+</div>
+</div>
+</div> -->
 
 <!-- SORT  AND FILTER SCRIPT -->
 <script>
@@ -379,6 +614,9 @@
 
     content.style.backgroundColor = 'white';
     content.style.color = 'black';
+    content.style.marginLeft = 'auto';
+  content.style.marginRight = 'auto';
+
   
   
 

@@ -549,23 +549,25 @@ def edititems(request, pr):
     
     # Retrieve the chart of accounts entry
     item = get_object_or_404(Items, id=pr)
-    units = Unit.objects.all()
+    
 
     # Check if 'company_id' is in the session
 
     log_user = LoginDetails.objects.get(id=login_id)
     if log_user.user_type == 'Company':
+      
      
         dash_details = CompanyDetails.objects.get(login_details=log_user)
-       
+        units = Unit.objects.filter(company=dash_details)
         allmodules= ZohoModules.objects.get(company=dash_details,status='New')
         item = get_object_or_404(Items, id=pr)
-        units = Unit.objects.all()
+        accounts=Chart_of_Accounts.objects.filter(company=dash_details)
+        units = Unit.objects.filter(company=dash_details)
         context = {
                     'item': item,
                     'units':units,
                     'details': dash_details,
-                   
+                   'accounts': accounts,
                     'allmodules': allmodules,
             }
        
@@ -614,7 +616,8 @@ def edititems(request, pr):
                 
         allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
         item = get_object_or_404(Items, id=pr)
-        units = Unit.objects.all()
+        units = Unit.objects.filter(company=dash_details.company)
+        accounts=Chart_of_Accounts.objects.filter(company=dash_details.company)
         context = {
                     'item': item,
                     'units':units,
@@ -1012,6 +1015,7 @@ def create_account(request):
         if request.method=='POST':
             a=Chart_of_Accounts()
             b=Chart_of_Accounts_History()
+            account=Chart_of_Accounts.objects.all()
             c = CompanyDetails.objects.get(login_details=company_id)
             b.company=c
             b.logindetails=log_user
@@ -1024,7 +1028,10 @@ def create_account(request):
             a.account_type = request.POST.get("account_type",None)
             a.account_name = request.POST.get("account_name",None)
             a.account_code = request.POST.get("account_code",None)
-            a.description = request.POST.get("description",None)
+            a.account_description = request.POST.get("description",None)
+            des = request.POST.get("account_type",None)
+            accountdesc=Chart_of_Accounts.objects.get(account_type=des)
+            a.description = accountdesc.description
     
             a.Create_status="active"
             ac_name=request.POST.get("account_name",None)

@@ -61,6 +61,7 @@ class Chart_of_Accounts(models.Model):
     # user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     account_type = models.CharField(max_length=255,null=True,blank=True)
     account_name = models.CharField(max_length=255,null=True,blank=True)
+    account_description = models.CharField(max_length=255,null=True,blank=True)
     
     account_code = models.CharField(max_length=255,null=True,blank=True)
     description = models.CharField(max_length=255,null=True,blank=True)
