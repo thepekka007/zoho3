@@ -7,6 +7,168 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ez8n5b/9F3JpKCEY6zIp+Hg7IbU8d7Q5ST78iEiRaP2mNPjkDps8I+1i0fblDOoh" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<style>
+  .bs{
+      box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);
+  }
+
+  .bs_sm{
+      box-shadow: inset 2px 2px 5px 3px rgba(0, 0, 0, 0.199);
+  }
+
+  .paiddiv{
+      color: black;
+      height: 10vh;
+      width: 20vh;
+      padding-left: 2vh;
+      padding-top: 1vh;
+      padding-bottom: 1vh;
+      margin-left: 7vh;
+      border-radius: 8px;
+      background-color: rgb(0, 0, 0);
+  }
+
+  .unpaiddiv{
+      color: black;
+      height: 10vh;
+      width: 20vh;
+      padding-left: 2vh;
+      padding-top: 1vh;
+      padding-bottom: 1vh;
+      margin-left: 7vh;
+      border-radius: 8px;
+      background-color: lightsteelblue;
+  }
+
+  .totaldiv{
+      color: black;
+      height: 10vh;
+      width: 20vh;
+      padding-left: 2vh;
+      padding-top: 1vh;
+      padding-bottom: 1vh;
+      margin-left: 7vh;
+      border-radius: 8px;
+      background-color: lightgreen;
+  }
+
+  #billtable tbody{
+      cursor: pointer;
+  }
+
+  #emptyMessage {
+      display: none;
+      font-size: x-large;
+      font-weight: bold;
+      color: red;
+  }
+
+  .dropdown {
+      position: relative;
+      display: inline-block;
+  }
+
+  .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+      padding: 10px;
+      z-index: 1;
+      width: 15%;
+  }
+
+  .dropdown-content label {
+      display: block;
+      margin-bottom: 5px;
+  }
+
+  .dropdown-content input {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+  }
+
+  .tplus{
+      margin-top: 3vh;
+      margin-left: 5vh;
+      margin-right: -2vh;
+  }
+
+  .tequal{
+      margin-top: 3vh;
+      margin-left: 5vh;
+      margin-right: -2vh;
+  }
+
+  .tg{
+      color: rgb(0, 140, 7);
+  }
+
+  .tr{
+      color: rgb(218, 0, 0);
+  }
+
+  .tj{
+      color:#E4A11B;
+  }
+
+  .th{
+      color: rgb(12, 79, 234);
+  }
+
+  @media print{
+      body{
+          visibility: hidden !important; /* hide everything in body when in print mode*/
+      }
+
+      .printContainer {
+          visibility: visible !important; /* Override the rule above to only show the printables*/
+          position: absolute;
+          z-index: 99999;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          font-size: large;
+      } 
+
+      #calcdiv{
+          visibility: visible;
+          margin-top: -30vh;
+          margin-left: -9vh;
+          margin-bottom: 30vh;
+      }
+
+      #billtable{
+          margin-top: 20vh;
+          margin-bottom: 20vh;
+      }
+
+      #billtable th{
+          font-size: medium;
+      }
+
+      .extra{
+          display: none;
+      }
+  }
+  
+  ::-webkit-scrollbar{
+      display: none
+  }
+</style>
 
 <style>
    .modal {
@@ -157,7 +319,7 @@
                   </tr> 
                   <tr class="account-row" data-account-type="{{ i.account_type }}">
                     <td><a href="{% url 'itemsoverview' i.id %}" style="  text-decoration: none;
-                      color: rgb(245, 245, 245);">{{ i.hsn_code }}</a><hr style="width: 200%;margin-left: -10px;color: #ffffff;">  </td>
+                      color: rgb(245, 245, 245);">{{ i.hsn_code }}</a><hr style="width: 250%;margin-left: -10px;color: #ffffff;">  </td>
                     <td><a href="{% url 'itemsoverview' i.id %}" style="  text-decoration: none;
                       color: rgb(255, 255, 254);">{{ i.current_stock }} </a> </td>
                     
@@ -229,16 +391,60 @@
 
       </div>
 
-      <div class="col-md-6" style="text-align: center;">
-
-       
-        <a href="{% url 'edititems'  selitem.id%}"  title="save this draft" >
-    </a>
-
-   
-  
-         
-    </div>
+      <div class="col-sm-1 " >
+        <div class="col-md-6 d-flex justify-content-between align-items-center">
+    
+            <!-- Edit Button -->
+            <a href="{% url 'edititems'  selitem.id%}" class="btn btn-outline-warning py-2 text-warning" title="Save this draft">
+                <i class="fas fa-pencil-alt"></i>
+            </a>
+    
+            <!-- Item Status Edit Button -->
+            <a href="{% url 'item_status_edit' selitem.id %}" class="btn btn-outline-warning py-2" title="Save this draft" style="margin-left: 4px;">
+                {{selitem.activation_tag}}
+            </a>
+    
+            <!-- Delete Button -->
+            <a href="{% url 'deleteitem'  selitem.id%}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2"
+                data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');" style="margin-left: 4px;"></a>
+    
+            <!-- Share Button -->
+            <!-- <div class="dropdown px-2 py-4">
+                <a class="btn text-center  btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button" style="margin-left: 4px;">
+                    <i class="fas fa-share"></i>
+                </a>
+                <div class="dropdown-menu m-1" style="background-color: rgb(43, 42, 42); color: white;margin-left: 4px;">
+                    <a class="dropdown-item" data-toggle="modal" data-target="#shareBillEmail" href="#" style="color: #eeeaea;">GMAIL</a>
+                    <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()" style="color: #fefefe;">WhatsApp</a>
+                </div>
+            </div>
+    
+            <a class="text-dark" onclick="exportToPDF3()">
+                <button class="btn btn-outline-warning" title="Pdf" style="width: 50px;margin-left: 4px;"><i class="fas fa-file-pdf" ></i></button>
+            </a>
+    
+            <a class="btn btn-outline-warning py-2" style="cursor: pointer;margin-left: 4px;" onclick="exportToExcel()" style="width: 50px;margin-left: 4px;">XLS</a>
+    
+            <a class="text-dark" onclick="printSelectedArea2()">
+                <button class="btn btn-outline-warning" title="Print" style="width: 50px;margin-left: 4px;"><i class="fas fa-print" ></i></button>
+            </a>
+     -->
+            <!-- Comment Button -->
+            <div class="dropdown">
+                <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning"
+                    data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 4px;"></a>
+                <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;margin-left: 4px;">
+                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i
+                            class="fa-solid fa fa-plus"></i>Add</a>
+                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i
+                            class="fas fa-list"></i>&nbsp;View List</a>
+                </div>
+            </div>
+    
+            <!-- History Button -->
+            <a class="btn btn-outline-warning py-2" style="cursor: pointer;margin-left: 4px;" data-toggle="modal" data-target="#history" >History</a>
+        </div>
+    </div><br>
     </div><br>
 
     <div class="row" id="div-to-pdf"
@@ -414,23 +620,23 @@
   
   
         </div>
-        <div class="col-sm-1 " style="margin-left: -18%;">
+        <div class="col-sm-1 " style="margin-left:5%;">
           <div class="col-md-6 d-flex justify-content-between align-items-center">
       
               <!-- Edit Button -->
-              <a href="{% url 'edititems'  selitem.id%}" class="btn btn-outline-warning py-2 text-warning" title="Save this draft">
+              <!-- <a href="{% url 'edititems'  selitem.id%}" class="btn btn-outline-warning py-2 text-warning" title="Save this draft">
                   <i class="fas fa-pencil-alt"></i>
-              </a>
+              </a> -->
       
               <!-- Item Status Edit Button -->
-              <a href="{% url 'item_status_edit' selitem.id %}" class="btn btn-outline-warning py-2" title="Save this draft" style="margin-left: 4px;">
+              <!-- <a href="{% url 'item_status_edit' selitem.id %}" class="btn btn-outline-warning py-2" title="Save this draft" style="margin-left: 4px;">
                   {{selitem.activation_tag}}
-              </a>
+              </a> -->
       
               <!-- Delete Button -->
-              <a href="{% url 'deleteitem'  selitem.id%}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2"
+              <!-- <a href="{% url 'deleteitem'  selitem.id%}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2"
                   data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');" style="margin-left: 4px;"></a>
-      
+       -->
               <!-- Share Button -->
               <div class="dropdown px-2 py-4">
                   <a class="btn text-center  btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button" style="margin-left: 4px;">
@@ -453,7 +659,7 @@
               </a>
       
               <!-- Comment Button -->
-              <div class="dropdown">
+              <!-- <div class="dropdown">
                   <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning"
                       data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 4px;"></a>
                   <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;margin-left: 4px;">
@@ -462,10 +668,10 @@
                       <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i
                               class="fas fa-list"></i>&nbsp;View List</a>
                   </div>
-              </div>
+              </div> -->
       
               <!-- History Button -->
-              <a class="btn btn-outline-warning py-2" style="cursor: pointer;margin-left: 4px;" data-toggle="modal" data-target="#history" >History</a>
+              <!-- <a class="btn btn-outline-warning py-2" style="cursor: pointer;margin-left: 4px;" data-toggle="modal" data-target="#history" >History</a> -->
           </div>
       </div><br>
       
@@ -529,25 +735,83 @@
   <table class="table table-hover table-bordered" id="table1" style="border-color: #000000;color: rgb(0, 0, 0);">
     <thead>
       <tr>
-        <th id="th" style="text-align: center;">Transactions <i class="fas fa-filter m-1" onclick="showFilter('Transactions')"></i></th>
-        <th id="th" style="text-align: center;">Type <i class="fas fa-filter m-1" onclick="showFilter('Type')"></i></th>
-        <th id="th" style="text-align: center;">Name <i class="fas fa-filter m-1" onclick="showFilter('Name')"></i></th>
-        <th id="th" style="text-align: center;">Date <i class="fas fa-filter m-1" onclick="showFilter('Date')"></i></th>
-        <th id="th" style="text-align: center;">Quantity <i class="fas fa-filter m-1" onclick="showFilter('Quantity')"></i></th>
-        <th id="th" style="text-align: center;">Price <i class="fas fa-filter m-1" onclick="showFilter('Price')"></i></th>
-        <th id="th" style="text-align: center;">Status <i class="fas fa-filter m-1" onclick="showFilter('Status')"></i></th>
+        <th id="th" style="text-align: center;">Transactions     
+           <a class="extra text-white" id="fil" style="display: block;" onclick="toggleDropdown(0)">&nbsp;<i class="fa fa-filter" aria-hidden="true" style="color: #000;"></i></a>
+          <div class="dropdown-content" id="dropdownContent0">
+              <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+              <input type="text" id="filterInput0"  />
+              <a class="btn btn-info" onclick="cleardropdown(0)">Clear</a> 
+              &nbsp;<a class="btn btn-info" onclick="filterTable(0)">Apply</a>
+          </div>
+        </th>
+        <th id="th" style="text-align: center;">Type
+          <a class="extra text-white" id="fil2" style="display: block;"  onclick="toggleDropdown(1)">&nbsp;<i class="fa fa-filter" aria-hidden="true" style="color: #000;"></i></a>
+          <div class="dropdown-content" id="dropdownContent1">
+              <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+              <input type="text" id="filterInput1"  />
+              <a class="btn btn-info" onclick="cleardropdown(1)">Clear</a> 
+              &nbsp;<a class="btn btn-info" onclick="filterTable(1)">Apply</a>
+          </div>
+        </th>
+        <th id="th" style="text-align: center;">Name 
+          <a class="extra text-white"  id="fil3" style="display: block;"  onclick="toggleDropdown(2)">&nbsp;<i class="fa fa-filter" aria-hidden="true" style="color: #000;"></i></a>
+          <div class="dropdown-content" id="dropdownContent2">
+              <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+              <input type="text" id="filterInput2"  />
+              <a class="btn btn-info" onclick="cleardropdown(2)">Clear</a> 
+              &nbsp;<a class="btn btn-info" onclick="filterTable(2)">Apply</a>
+          </div></th>
+        <th id="th" style="text-align: center;">Date 
+          <a class="extra text-white" id="fil4" style="display: block;"  onclick="toggleDropdown(3)">&nbsp;<i class="fa fa-filter" aria-hidden="true" style="color: #000;"></i></a>
+          <div class="dropdown-content" id="dropdownContent3">
+              <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+              <input type="date" id="filterInput3"  />
+              <a class="btn btn-info" onclick="cleardropdown(3)">Clear</a> 
+              &nbsp;<a class="btn btn-info" onclick="filterTable(3)">Apply</a>
+          </div>
+        </th>
+        <th id="th" style="text-align: center;">Quantity
+          
+          <a class="extra text-white" id="fil5" style="display: block;"  onclick="toggleDropdown(4)">&nbsp;<i class="fa fa-filter" aria-hidden="true" style="color: #000;"> </i></a>
+          <div class="dropdown-content" id="dropdownContent4">
+              <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+              <input type="text" id="filterInput4"  />
+              <a class="btn btn-info" onclick="cleardropdown(4)">Clear</a> 
+              &nbsp;<a class="btn btn-info" onclick="filterTable(4)">Apply</a>
+          </div>
+        </th>
+        <th id="th" style="text-align: center;">Price 
+          <a class="extra text-white" id="fil6" style="display: block;"  onclick="toggleDropdown(5)">&nbsp;<i class="fa fa-filter" aria-hidden="true" style="color: #000;"></i></a>
+          <div class="dropdown-content" id="dropdownContent5">
+              <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+              <input type="text" id="filterInput5"  />
+              <a class="btn btn-info" onclick="cleardropdown(5)">Clear</a> 
+              &nbsp;<a class="btn btn-info" onclick="filterTable(5)">Apply</a>
+          </div>
+        </th>
+        <th id="th" style="text-align: center;">Status   
+          <a class="extra text-white" id="fil7" style="display: block;"  onclick="toggleDropdown(6)">&nbsp;<i class="fa fa-filter" aria-hidden="true" style="color: #000;"></i></a>
+          <div class="dropdown-content" id="dropdownContent6">
+              <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+              <input type="text" id="filterInput6"  />
+              <a class="btn btn-info" onclick="cleardropdown(6)">Clear</a> 
+              &nbsp;<a class="btn btn-info" onclick="filterTable(6)">Apply</a>
+          </div>  
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr style="color: black;">
-        <td style="text-align: center;"></td>
-        <td style="text-align: center;"></td>
-        <td style="text-align: center;"></td>
-        <td style="text-align: center;"></td>
+
+      <tr style="color: black;">  
+        <td style="text-align: center;">{{forloop.counter}}</td>
+        <td style="text-align: center;">{{selitem.type}}</td>
+        <td style="text-align: center;">{{selitem.item_name}}</td>
+        <td style="text-align: center;">{{selitem.date}}</td>
         <td style="text-align: center;">{{selitem.opening_stock}}</td>
-        <td style="text-align: center;"></td>
+        <td style="text-align: center;">{{selitem.opening_stock_per_unit}}</td>
         <td style="text-align: center;"></td>
       </tr>
+
       
       <!-- Add more rows as needed -->
     </tbody>
@@ -713,47 +977,68 @@
 
 <script>
 function printSelectedArea2(area) {
-  // Get the HTML content of the table
   var printContents = document.getElementById("table1").innerHTML;
+var searchInput = document.getElementById('searchInput2');
+// Open a new window
+var printWindow = window.open('', '_blank');
 
-  // Open a new window
-  var printWindow = window.open('', '_blank');
+// Add styles to hide specific elements during printing
+printWindow.document.write('<style>@media print { #searchInput2, #dropdownContent0,#dropdownContent1,#dropdownContent2,#dropdownContent3,#dropdownContent4,#dropdownContent5,#dropdownContent6 { display: none; } }</style>');
 
-  // Add styles to hide specific elements during printing
-  printWindow.document.write('<style>@media print { #searchInput2, #filterWindow { display: none; } }</style>');
+// Add additional styles for the table layout
+printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }</style>');
+printWindow.document.write('<style>table, th, td { border: 1px solid black; }</style>');
 
-  // Add additional styles for the table layout
-  printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }</style>');
-  printWindow.document.write('<style>table, th, td { border: 1px solid black; }</style>');
+// Write the HTML content to the new window
+printWindow.document.write('<html><head><title>Print Data</title></head><body>');
+printWindow.document.write(document.getElementById('div-to-print').innerHTML);
+printWindow.document.write('</body></html>');
 
-  // Write the HTML content to the new window
-  printWindow.document.write('<html><head><title>Print Data</title></head><body>');
-  printWindow.document.write(document.getElementById('div-to-print').innerHTML);
-  printWindow.document.write('</body></html>');
+// Print the new window
+printWindow.print();
 
-  // Print the new window
-  printWindow.print();
+
 }
 
 
-  function exportToPDF3() {
+function exportToPDF3() {
+  // Get references to the elements
   var content = document.getElementById('div-to-print');
-  
-  // Apply styles to the content
-  var originalDisplayStyle = searchInput.style.display;
+  var searchInput = document.getElementById('searchInput2');
+  var fil = document.getElementById('fil');
+  // var fil1 = document.getElementById('fil1');
+  var fil2 = document.getElementById('fil2');
+  var fil3 = document.getElementById('fil3');
+  var fil4 = document.getElementById('fil4');
+  var fil5 = document.getElementById('fil5');
+  var fil6 = document.getElementById('fil6');
+  var fil7 = document.getElementById('fil7');
+  // Create a clone of the search input and hide it in the clone
+  // var searchClone = searchInput.cloneNode(true);
+  // searchClone.style.display = 'none';
+  // content.appendChild(searchClone);
 
-// Hide the search input temporarily
-searchInput2.style.display = 'none';
+  // Apply styles to the content
+  fil.style.display = 'none';
+  // fil1.style.display = 'none';
+  fil2.style.display = 'none';
+  fil3.style.display = 'none';
+  fil4.style.display = 'none';
+  fil5.style.display = 'none';
+  fil6.style.display = 'none';
+  fil7.style.display = 'none';
+
+  searchInput.style.display = 'none';
   content.style.backgroundColor = 'white';
   content.style.color = 'black';
 
-
   var heading = document.createElement('h1');
   heading.textContent = '{{selitem.item_name}}' + '  ' + 'Transactions';
-  heading.style.textAlign = 'center';  // Center the heading
-  heading.style.marginTop = '50px';    // Add top margin for better spacing
-  heading.style.marginBottom = '20px'; 
-  content.insertBefore(heading, content.firstChild); 
+  heading.style.textAlign = 'center';
+  heading.style.marginTop = '50px';
+  heading.style.marginBottom = '20px';
+  content.insertBefore(heading, content.firstChild);
+
   // Apply styles to h1 elements within the content
   var h1Elements = content.getElementsByTagName('h1');
   for (var i = 0; i < h1Elements.length; i++) {
@@ -764,7 +1049,12 @@ searchInput2.style.display = 'none';
   html2pdf()
     .from(content)
     .save('{{selitem.item_name}}' + '.pdf');
+
+  // Remove the cloned search input after generating PDF
+  content.removeChild(searchClone);
 }
+
+
 function exportToExcel() {
     var table = document.querySelector('#table1'); // Add # to select by ID
     var ws = XLSX.utils.table_to_sheet(table);
@@ -816,48 +1106,45 @@ function exportToExcel() {
 <!-- history modal -->
 
 
-<div class="modal fade" id="history">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
-      <div class="modal-header" style="background: rgb(32, 35, 37);">
-        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Transaction History</h5>
+<div class="modal fade" id="history" >
+  <div class="modal-dialog modal-xl" >
+    <div class="modal-content" style="background: #1f1f1ffd;border-radius: 20px;">
+      <div class="modal-header" style="background: #1f1f1ffd;">
+        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #e1e1e1;">Transaction History</h5>
         <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body" style="background: rgb(32, 35, 37);">
+      <div class="modal-body" style="background: #1f1f1ffd;;">
         <div class="card p-3 m-3" style="background-color: #000;">
         
-          <table style="background-color: #000; margin-right: 10px; border-radius: 5px;padding-top: 4px;">
+          <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
             <thead class="text-white">
+                <tr>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Action</b></th>
+                    <th style="color: rgb(244, 244, 244); padding-bottom: 10px;"><b>Date</b></th>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Name</b></th>
+                </tr>
+                <tr>
+                    <td colspan="3" style="border-bottom: 2px solid white; margin-bottom: 10px;"></td>
+                </tr>
+            </thead>
         
-              <tr>
-                <th style="color: rgb(250, 247, 242);">Action</th>
-                <th style="color: rgb(244, 244, 244);">Date</th>
-                  <th style="color: rgb(250, 247, 242);">Name</th>
-             
-                  
-              </tr>
-          </thead>
-        <tbody style="background-color: black;">
-          
-          {% for i in latest_item_id %}
-        <tr style="background-color: black;" class='clickable-row' data-href=""> 
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;padding-top: 6px;padding-left: 6px;padding-bottom: 6px;">{{ i.action }}</td>            
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.Date }}</td>
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.logindetails.first_name }}&nbsp;{{ i.logindetails.last_name }}</td>
-       </tr>
-    {% endfor %}
-    
-      
-        </tbody>
-          </table>
-
-
+            <tbody style="background-color: black; padding-top: 20px;"> <!-- Adjusted padding-top for spacing -->
+                {% for i in latest_item_id %}
+                    <tr style="background-color: black;height: 40px;">
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.action }}</td>            
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.Date }}</td>
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.logindetails.first_name }}&nbsp;{{ i.logindetails.last_name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        </div>
     </div>
-  </div>
+    
 </div>
-</div>
-</div>
+</div></div>
 <!-- comment modal -->
 <div class="modal fade" id="cmnts">
   <div class="modal-dialog modal-xl">
@@ -883,7 +1170,7 @@ function exportToExcel() {
         <div class="modal-footer d-flex justify-content-center" style="border-top: 1px solid #ffff;">
           <!-- <button type="submit">submit</button> -->
           <input type="submit" id="share_with_email"
-            class="submitShareEmailBtn rounded-pill text-grey w-50 my-4 mx-3" value="Save">
+            class="submitShareEmailBtn rounded-pill text-grey w-50 my-4 mx-3"  style="background-color: #222121; color: #e1e1e1;" value="Save">
         </div>
       </div>
     </form>
@@ -905,30 +1192,27 @@ function exportToExcel() {
         
           <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
             <thead class="text-white">
+                <tr>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Comments</b></th>
+                    <th style="color: rgb(244, 244, 244); padding-bottom: 10px;"><b></b></th>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Delete</b></th>
+                </tr>
+                <tr>
+                    <td colspan="3" style="border-bottom: 2px solid white; margin-bottom: 10px;"></td>
+                </tr>
+            </thead>
         
-              <tr>
-                <th style="color: rgb(250, 247, 242);"></th>
-                <th style="color: rgb(244, 244, 244);"></th>
-         
-             
-                  
-              </tr>
-          </thead>
-        <tbody style="background-color: rgb(225, 195, 195);width: 200px;">
-          
-          {% for i in est_comments %}
-        <tr style="background-color: black;" class='clickable-row' data-href=""> 
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;margin-left: 10px;">{{ i.comments }}</td>            
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'delete_item_comment' i.id %}"> <span
-            aria-hidden="true">&times;</span></a></td>
-          
-      </tr>
-      <tr></tr>
-    {% endfor %}
-    
-      
-        </tbody>
-          </table>
+            <tbody style="background-color: black; padding-top: 20px;"> <!-- Adjusted padding-top for spacing -->
+              {% for i in est_comments %}
+                    <tr style="background-color: black;height: 40px;">
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.comments }}</td>            
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;"></td>
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'delete_item_comment' i.id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+ 
 
 
     </div>
@@ -999,4 +1283,70 @@ function exportToExcel() {
     });
   });
 </script>
+
+
+<script>
+  function cleardropdown(index) {
+    document.getElementById('filterInput' + index).value = '';
+  }
+
+  function toggleDropdown(index) {
+    var dropdownContent = document.getElementById('dropdownContent' + index);
+    var isVisible = dropdownContent.style.display === 'block';
+    var allDropdowns = document.querySelectorAll('.dropdown-content');
+    allDropdowns.forEach(function (dropdown) {
+      dropdown.style.display = 'none';
+    });
+    dropdownContent.style.display = isVisible ? 'none' : 'block';
+  }
+
+  function filterTable(index) {
+    var input;
+    document.getElementById('dropdownContent' + index).style.display = 'none';
+
+    if (index === 3) {
+      input = document.getElementById('filterInput' + index).valueAsDate;
+    } else {
+      input = document.getElementById('filterInput' + index).value.toUpperCase();
+    }
+
+    var table = document.getElementById('table1');
+    var rows = table.getElementsByTagName('tr');
+    var emptyMessage = document.getElementById('emptyMessage');
+    var isEmpty = true;
+
+    for (var i = 1; i < rows.length; i++) {
+      var cells = rows[i].getElementsByTagName('td');
+      var cell = cells[index];
+
+      if (cell) {
+        var textValue = cell.textContent || cell.innerText;
+
+        if (index === 3) {
+          var dateVal = new Date(textValue);
+          var inputDate = new Date(input);
+
+          if (dateVal.toISOString().split('T')[0] === inputDate.toISOString().split('T')[0]) {
+            rows[i].style.display = 'table-row';
+            isEmpty = false;
+          } else {
+            rows[i].style.display = 'none';
+          }
+        } else {
+          if (textValue.toUpperCase().includes(input)) {
+            rows[i].style.display = 'table-row';
+            isEmpty = false;
+          } else {
+            rows[i].style.display = 'none';
+          }
+        }
+      }
+    }
+
+    emptyMessage.style.display = isEmpty ? 'block' : 'none';
+    // You can add any additional logic or calculations here
+  }
+</script>
+
+
   {% endblock %}

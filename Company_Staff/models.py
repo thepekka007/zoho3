@@ -44,6 +44,8 @@ class Items(models.Model):
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
     login_details=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
 
+    type=models.CharField(max_length=255,blank=True,null=True,)
+
 class Item_Transaction_History(models.Model):
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
     logindetails=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
@@ -61,7 +63,8 @@ class Chart_of_Accounts(models.Model):
     # user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     account_type = models.CharField(max_length=255,null=True,blank=True)
     account_name = models.CharField(max_length=255,null=True,blank=True)
-    account_description = models.CharField(max_length=255,null=True,blank=True)
+    account_description = models.CharField(max_length=255,null=True,blank=True)                         # created by tinto new
+    account_number = models.CharField(max_length=255,null=True,blank=True)                                          # created by tinto new
     
     account_code = models.CharField(max_length=255,null=True,blank=True)
     description = models.CharField(max_length=255,null=True,blank=True)

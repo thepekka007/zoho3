@@ -21,7 +21,7 @@ from io import BytesIO
 from datetime import date
 from django.db.models import Max
 
-
+from django.db.models import Q
 # -------------------------------Company section--------------------------------
 
 # company dashboard
@@ -294,7 +294,8 @@ def create_item(request):
             a.purchase_account = request.POST.get("cost_acc",None)
             a.purchase_description = request.POST.get("pur_desc",None)
             a.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
-            a.activation_tag = request.POST.get("status",None)
+            a.activation_tag = 'Active'
+            a.type = 'Opening Stock'
             a.inventory_account = request.POST.get("invacc",None)
             a.opening_stock = request.POST.get("openstock",None)
             a.opening_stock_per_unit = request.POST.get("rate",None)
@@ -358,14 +359,15 @@ def add_unit(request):
             unit_name = request.POST['units']
             unit = Unit(unit_name=unit_name,company=c)  
             unit.save()  
-            unit_id = unit.id  
-            response_data = {
-            "message": "success",
-            "unit_id":unit_id,
+            return HttpResponse({"message": "success"})
+            # unit_id = unit.id  
+        #     response_data = {
+        #     "message": "success",
+        #     "unit_id":unit_id,
        
-        }
+        # }
 
-        return JsonResponse(response_data)
+        return HttpResponse({"message": "success"})
       
 
     elif log_user.user_type == 'Staff':
@@ -379,21 +381,43 @@ def add_unit(request):
             unit_name = request.POST['units']
             unit = Unit(unit_name=unit_name,company=c)  
             unit.save()  
-            unit_id = unit.id  
-            return JsonResponse({"unit_name": unit_name, "unit_id": unit_id})
+             
+            return HttpResponse({"message": "success"})
+        return HttpResponse({"message": "success"})
         
-    return redirect('newitem')
+    return HttpResponse({"message": "success"})
 # create unit
 
 def unit_dropdown(request):
+    login_id = request.session['login_id']
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_user)
+            options = {}
+            option_objects = Unit.objects.filter(company=dash_details)
+            for option in option_objects:
+                unit_name=option.unit_name
+            options[option.id] = [unit_name,f"{unit_name}"]
+            return JsonResponse(options)
+      
+
+    elif log_user.user_type == 'Staff':
+            dash_details = StaffDetails.objects.get(login_details=log_user)
+            options = {}
+            option_objects = Unit.objects.filter(company=dash_details.company)
+            for option in option_objects:
+                unit_name=option.unit_name
+            options[option.id] = [unit_name,f"{unit_name}"]
+            return JsonResponse(options)
+             
 
 
-    options = {}
-    option_objects = Unit.objects.all()
-    for option in option_objects:
-        
-        options[option.id] = [option.unit_name,option.id]
-    return JsonResponse(options)
+    # options = {}
+    # option_objects = Unit.objects.all()
+    # for option in option_objects:
+    #     unit_name=option.unit_name
+    #     options[option.id] = [unit_name,f"{unit_name}"]
+    # return JsonResponse(options)
 
 def add_account(request):
     login_id = request.session['login_id']
@@ -479,12 +503,30 @@ def add_account(request):
     return redirect('newitems')
 
 def account_dropdown(request):
-    options = {}
-    option_objects = Chart_of_Accounts.objects.all()
-    for option in option_objects:
-        
-        options[option.id] = [option.account_name,option.id]
-    return JsonResponse(options)
+    login_id = request.session['login_id']
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_user)
+            options = {}
+            option_objects = Chart_of_Accounts.objects.filter(Q(company=dash_details) & (Q(account_type='Expense') | Q(account_type='Other Expense')))
+            for option in option_objects:
+                account_name=option.account_name
+                account_type=option.account_type
+                options[option.id] = [account_name,account_type,f"{account_name}"]
+            return JsonResponse(options)
+    elif log_user.user_type == 'Staff':
+            dash_details = StaffDetails.objects.get(login_details=log_user)
+            options = {}
+       
+            option_objects = Chart_of_Accounts.objects.filter(Q(company=dash_details.company) & (Q(account_type='Expense') | Q(account_type='Other Expense')))
+            for option in option_objects:
+                account_name=option.account_name
+                options[option.id] = [account_name,f"{account_name}"]
+            return JsonResponse(options)
+
+
+    
+    
 def itemsoverview(request,pk):
 
     if 'login_id' in request.session:
@@ -590,8 +632,13 @@ def edititems(request, pr):
             item.unit = unit_instance
             item.hsn_code = request.POST.get("hsn",None)
             item.tax_reference = request.POST.get("radio",None)
-            item.intrastate_tax = request.POST.get("intra",None)
-            item.interstate_tax= request.POST.get("inter",None)
+            if request.POST.get("radio",None) == 'taxable':
+
+                item.intrastate_tax = request.POST.get("intra",None)
+                item.interstate_tax= request.POST.get("inter",None)
+            elif request.POST.get("radio",None) == 'None-Taxable':
+                item.intrastate_tax = 0
+                item.interstate_tax= 0
             item.selling_price = request.POST.get("sel_price",None)
             item.sales_account = request.POST.get("sel_acc",None)
             item.sales_description = request.POST.get("sel_desc",None)
@@ -602,6 +649,8 @@ def edititems(request, pr):
             item.activation_tag = request.POST.get("status",None)
             item.inventory_account = request.POST.get("invacc",None)
             item.opening_stock = request.POST.get("openstock",None)
+            item.opening_stock_per_unit = request.POST.get("rate",None)
+            
             
             # Save the changes
             item.save()
@@ -699,7 +748,7 @@ def shareItemToEmail(request,pt):
                     'selitem':item,
                 }
                 print('2')
-                template_path = 'zohomodules/itememailpdf.html'
+                template_path = 'zohomodules/items/itememailpdf.html'
                 print('3')
                 template = get_template(template_path)
                 print('4')
@@ -1028,16 +1077,54 @@ def create_account(request):
             a.account_type = request.POST.get("account_type",None)
             a.account_name = request.POST.get("account_name",None)
             a.account_code = request.POST.get("account_code",None)
+            a.account_number = request.POST.get("account_number2",None)
             a.account_description = request.POST.get("description",None)
-            des = request.POST.get("account_type",None)
-            accountdesc=Chart_of_Accounts.objects.get(account_type=des)
-            a.description = accountdesc.description
+            account_type=request.POST.get("account_type",None)
+            if account_type == 'Other Assets':
+                a.description = 'Track special assets like goodwill and other intangible assets'
+            if account_type == 'Other Current Assets':
+                a.description = 'Any short term asset that can be converted into cash or cash equivalents easily Prepaid expenses Stocks and Mutual Funds'
+            if account_type == 'Cash':
+                a.description = 'To keep track of cash and other cash equivalents like petty cash, undeposited funds, etc., use an organized accounting system  financial software'
+            if account_type == 'Bank':
+                a.description = 'To keep track of bank accounts like Savings, Checking, and Money Market accounts.'
+            if account_type == 'Fixed Asset':
+                a.description = 'Any long-term investment or asset that cannot be easily converted into cash includes: Land and Buildings, Plant, Machinery, and Equipment, Computers, Furniture.'
+            if account_type == 'Stock':
+                a.description = 'To keep track of your inventory assets.'
+            if account_type == 'Payment Clearing':
+                a.description = 'To keep track of funds moving in and out via payment processors like Stripe, PayPal, etc.'
+            if account_type == 'Other Liability':
+                a.description = 'Obligation of an entity arising from past transactions or events which would require repayment.Tax to be paid Loan to be Repaid Accounts Payableetc.'
+            if account_type == 'Other Current Liability':
+                a.description = 'Any short term liability like: Customer Deposits Tax Payable'
+            if account_type == 'Credit Card':
+                a.description = 'Create a trail of all your credit card transactions by creating a credit card account.'
+            if account_type == 'Long Term Liability':
+                a.description = 'Liabilities that mature after a minimum period of one year like: Notes Payable Debentures Long Term Loans '
+            if account_type == 'Overseas Tax Payable':
+                a.description = 'Track your taxes in this account if your business sells digital services to foreign customers.'
+            if account_type == 'Equity':
+                a.description = 'Owners or stakeholders interest on the assets of the business after deducting all the liabilities.'
+            if account_type == 'Income':
+                a.description = 'Income or Revenue earned from normal business activities like sale of goods and services to customers.'
+            if account_type == 'Other Income':
+                a.description = 'Income or revenue earned from activities not directly related to your business like : Interest Earned Dividend Earned'
+            if account_type == 'Expense':
+                a.description = 'Reflects expenses incurred for running normal business operations, such as : Advertisements and Marketing Business Travel Expenses License Fees Utility Expenses'
+            if account_type == 'Cost Of Goods Sold':
+                a.description = 'This indicates the direct costs attributable to the production of the goods sold by a company such as: Material and Labor costs Cost of obtaining raw materials'
+            if account_type == 'Other Expense':
+                a.description = 'Track miscellaneous expenses incurred for activities other than primary business operations or create additional accounts to track default expenses like insurance or contribution towards charity.'
+       
+
+            
     
             a.Create_status="active"
             ac_name=request.POST.get("account_name",None)
             if Chart_of_Accounts.objects.filter(account_name=ac_name,company=c).exists():
                 error='yes'
-                messages.error(request,'Account with same name exsits')
+                messages.error(request,'Account with same name exsits !!!')
                 return redirect('addchartofaccounts')
             else:
                 a.save()
@@ -1091,7 +1178,7 @@ def chartofaccountsoverview(request,pk):
 
                     allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
                 
-                    acc=Chart_of_Accounts.objects.all()  
+                    acc=Chart_of_Accounts.objects.filter(company=dash_details.company)  
                     selacc=Chart_of_Accounts.objects.get(id=pk)  
                     est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
                     latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
@@ -1110,7 +1197,7 @@ def chartofaccountsoverview(request,pk):
             dash_details = CompanyDetails.objects.get(login_details=log_details)
        
             allmodules= ZohoModules.objects.get(company=dash_details,status='New')
-            acc=Chart_of_Accounts.objects.all()  
+            acc=Chart_of_Accounts.objects.filter(company=dash_details)  
             selacc=Chart_of_Accounts.objects.get(id=pk)  
             est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
             latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
@@ -1340,7 +1427,7 @@ def shareaccountToEmail(request,pt):
                     'selacc':acc,
                 }
                 print('2')
-                template_path = 'zohomodules/accountemailpdf.html'
+                template_path = 'zohomodules/chartofaccounts/accountemailpdf.html'
                 print('3')
                 template = get_template(template_path)
                 print('4')

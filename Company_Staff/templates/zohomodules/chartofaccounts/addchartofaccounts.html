@@ -161,10 +161,15 @@
                   
                 </div>
                 <hr>
+                
                 <div class="row ">
+                    {% for m in messages %}
+                    <p style="color: chocolate;">{{m}}</p>
+                    {% endfor %}
                     <div class="col">
                         <div class="row">
                             <div class="col-sm-4">
+                           
                                 <label for="">Account Type:</label>
                             </div>
                             <div class="col-sm-8">
@@ -217,12 +222,28 @@
                                         </ul>
         
         
-        
+                                   
                                     </div>
                                 </div>
         
                             </div>
-        
+                            <script>
+                                function handleOptionSelection(selectedOption) {
+                                    document.getElementById("soValue1").value = selectedOption;
+                            
+                                    // Show/hide account number field based on the selected option
+                                    var accountNumberField = document.getElementById("acc_bo_div");
+                                    if (selectedOption === "Bank") {
+                                        accountNumberField.style.display = "block";
+                                    } else {
+                                        accountNumberField.style.display = "none";
+                                    }
+                                }
+                            
+                                function filterFunction1() {
+                                    // Add your filtering logic here if needed
+                                }
+                            </script>
                             <script>
                                 const selectBox1 = document.querySelector('.select-box1');
                                 const selectOption1 = document.querySelector('.select-option1');
@@ -251,6 +272,17 @@
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control text-dark bg-light" name="account_name"
                                         id="account_name" style="width: 70%;" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: none;" id="acc_bo_div">
+                            <div class="row mt-3">
+                                <div class="col-sm-4">
+                                    <label for="">Account Number:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control text-dark bg-light" name="account_number2"
+                                        id="account_number" style="width: 70%;">
                                 </div>
                             </div>
                         </div>
@@ -896,7 +928,7 @@
             document.getElementById("sub_div222").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("cr_div").style.display = "none";
 
         } else if (vals == "Other Current Assets") {
@@ -905,7 +937,7 @@
             document.getElementById('message').innerHTML = ""
             document.getElementById("sub_account").checked = false;
             document.getElementById("cr_div").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("parent_div22").style.display = "none";
             document.getElementById("parent_div33").style.display = "none";
             document.getElementById("parent_div44").style.display = "none";
@@ -969,7 +1001,7 @@
             document.getElementById("sub_div44").style.display = "none";
             document.getElementById("sub_div22").style.display = "block";
             document.getElementById("cr_div").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
             $('#message').append(
@@ -978,9 +1010,9 @@
 
         } else if (vals == "Bank") {
             document.getElementById('message_hd').innerHTML = "Assets<br><br>To keep track of bank accounts like Savings, Checking, and Money Market accounts.";
-
+            document.getElementById("acc_bo_div").style.display = "block";
             document.getElementById('').innerHTML = "Assets"
-            document.getElementById('message').innerHTML = ""
+            // document.getElementById('message').innerHTML = ""
             document.getElementById("cr_div").style.display = "block";
             document.getElementById("acc_bo_div").style.display = "block";
             document.getElementById("name").style.display = "block";
@@ -1051,7 +1083,7 @@
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
             document.getElementById("cr_div").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             $('#message').append(
                 `Any long term investment or an asset that cannot be converted into cash easily like: 
           <ul><li>Land and Buildings</li> <li>Plant, Machinery and Equipment</li> <li>Computers</li> <li>Furniture</li></ul>`
@@ -1091,7 +1123,7 @@
 
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("cr_div").style.display = "none";
             $('#message').append(
                 `To keep track of your inventory assets.`
@@ -1103,7 +1135,7 @@
             document.getElementById('message').innerHTML = ""
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("cr_div").style.display = "none";
             document.getElementById("parent_div").style.display = "none";
             document.getElementById("parent_div22").style.display = "none";
@@ -1167,7 +1199,7 @@
             document.getElementById("sub_div222").style.display = "none";
 
             document.getElementById("cr_div").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
 
@@ -1183,7 +1215,7 @@
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
             document.getElementById("cr_div").style.display = "block";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
 
             document.getElementById("parent_div").style.display = "none";
             document.getElementById("parent_div22").style.display = "none";
@@ -1251,7 +1283,7 @@
             document.getElementById("sub_div222").style.display = "none";
 
 
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
 
             $('#message').append(
                 `Liabilities that mature after a minimum period of one year like Notes Payable, Debentures, and Long Term Loans`
@@ -1291,7 +1323,7 @@
             document.getElementById("cr_div").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
 
 
             $('#message').append(
@@ -1305,7 +1337,7 @@
             document.getElementById("cr_div").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("parent_div").style.display = "none";
             document.getElementById("parent_div22").style.display = "none";
             document.getElementById("parent_div33").style.display = "none";
@@ -1372,7 +1404,7 @@
             document.getElementById("sub_div111").style.display = "none";
             document.getElementById("sub_div222").style.display = "none";
 
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
 
             $('#message').append(
                 `Owners or stakeholders interest on the assets of the business after deducting all the liabilities`
@@ -1413,7 +1445,7 @@
             document.getElementById("sub_div222").style.display = "none";
 
 
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
 
             $('#message').append(
                 `Income or Revenue earned from normal business activities like sale of goods and services to customers`
@@ -1426,7 +1458,7 @@
             document.getElementById("cr_div").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
 
             document.getElementById("parent_div").style.display = "none";
             document.getElementById("parent_div22").style.display = "none";
@@ -1469,7 +1501,7 @@
             document.getElementById("cr_div").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("parent_div").style.display = "none";
             document.getElementById("parent_div22").style.display = "none";
             document.getElementById("parent_div33").style.display = "none";
@@ -1508,7 +1540,7 @@
             document.getElementById("cr_div").style.display = "none";
             document.getElementById("name").style.display = "block";
             document.getElementById("credit").style.display = "none";
-            document.getElementById("acc_bo_div").style.display = "none";
+            // document.getElementById("acc_bo_div").style.display = "none";
             document.getElementById("parent_div").style.display = "none";
             document.getElementById("parent_div22").style.display = "none";
             document.getElementById("parent_div33").style.display = "none";

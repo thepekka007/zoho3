@@ -268,7 +268,54 @@
 <!-- <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" data-toggle="modal" data-target="#history">History</a>
  </div> -->
     <!-- </div><br> -->
-    
+    <div class="col-sm-1 " >
+      <div class="col-md-6 d-flex justify-content-between align-items-center">
+  
+          <!-- Edit Button -->
+          <a href="{% url 'editchartofaccounts' selacc.id %}" class="btn btn-outline-warning py-2 text-warning btn-margin" title="save this draft"><i class="fas fa-pencil-alt"></i></a>
+
+          <!-- Item Status Edit Button -->
+          <a href="{% url 'acc_status_edit' selacc.id %}" class="btn btn-outline-warning py-2 btn-margin" title="save this draft">{{selacc.status}}</a>
+          
+          <!-- Delete Button -->
+          <a href="{% url 'deleteaccount' selacc.id %}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"></a>
+          
+          <!-- Share Button -->
+          <!-- <div class="dropdown btn-margin">
+              <a class="btn text-center btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button">
+                  <i class="fas fa-share"></i>
+              </a>
+              <div class="dropdown-menu m-1" style="background-color: rgb(43, 42, 42); color: white;">
+                  <a class="dropdown-item" data-toggle="modal" data-target="#shareBillEmail" href="#" style="color: #eeeaea;">GMAIL</a>
+                  <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()" style="color: #fefefe;">WhatsApp</a>
+              </div>
+          </div>
+          
+          <a class="text-dark btn-margin" onclick="exportToPDF3()">
+              <button class="btn btn-outline-warning" title="Pdf" style="width: 50px;"><i class="fas fa-file-pdf"></i></button>
+          </a>
+          
+          <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" onclick="exportToExcel()" style="width: 50px;">XLS</a>
+          
+          <a class="text-dark btn-margin" onclick="printSelectedArea2()">
+              <button class="btn btn-outline-warning" title="Print" style="width: 50px;"><i class="fas fa-print"></i></button>
+          </a>
+          
+        Comment Button -->
+          <!-- <div class="dropdown btn-margin">
+              <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning" data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"></a>
+              <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;">
+                  <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i class="fa-solid fa fa-plus"></i>Add</a>
+                  <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i class="fas fa-list"></i>&nbsp;View List</a>
+              </div>
+          </div>
+           -->
+          <!-- History Button -->
+          <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" data-toggle="modal" data-target="#history">History</a> 
+          <a href="{% url 'chartofaccounts'%}" class="delete fa fa-times  btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="back" ></a>
+          
+           </div>
+  </div><br>
 <br>
     <div class="row" id=""
       style="background-color: #c4c1c1fd;  height: auto; margin-left:20px; margin-right: 1rem;width: 75%; margin-top: 10px;">
@@ -294,14 +341,29 @@
               </p>
           </div>
         </div>
+        {% if selacc.account_code is not none and selacc.account_code != '' %}
         <div class="row mt-3">
-          <div class="col-5"><label class="text-black" for="">Account Code:</label></div>
-          <div class="col-7">
-            <p class="bold text-black" style="max-width: 15rem;word-wrap: break-word;">
-                {{selacc.account_code}}
-              </p>
-          </div>
+            <div class="col-5"><label class="text-black" for="">Account Code:</label></div>
+            <div class="col-7">
+                <p class="bold text-black" style="max-width: 15rem; word-wrap: break-word;">
+                    {{ selacc.account_code }}
+                </p>
+            </div>
         </div>
+    {% endif %}
+    {% if selacc.account_number is not none and selacc.account_number != '' %}
+    <div class="row mt-3">
+        <div class="col-5"><label class="text-black" for="">Account Code:</label></div>
+        <div class="col-7">
+            <p class="bold text-black" style="max-width: 15rem; word-wrap: break-word;">
+                {{ selacc.account_number }}
+            </p>
+        </div>
+    </div>
+{% endif %}
+  
+    
+    
         <div class="row mt-3">
           <div class="col-5"><label class="text-black" for="">Description :</label></div>
           <div class="col-7">
@@ -344,7 +406,7 @@
       <div class="col-md-7">
         <a class="text-white" style="font-size: 1.5rem;">
           <br>
-          <h2 style="color: aliceblue;">{{selitem.item_name}}</h2>
+          <h2 style="color: aliceblue;">{{selacc.account_name}}</h2>
         </a>
       </div>
     </div>
@@ -358,17 +420,17 @@
 
 
       </div>
-      <div class="col-sm-1 " style="margin-left: -18%;">
+      <div class="col-sm-1 " style="margin-left: -1%;">
         <div class="col-md-6 d-flex justify-content-between align-items-center">
     
             <!-- Edit Button -->
-            <a href="{% url 'editchartofaccounts' selacc.id %}" class="btn btn-outline-warning py-2 text-warning btn-margin" title="save this draft"><i class="fas fa-pencil-alt"></i></a>
+            <!-- <a href="{% url 'editchartofaccounts' selacc.id %}" class="btn btn-outline-warning py-2 text-warning btn-margin" title="save this draft"><i class="fas fa-pencil-alt"></i></a> -->
 
             <!-- Item Status Edit Button -->
-            <a href="{% url 'acc_status_edit' selacc.id %}" class="btn btn-outline-warning py-2 btn-margin" title="save this draft">{{selacc.status}}</a>
+            <!-- <a href="{% url 'acc_status_edit' selacc.id %}" class="btn btn-outline-warning py-2 btn-margin" title="save this draft">{{selacc.status}}</a> -->
             
             <!-- Delete Button -->
-            <a href="{% url 'deleteaccount' selacc.id %}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"></a>
+            <!-- <a href="{% url 'deleteaccount' selacc.id %}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"></a> -->
             
             <!-- Share Button -->
             <div class="dropdown btn-margin">
@@ -408,14 +470,14 @@
     <br>
     <div class="row" id="div-to-pdf"
     style="background-color: #c4c1c1fd;  height: 31rem; margin-left:20px; margin-right: 1rem; width: 75%; ">
-
+    <div class="row" id="div-to-print"
+    style="background-color: #c4c1c1fd;  height: auto; margin-left:1px; margin-right: 1rem;width: 100%; ">
     <div class="row text-center">
       <h2 style="color: #000000;"><br>{{selacc.account_name}}
         <hr>
       </h2>
     </div>    
-    <div class="row" id="div-to-print"
-    style="background-color: #c4c1c1fd;  height: auto; margin-left:1px; margin-right: 1rem;width: 100%; ">
+
  
 <style>
 .dashed-line {
@@ -646,45 +708,43 @@
 <!-- history modal -->
 
 
-<div class="modal fade" id="history">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
-      <div class="modal-header" style="background: rgb(32, 35, 37);">
-        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Transaction History</h5>
+<div class="modal fade" id="history" >
+  <div class="modal-dialog modal-xl" >
+    <div class="modal-content" style="background: #1f1f1ffd;border-radius: 20px;">
+      <div class="modal-header" style="background: #1f1f1ffd;">
+        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #e1e1e1;">Transaction History</h5>
         <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body" style="background: rgb(32, 35, 37);">
+      <div class="modal-body" style="background: #1f1f1ffd;;">
         <div class="card p-3 m-3" style="background-color: #000;">
         
           <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
             <thead class="text-white">
+                <tr>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Action</b></th>
+                    <th style="color: rgb(244, 244, 244); padding-bottom: 10px;"><b>Date</b></th>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Name</b></th>
+                </tr>
+                <tr>
+                    <td colspan="3" style="border-bottom: 2px solid white; margin-bottom: 10px;"></td>
+                </tr>
+            </thead>
         
-              <tr>
-                <th style="color: rgb(250, 247, 242);">Action</th>
-                <th style="color: rgb(244, 244, 244);">Date</th>
-                  <th style="color: rgb(250, 247, 242);">Name</th>
-             
-                  
-              </tr>
-          </thead>
-        <tbody style="background-color: black;">
-          
-          {% for i in latest_item_id %}
-        <tr style="background-color: black;" class='clickable-row' data-href=""> 
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.action }}</td>            
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.Date }}</td>
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;">{{ i.logindetails.first_name }}&nbsp;{{ i.logindetails.last_name }}</td>
-       </tr>
-    {% endfor %}
-    
-      
-        </tbody>
-          </table>
-
-
+            <tbody style="background-color: black; padding-top: 20px;"> <!-- Adjusted padding-top for spacing -->
+                {% for i in latest_item_id %}
+                    <tr style="background-color: black;height: 40px;">
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.action }}</td>            
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.Date }}</td>
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.logindetails.first_name }}&nbsp;{{ i.logindetails.last_name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        </div>
     </div>
-  </div>
+    
 </div>
 </div></div>
 </div>
@@ -737,30 +797,26 @@
         
           <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
             <thead class="text-white">
+                <tr>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Comments</b></th>
+                    <th style="color: rgb(244, 244, 244); padding-bottom: 10px;"><b></b></th>
+                    <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Delete</b></th>
+                </tr>
+                <tr>
+                    <td colspan="3" style="border-bottom: 2px solid white; margin-bottom: 10px;"></td>
+                </tr>
+            </thead>
         
-              <tr>
-                <th style="color: rgb(250, 247, 242);"></th>
-                <th style="color: rgb(244, 244, 244);"></th>
-         
-             
-                  
-              </tr>
-          </thead>
-        <tbody style="background-color: rgb(225, 195, 195);width: 200px;">
-          
-          {% for i in est_comments %}
-        <tr style="background-color: black;" class='clickable-row' data-href=""> 
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;margin-left: 10px;">{{ i.comments }}</td>            
-          <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'delete_account_comment' i.id %}"> <span
-            aria-hidden="true">&times;</span></a></td>
-          
-      </tr>
-      <tr></tr>
-    {% endfor %}
-    
-      
-        </tbody>
-          </table>
+            <tbody style="background-color: black; padding-top: 20px;"> <!-- Adjusted padding-top for spacing -->
+              {% for i in est_comments %}
+                    <tr style="background-color: black;height: 40px;">
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.comments }}</td>            
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;"></td>
+                        <td class="text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'delete_item_comment' i.id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
 
     </div>

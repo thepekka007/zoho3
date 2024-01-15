@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <style>
                                     /* form style */
@@ -251,7 +252,7 @@ li{
               <label class="col-sm-2 col-form-label" style="color: aliceblue;">Unit <i class="fa fa-question-circle"></i></label>
               <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
                   <div class="d-flex align-items-center">
-                      <select name="unit" class="form-control" id="unit"  style="background-color: black; color: white;"  >
+                      <select name="unit" class="form-control" id="selunit"  style="background-color: black; color: white;"  >
                 
 
                         {% for i in units %}
@@ -260,7 +261,7 @@ li{
                   
                       </select>
                         
-      <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#history" style="height: 38px; margin-right: 3px;">+</a>
+      <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#unitmodal" style="height: 38px; margin-right: 3px;">+</a>
     </div>
               </div>
           </div>
@@ -332,7 +333,7 @@ li{
                       <div class="input-group-prepend">
                         <div class="input-group-text text-white" style="background-color: black;">INR</div>
                       </div>
-                      <input required type="text" name="sel_price" class="form-control">
+                      <input required type="text" name="sel_price" style="color: #ede4e4;" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -357,7 +358,7 @@ li{
                 <div class="form-group row">
                   <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Description </label>
                   <div class="col-sm-10 col-md-7 col-9 ml-5">
-                    <input  type="text" name="sel_desc" class="form-control " placeholder="Enter Discription">
+                    <input  type="text" style="color: #ede4e4;" name="sel_desc" class="form-control " placeholder="Enter Discription">
                   </div>
                 </div>
                                       
@@ -372,7 +373,7 @@ li{
                       <div class="input-group-prepend">
                         <div class="input-group-text text-white" style="background-color: black;">INR</div>
                       </div>
-                      <input required type="text" class="form-control " name="cost_price" >
+                      <input required type="text" style="color: #ede4e4;" class="form-control " name="cost_price" >
                     </div>
                   </div>
                 </div>
@@ -383,7 +384,7 @@ li{
                       <div class="d-flex align-items-center">
                           <select name="cost_acc" class="form-control " id="myaccount" style="color: #fefefe;background-color: #000;">
                             <option value="">--Select Account--</option>
-                            <optgroup label="Expense">
+                            <optgroup id="expensesel" label="Expense">
                        
                             {% for i in accounts %}
 
@@ -394,7 +395,7 @@ li{
                             {% endif %}
                             {% endfor %}
                           </optgroup>
-                            <optgroup label="Other Expense">
+                            <optgroup id="otherexpensesel" label="Other Expense">
                             {% for i in accounts %}
                             {% if i.account_type == 'Other Expense' %}
                       
@@ -418,7 +419,7 @@ li{
                   <label class="col-sm-2 col-form-label" style="color: aliceblue;">Description</label>
                   <div class="col-sm-10 col-md-7 col-5">
                       <div class="d-flex align-items-center">
-                          <input  type="text" name="pur_desc" class="form-control " placeholder="Enter Discription">
+                          <input  type="text" style="color: #ede4e4;" name="pur_desc" class="form-control " placeholder="Enter Discription">
                       </div>
                   </div>
               </div>
@@ -428,11 +429,11 @@ li{
               <div class="form-group row text-center">
                   <label class="col-sm-2 col-form-label" style="color: aliceblue;">Minimum Stock to maintain :</label>
                   <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center" style="margin-left: -2.2rem;">
-                    <input type="text" name="minimum_stock" class="form-control mx-auto" placeholder="Enter Minimum Stock">
+                    <input type="text" style="color: #ede4e4;" name="minimum_stock" class="form-control mx-auto" placeholder="Enter Minimum Stock">
                   </div>
                 </div>
                 <br>
-                <fieldset class="form-group" >
+                <!-- <fieldset class="form-group" >
                   <div class="row">
                       <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Activation tag  &nbsp;&nbsp;<i
                               class="fa fa-question-circle"></i></label>
@@ -447,7 +448,7 @@ li{
                           </div>
                       </div>
                   </div>
-              </fieldset>
+              </fieldset> -->
               <br><br>
               <div class="row" >
                 <div class="col-md-10">
@@ -473,14 +474,14 @@ li{
                     <div class="form-group row ">
                       <label class="col-sm-2 col-form-label" style="color: aliceblue;">Opening Stock</label>
                       <div class=" col-md-5">
-                        <input  type="number" class="form-control "  name="openstock" value="0">
+                        <input  type="number" style="color: #ede4e4;" class="form-control "  name="openstock" value="0">
                       </div>
                       </div>
                       <br>
                       <div class="form-group row ">
                           <label class="col-sm-2 col-form-label" style="color: aliceblue;">Opening Stock Rate per Unit</label>
                           <div class=" col-md-5">
-                              <input type="number" class="form-control" name="rate"  value="0">
+                              <input type="number" style="color: #ede4e4;" class="form-control" name="rate"  value="0">
                           </div>
                           </div>
                       <!-- <div class="col-md-5  "> -->
@@ -601,40 +602,52 @@ li{
 
    <!-- UNIT SCRIPT -->
    <script>
-    $(document).on("click","#UnitSave2",function(){
-    $.ajax({
+  //   $(document).on("click","#UnitSave2",function(){
+  //   $.ajax({
       
-      type : 'POST',
-      url:"{% url 'add_unit' %}",
+  //     type : 'POST',
+  //     url:"{% url 'add_unit' %}",
   
-      data:{
+  //     data:{
      
-          units : $("#unitName").val(),
+  //         units : $("#unitName").val(),
    
    
-          csrfmiddlewaretoken: '{{ csrf_token }}'
+  //         csrfmiddlewaretoken: '{{ csrf_token }}'
           
-        },
+  //       },
       
-        success: function(response) {debugger
+  //       success: function(response) {
              
-            document.getElementById("unitForm").reset();
-            reloadUnit()
-        },
-    });        
+  //           document.getElementById("unitform").reset();
+  //           // reloadUnit()
+  //       },
+  //   });        
+  // });
+  $(document).on("click", "#UnitSave2", function(event) {
+  event.preventDefault(); // Prevent the default form submission
+
+  $.ajax({
+    type: 'POST',
+    url: "{% url 'add_unit' %}",
+    data: {
+      units: $("#unitName").val(),
+      csrfmiddlewaretoken: '{{ csrf_token }}'
+    },
+    success: function(response) {
+      document.getElementById("unitform").reset();
+      reloadUnit()
+      // Do any other actions you need here without reloading the page
+    },
   });
-  
-  
-  
-  
-  </script>
-  
-  <script>
-  
+});
+
+
+ 
   
   
   function reloadUnit() {
-    debugger
+
   $.ajax({
     url: "{% url 'unit_dropdown' %}",
     type: "GET",
@@ -642,21 +655,22 @@ li{
     data: $(this).serialize(),
     csrfmiddlewaretoken: '{{ csrf_token }}',
   
-    success: function(data) {debugger
-      var dropdown = $('#unit');
-      dropdown.empty();
-      dropdown.append($('<option></option>').text('Select unit'));
+    success: function(data) {
+      var dropdown = $('#selunit');
+        //  dropdown.empty();
+      // dropdown.append($('<option></option>').text('Select Unit'));
       $.each(data, function(key, value) {
           // dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(value[0] + ' ' + value[1]));
           // dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(key));
-          dropdown.append($('<option></option>').attr('value', key).text(value[0] + ' ' + value[1]+ ' ' + value[2]).val(key));
+          dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(key));
+          // dropdown.append($('<option></option>').attr('value', key).text(value[0] + ' ' + value[1]+ ' ' + value[2]).val(key));
       });
-      showTaxSelectors();
+
     },
-    error: function(xhr, status, error) {
-    console.error(xhr.responseText);
-    showTaxSelectors();
-    }
+    // error: function(xhr, status, error) {
+    // console.error(xhr.responseText);
+
+    // }
   });
   }
   </script>
@@ -666,6 +680,7 @@ li{
     <!-- ACCOUNT SCRIPT-->
    <script>
     $(document).on("click","#newaccountsave",function(){
+      event.preventDefault();
     $.ajax({
       
       type : 'POST',
@@ -684,7 +699,7 @@ li{
           
         },
       
-        success: function(response) {debugger
+        success: function(response) {
              
             document.getElementById("newaccount").reset();
             reloadaccount()
@@ -706,7 +721,7 @@ li{
   $.ajax({
     url: "{% url 'account_dropdown' %}",
     type: "GET",
-    dataType: "json",
+    dataType: "json", 
     data: $(this).serialize(),
     csrfmiddlewaretoken: '{{ csrf_token }}',
   
@@ -714,16 +729,17 @@ li{
       var dropdown = $('#myaccount');
       dropdown.empty();
       dropdown.append($('<option></option>').text('Select account'));
+      
       $.each(data, function(key, value) {
           // dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(value[0] + ' ' + value[1]));
           // dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(key));
-          dropdown.append($('<option></option>').attr('value', key).text(value[0] + ' ' + value[1]+ ' ' + value[2]).val(key));
+          dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(key));
       });
-      showTaxSelectors();
+
     },
     error: function(xhr, status, error) {
     console.error(xhr.responseText);
-    showTaxSelectors();
+
     }
   });
   }
@@ -735,7 +751,7 @@ li{
 
        <!-- MODAL HISTORY-->     
 
-   <div class="modal fade" id="history">
+   <div class="modal fade" id="unitmodal">
     <div class="modal-dialog modal-xl">
       <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
         <div class="modal-header" style="background: rgb(32, 35, 37);">
@@ -746,16 +762,16 @@ li{
         <div class="modal-body" style="background: rgb(32, 35, 37);">
           <div class="card p-3 m-3" style="background-color: #000;">
           
-            <form action="" class="form-container" id="unitForm">
+            <form action="" class="needs-validation" novalidate autocomplete="off" id="unitform">
               {% csrf_token %}
      
               <h1 class="text-dark"></h1>
         
-              <label class="text-dark" for="unit"><b>Unit</b></label>
-              <input type="text" class="form-control text-black" placeholder="Enter unit" id="unitName" name="unit_name" required>
+              <label class="text-dark" for="unit"><b>Unit Name</b></label>
+              <input type="text" class="form-control text-white"  placeholder="Enter unit" id="unitName" name="unit_name" required>
               <p class="text-white">eg:KL,PCS,BOX,LTR</p>
         
-              <button type="submit" id="UnitSave2" class="btn add-button text-white">Add</button>
+              <button type="submit"  id="UnitSave2" class="btn submit text-white" style="border-color: #ced4da;">Add</button>
           </form>
   
   
@@ -781,8 +797,8 @@ li{
         <div class="card p-3 m-3" style="background-color: #000;">
         
   
-            <form action="" method="POST" enctype="multipart/form-data" style="color: #000000;" id="newaccount">
-                {% csrf_token%}
+            <form action="" method="post"  style="color: #000000;" id="newaccount">
+              {% csrf_token %}
                 
                 <div class="d-flex align-items-center">
                     <h5 style="font-size: 25px;color: aliceblue;">Create Account</h5>

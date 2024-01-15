@@ -109,7 +109,7 @@ input {
             <div class="row">
               <div class="col-md-3">
             
-                <div id="select1_div" style="display: none;">
+                <div id="select1_div" style="display: block;">
                   <label for="select1">Intra-State TAX</label><br> <br>
                   <select name="intra" class="form-control" id="select1" style="background-color: black; color: white;">
                       <option value="0"  {% if item.intrastate_tax == 0 %}Selected{% endif %} >GST0[0%]</option>
@@ -123,7 +123,7 @@ input {
                 </div>
               </div>
               <div class="col-md-6">
-                <div id="select2_div"  style="display: none;">
+                <div id="select2_div"  style="display: block;">
                   <label for="select2">Inter-State TAX</label> <br><br>
                   <select name="inter" class="form-control " id="select2" style="background-color: black; color: white;">
                     <option value="0"  {% if item.interstate_tax == 0 %}Selected{% endif %}>IGST0[0%]</option>
@@ -274,7 +274,7 @@ input {
                   {% comment %} <input type="hidden" name="trackState" id="trackState" value="" unchecked> {% endcomment %}
                   <label style="color: aliceblue;">
                  
-                    <input type="checkbox" name="trackstate" value="trackstate" class=" "  onclick="toggleFormFields()">
+                    <input type="checkbox" name="trackstate" value="trackstate" class=" "  onclick="toggleFormFields()" checked>
                     Track Inventory for this item
                   </label>   <br>   <br>
                   <div id="formFields" > 

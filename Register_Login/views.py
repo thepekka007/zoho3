@@ -337,7 +337,44 @@ def company_registration_save2(request,pk):
 
     for account in account_info:
           if not Chart_of_Accounts.objects.filter(company = com,account_name=account['account_name']).exists():
-                new_account = Chart_of_Accounts(company=account['company_id'],login_details=account['login_details'],account_name=account['account_name'],account_type=account['account_type'],account_code=account['account_code'],description=account['description'],Create_status=account['create_status'],status=account['status'])
+                new_account = Chart_of_Accounts(company=account['company_id'],login_details=account['login_details'],account_name=account['account_name'],account_type=account['account_type'],account_code=account['account_code'],account_description=account['description'],Create_status=account['create_status'],status=account['status'])
+                if account['account_type'] == 'Other Assets':
+                    new_account.description = 'Track special assets like goodwill and other intangible assets'
+                if account['account_type'] == 'Other Current Assets':
+                    new_account.description = 'Any short term asset that can be converted into cash or cash equivalents easily Prepaid expenses Stocks and Mutual Funds'
+                if account['account_type'] == 'Cash':
+                    new_account.description = 'To keep track of cash and other cash equivalents like petty cash, undeposited funds, etc., use an organized accounting system  financial software'
+                if account['account_type'] == 'Bank':
+                    new_account.description = 'To keep track of bank accounts like Savings, Checking, and Money Market accounts.'
+                if account['account_type'] == 'Fixed Asset':
+                    new_account.description = 'Any long-term investment or asset that cannot be easily converted into cash includes: Land and Buildings, Plant, Machinery, and Equipment, Computers, Furniture.'
+                if account['account_type'] == 'Stock':
+                    new_account.description = 'To keep track of your inventory assets.'
+                if account['account_type'] == 'Payment Clearing':
+                    new_account.description = 'To keep track of funds moving in and out via payment processors like Stripe, PayPal, etc.'
+                if account['account_type'] == 'Other Liability':
+                    new_account.description = 'Obligation of an entity arising from past transactions or events which would require repayment.Tax to be paid Loan to be Repaid Accounts Payableetc.'
+                if account['account_type'] == 'Other Current Liability':
+                    new_account.description = 'Any short term liability like: Customer Deposits Tax Payable'
+                if account['account_type'] == 'Credit Card':
+                    new_account.description = 'Create a trail of all your credit card transactions by creating a credit card account.'
+                if account['account_type'] == 'Long Term Liability':
+                    new_account.description = 'Liabilities that mature after a minimum period of one year like: Notes Payable Debentures Long Term Loans '
+                if account['account_type'] == 'Overseas Tax Payable':
+                    new_account.description = 'Track your taxes in this account if your business sells digital services to foreign customers.'
+                if account['account_type'] == 'Equity':
+                    new_account.description = 'Owners or stakeholders interest on the assets of the business after deducting all the liabilities.'
+                if account['account_type'] == 'Income':
+                    new_account.description = 'Income or Revenue earned from normal business activities like sale of goods and services to customers.'
+                if account['account_type'] == 'Other Income':
+                    new_account.description = 'Income or revenue earned from activities not directly related to your business like : Interest Earned Dividend Earned'
+                if account['account_type'] == 'Expense':
+                    new_account.description = 'Reflects expenses incurred for running normal business operations, such as : Advertisements and Marketing Business Travel Expenses License Fees Utility Expenses'
+                if account['account_type'] == 'Cost Of Goods Sold':
+                    new_account.description = 'This indicates the direct costs attributable to the production of the goods sold by a company such as: Material and Labor costs Cost of obtaining raw materials'
+                if account['account_type'] == 'Other Expense':
+                    new_account.description = 'Track miscellaneous expenses incurred for activities other than primary business operations or create additional accounts to track default expenses like insurance or contribution towards charity.'
+                          
                 new_account.save()
    
         # Re  # Save the instance to the database
