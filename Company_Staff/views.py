@@ -191,11 +191,11 @@ def staff_profile(request):
 
 
 
-    # tinto view items
+    #--------------------------------------------------- TINTO VIEW ITEMS START-------------------------------------------
 
 # items llist
     
-def items_list(request):
+def items_list(request):                                                                #new by tinto mt
      if 'login_id' in request.session:
         login_id = request.session['login_id']
         if 'login_id' not in request.session:
@@ -226,7 +226,7 @@ def items_list(request):
    
 # create Items
 
-def new_items(request):
+def new_items(request):                                                                #new by tinto mt
     if 'login_id' in request.session:
         login_id = request.session['login_id']
         if 'login_id' not in request.session:
@@ -260,7 +260,7 @@ def new_items(request):
     
             return render(request, 'zohomodules/items/newitem.html',context)
 # create Items
-def create_item(request):
+def create_item(request):                                                                #new by tinto mt
     
     login_id = request.session['login_id']
     if 'login_id' not in request.session:
@@ -349,46 +349,42 @@ def create_item(request):
     return redirect('items_list')
 
 # create unit
-def add_unit(request):
+def add_unit(request):                                                                #new by tinto mt (item)
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
-    if log_user.user_type == 'Company':
-        company_id = request.session['login_id']
-        if request.method == 'POST':
-            c = CompanyDetails.objects.get(login_details=company_id)
-            unit_name = request.POST['units']
-            unit = Unit(unit_name=unit_name,company=c)  
-            unit.save()  
-            return HttpResponse({"message": "success"})
-            # unit_id = unit.id  
-        #     response_data = {
-        #     "message": "success",
-        #     "unit_id":unit_id,
-       
-        # }
 
-        return HttpResponse({"message": "success"})
-      
+    if log_user.user_type == 'Company':
+        if request.method == 'POST':
+            c = CompanyDetails.objects.get(login_details=login_id)
+            unit_name = request.POST['units']
+            
+            if Unit.objects.filter(unit_name=unit_name, company=c).exists():
+                return JsonResponse({"message": "error"})
+            else:
+                unit = Unit(unit_name=unit_name, company=c)  
+                unit.save()  
+                return JsonResponse({"message": "success"})
 
     elif log_user.user_type == 'Staff':
-        staff_id = request.session['login_id']
-        if request.method=='POST':
-         
-            staff = LoginDetails.objects.get(id=staff_id)
+        if request.method == 'POST':
+            staff = LoginDetails.objects.get(id=login_id)
             sf = StaffDetails.objects.get(login_details=staff)
-            c=sf.company
-            
+            c = sf.company
             unit_name = request.POST['units']
-            unit = Unit(unit_name=unit_name,company=c)  
-            unit.save()  
-             
-            return HttpResponse({"message": "success"})
-        return HttpResponse({"message": "success"})
-        
-    return HttpResponse({"message": "success"})
+            
+            if Unit.objects.filter(unit_name=unit_name, company=c).exists():
+                return JsonResponse({"message": "error"})
+            else:
+                unit = Unit(unit_name=unit_name, company=c)  
+                unit.save()  
+                return JsonResponse({"message": "success"})
+
+    return JsonResponse({"message": "success"})
 # create unit
 
-def unit_dropdown(request):
+
+    
+def unit_dropdown(request):                                                                 #new by tinto mt (item)
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
     if log_user.user_type == 'Company':
@@ -412,14 +408,8 @@ def unit_dropdown(request):
              
 
 
-    # options = {}
-    # option_objects = Unit.objects.all()
-    # for option in option_objects:
-    #     unit_name=option.unit_name
-    #     options[option.id] = [unit_name,f"{unit_name}"]
-    # return JsonResponse(options)
 
-def add_account(request):
+def add_account(request):                                                                #new by tinto mt (item)
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
     if log_user.user_type == 'Company':
@@ -443,26 +433,25 @@ def add_account(request):
     
             a.Create_status="active"
             ac_name=request.POST.get("account_name",None)
-            if Chart_of_Accounts.objects.filter(account_name=ac_name,company=c).exists():
-                error='yes'
-                messages.error(request,'Account with same name exsits')
-                return redirect('addchartofaccounts')
+            if Chart_of_Accounts.objects.filter(account_name=ac_name, company=c).exists():
+                return JsonResponse({"message": "error"})
             else:
+          
                 a.save()
                 t=Chart_of_Accounts.objects.get(id=a.id)
                 b.chart_of_accounts=t
                 b.save()
                 acc_id = a.id  
                 acc_name=a.account_name
-            response_data = {
-            "message": "success",
-            "acc_id":acc_id,
-            "acc_name":acc_name,
-       
-        }
+                response_data = {
+                "message": "success",
+                "acc_id":acc_id,
+                "acc_name":acc_name,
+        
+                         }
 
-        return JsonResponse(response_data)
-      
+                return JsonResponse(response_data)
+        
 
     elif log_user.user_type == 'Staff':
         staff_id = request.session['login_id']
@@ -485,40 +474,47 @@ def add_account(request):
             a.description = request.POST.get("description",None)
     
             a.Create_status="active"
-            a.save()
-            t=Chart_of_Accounts.objects.get(id=a.id)
-            b.chart_of_accounts=t
-            b.save() 
-            acc_id = a.id  
-            acc_name=a.account_name
-            response_data = {
-            "message": "success",
-            "acc_id":acc_id,
-            "acc_name":acc_name,
-       
-        }
-       
-            return JsonResponse(response_data)
+            ac_name=request.POST.get("account_name",None)
+            if Chart_of_Accounts.objects.filter(account_name=ac_name, company=c).exists():
+                return JsonResponse({"message": "error"})
+            else:
+          
+                a.save()
+                t=Chart_of_Accounts.objects.get(id=a.id)
+                b.chart_of_accounts=t
+                b.save()
+                acc_id = a.id  
+                acc_name=a.account_name
+                response_data = {
+                "message": "success",
+                "acc_id":acc_id,
+                "acc_name":acc_name,
+        
+                         }
+
+                return JsonResponse(response_data)
+        
+      
         
     return redirect('newitems')
 
-def account_dropdown(request):
+def account_dropdown(request):                                                                #new by tinto mt (item)
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
     if log_user.user_type == 'Company':
             dash_details = CompanyDetails.objects.get(login_details=log_user)
             options = {}
-            option_objects = Chart_of_Accounts.objects.filter(Q(company=dash_details) & (Q(account_type='Expense') | Q(account_type='Other Expense')))
+            option_objects = Chart_of_Accounts.objects.filter(Q(company=dash_details) & (Q(account_type='Expense') | Q(account_type='Other Expense') | Q(account_type='Cost Of Goods Sold')))
             for option in option_objects:
                 account_name=option.account_name
                 account_type=option.account_type
-                options[option.id] = [account_name,account_type,f"{account_name}"]
+                options[option.id] = [account_name,f"{account_name}"]
             return JsonResponse(options)
     elif log_user.user_type == 'Staff':
             dash_details = StaffDetails.objects.get(login_details=log_user)
             options = {}
        
-            option_objects = Chart_of_Accounts.objects.filter(Q(company=dash_details.company) & (Q(account_type='Expense') | Q(account_type='Other Expense')))
+            option_objects = Chart_of_Accounts.objects.filter(Q(company=dash_details.company) & (Q(account_type='Expense') | Q(account_type='Other Expense') | Q(account_type='Cost Of Goods Sold')))
             for option in option_objects:
                 account_name=option.account_name
                 options[option.id] = [account_name,f"{account_name}"]
@@ -527,7 +523,7 @@ def account_dropdown(request):
 
     
     
-def itemsoverview(request,pk):
+def itemsoverview(request,pk):                                                                 #new by tinto mt
 
     if 'login_id' in request.session:
         login_id = request.session['login_id']
@@ -583,7 +579,7 @@ def itemsoverview(request,pk):
     return render(request, 'zohomodules/items/itemsoverview.html')
 
 
-def edititems(request, pr):
+def edititems(request, pr):                                                                #new by tinto mt
     if 'login_id' in request.session:
         login_id = request.session['login_id']
         if 'login_id' not in request.session:
@@ -714,7 +710,7 @@ def edititems(request, pr):
  
         return render(request, 'zohomodules/items/edititems.html', context)
    
-def item_status_edit(request, pv):
+def item_status_edit(request, pv):                                                                #new by tinto mt
     
     selitem = Items.objects.get(id=pv)
 
@@ -730,7 +726,7 @@ def item_status_edit(request, pv):
     return redirect('itemsoverview',pv)
 
 
-def shareItemToEmail(request,pt):
+def shareItemToEmail(request,pt):                                                                #new by tinto mt
     if request.user: 
         try:
             if request.method == 'POST':
@@ -769,20 +765,20 @@ def shareItemToEmail(request,pt):
             messages.error(request, f'{e}')
             return redirect(itemsoverview,pt)   
         
-def deleteitem(request,pl):
+def deleteitem(request,pl):                                                                #new by tinto mt
     items=Items.objects.filter(id=pl)
     items.delete()
     
     return redirect(items_list)
 
-def delete_item_comment(request,ph):
+def delete_item_comment(request,ph):                                                                #new by tinto mt
     items=Items_comments.objects.filter(id=ph)
     items.delete()
     
     return redirect(items_list)
 
 
-def add_item_comment(request,pc):
+def add_item_comment(request,pc):                                                                #new by tinto mt
 
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
@@ -827,7 +823,7 @@ def add_item_comment(request,pc):
 
 
          
-def downloadItemSampleImportFile(request):
+def downloadItemSampleImportFile(request):                                                                  #new by tinto mt
     estimate_table_data = [['No.','ITEM TYPE','ITEM NAME','HSN','TAX REFERENCE','INTRASTATE TAX','INTERSTATE TAX','SELLING PRICE','SALES ACCOUNT','SALES DESCRIPTION','PURCHASE PRICE','PURCHASE ACCOUNT','PURCHASE DESCRIPTION','MINIMUM STOCK TO MAINTAIN','ACTIVATION TAG','OPENING STOCK','CURRENT STOCK','OPENING STOCK PER UNIT']]      
     wb = Workbook()
     sheet1 = wb.active
@@ -849,7 +845,7 @@ def downloadItemSampleImportFile(request):
 
 
 
-def import_item(request):
+def import_item(request):                                                                #new by tinto mt
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
 
@@ -924,7 +920,7 @@ def import_item(request):
         return redirect("items_list")
 
 
-def item_view_sort_by_name(request, pk):
+def item_view_sort_by_name(request, pk):                                                                #new by tinto mt
     # Retrieve all items and convert them to a list of dictionaries
     items = list(Items.objects.all().values())
 
@@ -948,7 +944,8 @@ def item_view_sort_by_name(request, pk):
 
     # Render the template with the sorted items and other relevant data
     return render(request, 'zohomodules/items/itemsoverview.html', {'items': sorted_items, 'selitem': selitem, 'stock_value': stock_value, 'latest_item_id': filtered_data, 'est_comments': est_comments})
-def item_view_sort_by_hsn(request, pk):
+
+def item_view_sort_by_hsn(request, pk):                                                                #new by tinto mt
     # Retrieve all items and convert them to a list of dictionaries
     items = list(Items.objects.all().values())
 
@@ -973,7 +970,7 @@ def item_view_sort_by_hsn(request, pk):
     # Render the template with the sorted items and other relevant data
     return render(request, 'zohomodules/items/itemsoverview.html', {'items': sorted_items, 'selitem': selitem, 'stock_value': stock_value, 'latest_item_id': filtered_data, 'est_comments': est_comments})
 
-def filter_item_view_Active(request,pk):
+def filter_item_view_Active(request,pk):                                                                #new by tinto mt
     items=Items.objects.filter(activation_tag='Active')  
     selitem=Items.objects.get(id=pk)
     est_comments=Items_comments.objects.filter(Items=pk)
@@ -982,7 +979,8 @@ def filter_item_view_Active(request,pk):
     filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
 
     return render(request, 'zohomodules/items/itemsoverview.html',{'items':items,'selitem':selitem,'stock_value':stock_value,'latest_item_id':filtered_data,'est_comments':est_comments})
-def filter_item_view_inActive(request,pk):
+
+def filter_item_view_inActive(request,pk):                                                                #new by tinto mt
     items=Items.objects.filter(activation_tag='inactive')  
     selitem=Items.objects.get(id=pk)
     est_comments=Items_comments.objects.filter(Items=pk)
@@ -993,7 +991,11 @@ def filter_item_view_inActive(request,pk):
     return render(request, 'zohomodules/items/itemsoverview.html',{'items':items,'selitem':selitem,'stock_value':stock_value,'latest_item_id':filtered_data,'est_comments':est_comments})
 
     
-def addchartofaccounts(request):
+    #--------------------------------------------------- TINTO VIEW ITEMS END-------------------------------------------
+
+
+        #--------------------------------------------------- TINTO VIEW CHART OF ACCOUNTS START-------------------------------------------
+def addchartofaccounts(request):                                                                #new by tinto mt
         if 'login_id' in request.session:
             login_id = request.session['login_id']
         if 'login_id' not in request.session:
@@ -1028,7 +1030,7 @@ def addchartofaccounts(request):
             return render(request,'zohomodules/chartofaccounts/addchartofaccounts.html',context)
 
 
-def chartofaccounts(request):
+def chartofaccounts(request):                                                                #new by tinto mt
      if 'login_id' in request.session:
         log_id = request.session['login_id']
         if 'login_id' not in request.session:
@@ -1056,7 +1058,7 @@ def chartofaccounts(request):
             return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
   
 
-def create_account(request):
+def create_account(request):                                                                #new by tinto mt
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
     if log_user.user_type == 'Company':
@@ -1167,7 +1169,7 @@ def create_account(request):
 
     return redirect('addchartofaccounts')
 
-def chartofaccountsoverview(request,pk):
+def chartofaccountsoverview(request,pk):                                                                #new by tinto mt
        if 'login_id' in request.session:
         login_id = request.session['login_id']
         if 'login_id' not in request.session:
@@ -1227,7 +1229,7 @@ def chartofaccountsoverview(request,pk):
 
 from django.shortcuts import render, redirect
 
-def editchartofaccounts(request, pr):
+def editchartofaccounts(request, pr):                                                                #new by tinto mt
     # Retrieve the chart of accounts entry
     
 
@@ -1326,14 +1328,14 @@ def editchartofaccounts(request, pr):
             return redirect('chartofaccountsoverview', pr)
         return render(request, 'zohomodules/chartofaccounts/editchartofaccounts.html', context)
 
-def deleteaccount(request,pl):
+def deleteaccount(request,pl):                                                                #new by tinto mt
     acc=Chart_of_Accounts.objects.filter(id=pl)
     acc.delete()
     
     return redirect(chartofaccounts)
 
 
-def acc_status_edit(request, pv):
+def acc_status_edit(request, pv):                                                                #new by tinto mt
     
     selacc = Chart_of_Accounts.objects.get(id=pv)
 
@@ -1349,7 +1351,7 @@ def acc_status_edit(request, pv):
     return redirect('chartofaccountsoverview',pv)
 
 
-def add_account_comment(request,pc):
+def add_account_comment(request,pc):                                                                #new by tinto mt
 
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
@@ -1389,7 +1391,7 @@ def add_account_comment(request,pc):
             return redirect('chartofaccountsoverview',pc)
 
 
-def delete_account_comment(request,ph):
+def delete_account_comment(request,ph):                                                                #new by tinto mt
     acc=chart_of_accounts_comments.objects.filter(id=ph)
     acc.delete()
     
@@ -1397,7 +1399,7 @@ def delete_account_comment(request,ph):
 
 from django.db.models import Max
 
-def account_view_sort_by_name(request, pk):
+def account_view_sort_by_name(request, pk):                                                                #new by tinto mt
     # Retrieve all items and convert them to a list of dictionaries
     acc = Chart_of_Accounts.objects.all().order_by('account_name')
     selacc = Chart_of_Accounts.objects.get(id=pk)
@@ -1409,7 +1411,7 @@ def account_view_sort_by_name(request, pk):
     return render(request, 'zohomodules/chartofaccounts/chartofaccountsoverview.html', {'acc': acc, 'selacc': selacc, 'latest_item_id': filtered_data, 'est_comments': est_comments})
 
 
-def shareaccountToEmail(request,pt):
+def shareaccountToEmail(request,pt):                                                                #new by tinto mt
     if request.user: 
         try:
             if request.method == 'POST':
@@ -1447,3 +1449,5 @@ def shareaccountToEmail(request,pt):
             print(e)
             messages.error(request, f'{e}')
             return redirect(chartofaccountsoverview,pt) 
+        
+        #--------------------------------------------------- TINTO VIEW CHART OF ACCOUNTS END-------------------------------------------

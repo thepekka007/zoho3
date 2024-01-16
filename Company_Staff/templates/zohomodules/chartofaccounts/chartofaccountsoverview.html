@@ -1,3 +1,4 @@
+                                                <!-- CREATEED BY TINTO MT -->
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
@@ -279,7 +280,13 @@
           
           <!-- Delete Button -->
           <a href="{% url 'deleteaccount' selacc.id %}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"></a>
-          
+          <div class="dropdown btn-margin">
+            <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning" data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"></a>
+            <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;">
+                <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i class="fa-solid fa fa-plus"></i>Add</a>
+                <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i class="fas fa-list"></i>&nbsp;View List</a>
+            </div>
+        </div>
           <!-- Share Button -->
           <!-- <div class="dropdown btn-margin">
               <a class="btn text-center btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button">
@@ -363,7 +370,7 @@
 {% endif %}
   
     
-    
+{% if selacc.account_description is not none and selacc.account_description != '' %}
         <div class="row mt-3">
           <div class="col-5"><label class="text-black" for="">Description :</label></div>
           <div class="col-7">
@@ -371,7 +378,7 @@
                 {{selacc.account_description}}</p>
           </div>
         </div>
-       
+       {% endif %}
       
         <div class="row mt-3">
           <div class="col-5"><label class="text-dark" for=""></label></div>
@@ -454,13 +461,7 @@
             </a>
             
             <!-- Comment Button -->
-            <div class="dropdown btn-margin">
-                <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning" data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"></a>
-                <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;">
-                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i class="fa-solid fa fa-plus"></i>Add</a>
-                    <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i class="fas fa-list"></i>&nbsp;View List</a>
-                </div>
-            </div>
+         
             
             <!-- History Button -->
             <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" data-toggle="modal" data-target="#history">History</a>

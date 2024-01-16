@@ -7,12 +7,15 @@ from Register_Login.models import *
 
 
     
-
+# TINTO -----ITEM ----START
 
 class Unit(models.Model):
-    # user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
+ 
     unit_name=models.CharField(max_length=255)
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
+
+
+    
 
 class Items(models.Model):
    
@@ -37,7 +40,8 @@ class Items(models.Model):
     activation_tag=models.CharField(max_length=255,default='active')
     inventory_account=models.CharField(max_length=255,null=True)
 
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateTimeField(auto_now_add=True)                                       
+
     opening_stock=models.IntegerField(blank=True,null=True,default=0)
     current_stock=models.IntegerField(blank=True,null=True,default=0)
     opening_stock_per_unit=models.IntegerField(blank=True,null=True,)
@@ -53,18 +57,25 @@ class Item_Transaction_History(models.Model):
     Date=models.DateField(null=True)
     action=models.CharField(max_length=255,default='Created')
 
-class Items_comments(models.Model):                                              # new model by tinto
+class Items_comments(models.Model):                                              
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
     logindetails=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
     Items=models.ForeignKey(Items,on_delete=models.CASCADE)
     comments = models.CharField(max_length=255,null=True,blank=True)
 
+
+# TINTO -----ITEM ----END
+    
+# TINTO -----CHART OF ACCOUNNTS ----START
+    
 class Chart_of_Accounts(models.Model):
-    # user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+  
     account_type = models.CharField(max_length=255,null=True,blank=True)
     account_name = models.CharField(max_length=255,null=True,blank=True)
-    account_description = models.CharField(max_length=255,null=True,blank=True)                         # created by tinto new
-    account_number = models.CharField(max_length=255,null=True,blank=True)                                          # created by tinto new
+
+    account_description = models.CharField(max_length=255,null=True,blank=True)
+
+    account_number = models.CharField(max_length=255,null=True,blank=True)
     
     account_code = models.CharField(max_length=255,null=True,blank=True)
     description = models.CharField(max_length=255,null=True,blank=True)
@@ -82,9 +93,10 @@ class Chart_of_Accounts_History(models.Model):
 
 
 
-class chart_of_accounts_comments(models.Model):                                              # new model by tinto
+class chart_of_accounts_comments(models.Model):                                         
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
     logindetails=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
     chart_of_accounts=models.ForeignKey(Chart_of_Accounts,on_delete=models.CASCADE)
     comments = models.CharField(max_length=255,null=True,blank=True)
     
+# TINTO -----CHART OF ACCOUNNTS ----END

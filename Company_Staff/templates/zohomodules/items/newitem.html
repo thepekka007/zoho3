@@ -1,7 +1,17 @@
+                                                <!-- CREATEED BY TINTO MT -->
+
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ez8n5b/9F3JpKCEY6zIp+Hg7IbU8d7Q5ST78iEiRaP2mNPjkDps8I+1i0fblDOoh" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
 
 <style>
                                     /* form style */
@@ -15,7 +25,7 @@ input {
     color: white;
 }
 </style>
-<style>
+<style>         /* SEARCH STYLE */
   /* Style the Select2 search input */
   .select2-search__field {
     width: 100%; /* Set the width as needed */
@@ -28,7 +38,7 @@ input {
 /*   
   .select2-container .select2-selection--single{box-sizing:border-box;cursor:pointer;display:block;height:35px;user-select:none;color: black;
     -webkit-user-select:none;background-color: #fff;} */
-.select2-container .select2-selection--single .select2-selection__rendered{display:block;padding-left:20px;padding-right:20px; height: 25px;color: rgb(252, 252, 252);background-color: #000000;border-radius: 2px;box-shadow: #fcfcfc;border-color: #f2e8e8;}
+.select2-container .select2-selection--single .select2-selection__rendered{border: 1px solid white; border-radius: 6px; display:block;padding-left:20px;padding-right:20px; height: 35px;color: rgb(252, 252, 252);background-color: #000000;border-radius: 2px;box-shadow: #fcfcfc;border-color: #f2e8e8;}
     .select2-dropdown{background-color:rgb(0, 0, 0);color: rgb(253, 253, 253);position:absolute;left:-100000px;width:100%;z-index:1051;color: rgb(255, 255, 255);border-color: #f2e8e8;}
     .select2-results{display:block;border: #ced4da;border-color: #f2e8e8;}
     .select2-results__options{list-style:none;margin:0;padding:0;color: rgb(255, 255, 255);background-color: #030303;padding-left: 20px;border-color: #f2e8e8;} 
@@ -40,10 +50,10 @@ input {
 /* .select2-hidden-accessible{background-color: #fff;border:0 !important;clip:rect(0 0 0 0) !important;-webkit-clip-path:inset(50%) !important;clip-path:inset(50%) !important;height:1px !important;overflow:hidden !important;padding:0 !important;position:absolute !important;width:1px !important;white-space:nowrap !important;color: black}  */
 .select2-container--default .select2-selection--single:focus, .select2-container--default .select2-selection--single .select2-search__field:focus, .typeahead:focus, .tt-query:focus, .tt-hint:focus {
     border: 1px solid rgba(250, 250, 250, 0.5);
-    background-color: #f2e8e8;
+    background-color: #d3bcbc;
 }
 </style>
-<style>
+<style> /* MODAL STYLE */
   .modal {
  z-index: 9999;
  overflow: scroll;
@@ -58,7 +68,7 @@ input {
 }
 
 </style>
-<style>
+<style>   /* ACCOUNT STYLE */
   /*.modal {
     z-index: 9999;
     overflow: scroll;
@@ -189,14 +199,6 @@ li{
   }
 </style>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ez8n5b/9F3JpKCEY6zIp+Hg7IbU8d7Q5ST78iEiRaP2mNPjkDps8I+1i0fblDOoh" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
 
 
 
@@ -208,15 +210,13 @@ li{
 
         <!-- ADD ITEM FORM -->
         <div style="background-color: rgb(0, 0, 0); border-radius: 10px; width:80% ;margin-left: 18%;">
-          
-       
           <div style="margin-top: 90px;">
             <h4 id="selected_customer_heading" class="text" style="color: white; margin-left: 2%; padding-top: 20px;"><b>NEW ITEM</b></h4>
           </div>
        <br>
-       
-     
       <div class="container-fluid"> 
+
+
         <form action="{% url 'create_item'%}" method="POST" id="add" style="padding-left: 20px;">
           {% csrf_token%}
           <br>  
@@ -240,7 +240,6 @@ li{
               </div>
           </fieldset>
           <br>
-          
           <div class="form-group row">
               <label  class="col-sm-2 col-form-label " style="color: aliceblue;">Name *</label>
               <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
@@ -252,24 +251,27 @@ li{
               <label class="col-sm-2 col-form-label" style="color: aliceblue;">Unit <i class="fa fa-question-circle"></i></label>
               <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
                   <div class="d-flex align-items-center">
-                      <select name="unit" class="form-control" id="selunit"  style="background-color: black; color: white;"  >
-                
-
+                      <select name="unit" class="form-control" id="selunit"  style="background-color: black; color: white;border-radius: 5px;"  >
                         {% for i in units %}
                           <option value={{i.id}}>{{i.unit_name}}</option>
                         {% endfor %}
-                  
                       </select>
-                        
+                      <script>
+                        $(document).ready(function() {
+                          // Initialize select2
+                          $('#selunit').select2();
+                        });
+                        </script>                        
+                         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
       <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#unitmodal" style="height: 38px; margin-right: 3px;">+</a>
-    </div>
+                  </div>
               </div>
           </div>
           <br>
           <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="color: aliceblue;">HSN Code</label>
               <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
-                  <input required type="text" class="form-control" name="hsn" id="myInputField" style="color: aliceblue;" placeholder="Enter six digit HSN code" oninput="validateInput()">
+                  <input required type="text" class="form-control" name="hsn" required id="myInputField" style="color: aliceblue;" placeholder="Enter six digit HSN code" oninput="validateInput()">
                   <div id="validationResult"></div>
               </div>
           </div>
@@ -338,6 +340,7 @@ li{
                   </div>
                 </div>
                 <br>
+                <br>
                 <div class="form-group row">
                   <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Account *</label>
                   <div class="col-sm-10 col-md-7 col-9 ml-5">
@@ -354,7 +357,7 @@ li{
                   </div>
                 </div>
                 <br>
-
+                <br>
                 <div class="form-group row">
                   <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Description </label>
                   <div class="col-sm-10 col-md-7 col-9 ml-5">
@@ -379,6 +382,7 @@ li{
                 </div>
                 <br>
                 <div class="form-group row in">
+        
                   <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account*</label>
                   <div class="col-sm-10 col-md-7 col-5">
                       <div class="d-flex align-items-center">
@@ -395,6 +399,15 @@ li{
                             {% endif %}
                             {% endfor %}
                           </optgroup>
+                          <optgroup id="costofgoods" label="Cost Of Goods Sold">
+                            {% for i in accounts %}
+                            {% if i.account_type == 'Cost Of Goods Sold' %}
+                      
+                              <option value="i.account_name">{{i.account_name}}</option>
+                              
+                              {% endif %}
+                              {% endfor %}
+                            </optgroup>
                             <optgroup id="otherexpensesel" label="Other Expense">
                             {% for i in accounts %}
                             {% if i.account_type == 'Other Expense' %}
@@ -408,6 +421,13 @@ li{
                            
                         
                           </select>
+                          <script>
+                            $(document).ready(function() {
+                              // Initialize select2
+                              $('#myaccount').select2();
+                            });
+                            </script>                        
+                             <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
                           <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#account" style="height: 38px; margin-right: 3px;">+</a>
    
                       </div>
@@ -425,31 +445,16 @@ li{
               </div>
               </div>
               </div>
-              <br>
+              <br>     <br>
               <div class="form-group row text-center">
                   <label class="col-sm-2 col-form-label" style="color: aliceblue;">Minimum Stock to maintain :</label>
                   <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center" style="margin-left: -2.2rem;">
-                    <input type="text" style="color: #ede4e4;" name="minimum_stock" class="form-control mx-auto" placeholder="Enter Minimum Stock">
+                    <input type="number" style="color: #ede4e4;" name="minimum_stock" class="form-control mx-auto" placeholder="Enter Minimum Stock">
                   </div>
                 </div>
                 <br>
-                <!-- <fieldset class="form-group" >
-                  <div class="row">
-                      <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Activation tag  &nbsp;&nbsp;<i
-                              class="fa fa-question-circle"></i></label>
-                      <div class="col-12 col-md-10">
-                          <div class="form-check form-check-inline">
-                              <input required class="form-check-input" type="radio" name="status" id="gridRadios1" value="Active"  style="margin-left:5px;" >
-                              <label class="form-check-label text-white" for="gridRadios1">Activate</label>
-                          </div> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
-                          <div class="form-check form-check-inline ml-md-3">
-                              <input required class="form-check-input" type="radio" name="status" id="gridRadios2" value="Inactive" style="margin-left:50px;">
-                              <label class="form-check-label text-white" for="gridRadios2">Non-Activate</label>
-                          </div>
-                      </div>
-                  </div>
-              </fieldset> -->
-              <br><br>
+               
+              <br><br>     
               <div class="row" >
                 <div class="col-md-10">
                   {% comment %} <label style="color: aliceblue;"><input type="checkbox" value="trackstate" name="trackstate" onclick="toggleForm()" style="display: none;">
@@ -484,10 +489,6 @@ li{
                               <input type="number" style="color: #ede4e4;" class="form-control" name="rate"  value="0">
                           </div>
                           </div>
-                      <!-- <div class="col-md-5  "> -->
-                     
-                    
-                    
 
                     </div>
                   </div>
@@ -522,7 +523,7 @@ li{
 </section>
 </div>
 </body>
-                                            <!-- ADD ITEM FORM  RNS-->
+                                            <!-- ADD ITEM FORM  END-->
 
 
                                               <!-- SCRIPTS -->
@@ -602,29 +603,8 @@ li{
 
    <!-- UNIT SCRIPT -->
    <script>
-  //   $(document).on("click","#UnitSave2",function(){
-  //   $.ajax({
-      
-  //     type : 'POST',
-  //     url:"{% url 'add_unit' %}",
   
-  //     data:{
-     
-  //         units : $("#unitName").val(),
-   
-   
-  //         csrfmiddlewaretoken: '{{ csrf_token }}'
-          
-  //       },
-      
-  //       success: function(response) {
-             
-  //           document.getElementById("unitform").reset();
-  //           // reloadUnit()
-  //       },
-  //   });        
-  // });
-  $(document).on("click", "#UnitSave2", function(event) {
+$(document).on("click", "#UnitSave2", function(event) {
   event.preventDefault(); // Prevent the default form submission
 
   $.ajax({
@@ -635,12 +615,16 @@ li{
       csrfmiddlewaretoken: '{{ csrf_token }}'
     },
     success: function(response) {
-      document.getElementById("unitform").reset();
-      reloadUnit()
-      // Do any other actions you need here without reloading the page
+      if (response.message === 'success') {
+        document.getElementById("unitform").reset();
+        reloadUnit();
+      } else {
+        $("#error-message-container").text("Unit with the same name exists");
+      }
     },
   });
 });
+
 
 
  
@@ -657,20 +641,15 @@ li{
   
     success: function(data) {
       var dropdown = $('#selunit');
-        //  dropdown.empty();
-      // dropdown.append($('<option></option>').text('Select Unit'));
+
       $.each(data, function(key, value) {
-          // dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(value[0] + ' ' + value[1]));
-          // dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(key));
+   
           dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(key));
-          // dropdown.append($('<option></option>').attr('value', key).text(value[0] + ' ' + value[1]+ ' ' + value[2]).val(key));
+
       });
 
     },
-    // error: function(xhr, status, error) {
-    // console.error(xhr.responseText);
-
-    // }
+ 
   });
   }
   </script>
@@ -698,12 +677,15 @@ li{
           csrfmiddlewaretoken: '{{ csrf_token }}'
           
         },
-      
         success: function(response) {
-             
-            document.getElementById("newaccount").reset();
+      if (response.message === 'success') {
+        document.getElementById("newaccount").reset();
             reloadaccount()
-        },
+      } else {
+        $("#error-message-container2").text("Account with the same name exists");
+      }
+    },
+
     });        
   });
   
@@ -712,6 +694,7 @@ li{
   
   </script>
   
+   
   <script>
   
   
@@ -731,8 +714,7 @@ li{
       dropdown.append($('<option></option>').text('Select account'));
       
       $.each(data, function(key, value) {
-          // dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(value[0] + ' ' + value[1]));
-          // dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(key));
+ 
           dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(key));
       });
 
@@ -749,7 +731,7 @@ li{
    
                                                       <!-- MODALS -->
 
-       <!-- MODAL HISTORY-->     
+       <!-- MODAL UNIT-->     
 
    <div class="modal fade" id="unitmodal">
     <div class="modal-dialog modal-xl">
@@ -762,6 +744,7 @@ li{
         <div class="modal-body" style="background: rgb(32, 35, 37);">
           <div class="card p-3 m-3" style="background-color: #000;">
           
+       <div id="error-message-container" style="color: chocolate;"></div>
             <form action="" class="needs-validation" novalidate autocomplete="off" id="unitform">
               {% csrf_token %}
      
@@ -796,14 +779,17 @@ li{
       <div class="modal-body" style="background: rgb(32, 35, 37);">
         <div class="card p-3 m-3" style="background-color: #000;">
         
-  
+         
             <form action="" method="post"  style="color: #000000;" id="newaccount">
               {% csrf_token %}
-                
+              {% for m in messages %}
+              <p style="color: chocolate;">{{m}}</p>
+              {% endfor %}
                 <div class="d-flex align-items-center">
                     <h5 style="font-size: 25px;color: aliceblue;">Create Account</h5>
                   
                 </div>
+                <div id="error-message-container2" style="color: chocolate;"></div>
                 <hr>
                 <div class="row ">
                     <div class="col">
@@ -994,7 +980,7 @@ li{
 
       <!-- MODAL account END -->   
 
-
+ <!-- SCRIPT FOR account DESCRIPYION -->  
       <script>
         function message() {
     
@@ -1753,4 +1739,9 @@ li{
         }
     </script>
 </body>
+
+
+
+
+
 {% endblock %}
