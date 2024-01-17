@@ -1038,7 +1038,7 @@ def chartofaccounts(request):                                                   
         log_details= LoginDetails.objects.get(id=log_id)
         if log_details.user_type == 'Staff':
                 dash_details = StaffDetails.objects.get(login_details=log_details)
-                acc=Chart_of_Accounts.objects.filter(company=dash_details.company)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,status="inactive")
                 allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
                 content = {
                         'details': dash_details,
@@ -1057,7 +1057,61 @@ def chartofaccounts(request):                                                   
             }   
             return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
   
+def chartofaccountsActive(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,status="active")
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc=Chart_of_Accounts.objects.filter(company=dash_details)
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
 
+def chartofaccountsInactive(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,status="inactive")
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc=Chart_of_Accounts.objects.filter(company=dash_details,status="inactive")
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+            
+        
 def create_account(request):                                                                #new by tinto mt
     login_id = request.session['login_id']
     log_user = LoginDetails.objects.get(id=login_id)
@@ -1081,6 +1135,73 @@ def create_account(request):                                                    
             a.account_code = request.POST.get("account_code",None)
             a.account_number = request.POST.get("account_number2",None)
             a.account_description = request.POST.get("description",None)
+            if a.account_type=="Other Current Assets":
+
+                a.sub_account = request.POST.get("sub_account",None)
+                a.parent_account = request.POST.get("parent_account",None)
+               
+
+            if a.account_type=="Cash":
+             
+                a.sub_account = request.POST.get("sub_account22",None)
+                a.parent_account = request.POST.get("parent_account22",None)
+               
+
+            if a.account_type=="Fixed Assets":
+            
+                a.sub_account = request.POST.get("sub_account33",None)
+                a.parent_account = request.POST.get("parent_account33",None)
+               
+            
+            if a.account_type=="Stock":
+               
+                a.sub_account = request.POST.get("sub_account44",None)
+                a.parent_account = request.POST.get("parent_account44",None)
+             
+            
+            if a.account_type=="Other Current Liability":
+             
+                a.sub_account = request.POST.get("sub_account55",None)
+                a.parent_account = request.POST.get("parent_account55",None)
+               
+            if a.account_type=="Long Term Liability":
+            
+                a.sub_account = request.POST.get("sub_account66",None)
+                a.parent_account = request.POST.get("parent_account66",None)
+              
+            
+            if a.account_type=="Other Liability":
+              
+                a.sub_account = request.POST.get("sub_account77",None)
+                a.parent_account = request.POST.get("parent_account77",None)
+              
+            if a.account_type=="Equity":
+            
+                a.sub_account = request.POST.get("sub_account88",None)
+                a.parent_account = request.POST.get("parent_account88",None)
+            
+            
+            if a.account_type=="Income":
+             
+                a.sub_account = request.POST.get("sub_account99",None)
+                a.parent_account = request.POST.get("parent_account99",None)
+              
+            
+            if a.account_type=="Expense":
+             
+                a.sub_account = request.POST.get("sub_account100",None)
+                a.parent_account = request.POST.get("parent_account100",None)
+              
+            if a.account_type=="Cost Of Goods Sold":
+              
+                a.sub_account = request.POST.get("sub_account111",None)
+                a.parent_account = request.POST.get("parent_account111",None)
+             
+            if a.account_type=="Other Expense":
+             
+                a.sub_account = request.POST.get("sub_account222",None)
+                a.parent_account = request.POST.get("parent_account222",None)
+               
             account_type=request.POST.get("account_type",None)
             if account_type == 'Other Assets':
                 a.description = 'Track special assets like goodwill and other intangible assets'

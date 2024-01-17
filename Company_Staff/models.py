@@ -83,6 +83,8 @@ class Chart_of_Accounts(models.Model):
     Create_status = models.CharField(max_length=255,null=True,blank=True,default='added')
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
     login_details=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
+    sub_account = models.CharField(max_length=255,null=True,blank=True)
+    parent_account = models.CharField(max_length=255,null=True,blank=True)    
 
 class Chart_of_Accounts_History(models.Model):
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)

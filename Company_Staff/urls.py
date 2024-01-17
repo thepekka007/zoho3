@@ -45,7 +45,7 @@ urlpatterns = [
         path('filter_item_view_inActive/<int:pk>',views.filter_item_view_inActive,name='filter_item_view_inActive'),
 
   #  ----------------------------- TINTO urls items  END-----------------------------
--
+
     # -------------------------TINTO Chartof accounts urls  START------------------------
 
         path('chartofaccounts',views.chartofaccounts,name='chartofaccounts'),
@@ -62,6 +62,10 @@ urlpatterns = [
         path('account_dropdown',views.account_dropdown,name = 'account_dropdown'),
         path('account_view_sort_by_name/<int:pk>',views.account_view_sort_by_name,name='account_view_sort_by_name'),
         path('shareaccountToEmail/<int:pt>',views.shareaccountToEmail,name='shareaccountToEmail'),
+        path('chartofaccountsActive',views.chartofaccountsActive,name='chartofaccountsActive'),
+        path('chartofaccountsInactive',views.chartofaccountsInactive,name='chartofaccountsInactive'),
+
+
 
          #------------------------- TINTO Chartof accounts urls  ENDS----------------------
 ]

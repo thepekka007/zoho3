@@ -1,7 +1,7 @@
-                                                <!-- CREATEED BY TINTO MT -->
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+
 <style>
     /*.modal {
       z-index: 9999;
@@ -130,20 +130,26 @@
         transform: rotate(-180deg);
     }
 </style>
-<body>
-    <BR> 
-      <div class="container-fluid" >
-    
-  
-          <!-- ADD ITEM FORM -->
-          <div style="background-color: rgb(0, 0, 0); border-radius: 10px; width:80% ;margin-left: 18%;">
-            
-         
+<div class="body-wrapper">
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Accounts</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Chart of Accounts</a></li>
+              <!-- <li class="breadcrumb-item" aria-current="page" class="text-warning-emphasis"></li> -->
+              <li class="breadcrumb-item" aria-current="page">New Chart of Accounts</li>
+            </ol>
+        </nav>
+        <div class="card mb-3 bg-black shadow p-3 mb-5 rounded" style="max-width: 1400px;">
+       
             <div style="margin-top: 90px;">
-              <h4 id="selected_customer_heading" class="text" style="color: white; margin-left: 2%; padding-top: 20px;"><b>NEW ACCOUNT</b></h4>
+              <h4 id="selected_customer_heading" class="text" style="color: white; margin-left: 2%; padding-top: 20px;"><b>NEW ACCOUNTS</b></h4>
             </div>
          <br>
- 
+  
+                                                            
+       
   
   <div class="container-fluid" id="container-to-print" style="width: 100%;"> 
       <section id="selected-area">
@@ -301,504 +307,1212 @@
                         </div>
         
                         <!-- ...................   checkbox............................. -->
-                        <!-- <div id="sub_div" style="display: none;">
-        
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-        
-                                <div class="col-sm-8">
-        
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent()"
-                                        name="sub_account" id="sub_account">
-        
-                                    <label for="">Make this a sub-account</label>
-        
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div22" style="display: none;">
-        
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-        
-                                <div class="col-sm-8">
-        
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent22()"
-                                        name="sub_account22" id="sub_account22">
-        
-                                    <label for="">Make this a sub-account</label>
-        
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div33" style="display: none;">
-        
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-        
-                                <div class="col-sm-8">
-        
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent33()"
-                                        name="sub_account33" id="sub_account33">
-        
-                                    <label for="">Make this a sub-account</label>
-        
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div44" style="display: none;">
-        
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-        
-                                <div class="col-sm-8">
-        
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent44()"
-                                        name="sub_account44" id="sub_account44">
-        
-                                    <label for="">Make this a sub-account</label>
-        
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div55" style="display: none;">
-        
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-        
-                                <div class="col-sm-8">
-        
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent55()"
-                                        name="sub_account55" id="sub_account55">
-        
-                                    <label for="">Make this a sub-account</label>
-        
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="sub_div66" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent66()"
-                                        name="sub_account66" id="sub_account66">
-                                    <label for="">Make this a sub-account</label>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-        
-                        <div id="sub_div77" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent77()"
-                                        name="sub_account77" id="sub_account77">
-                                    <label for="">Make this a sub-account</label>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-        
-                        <div id="sub_div88" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent88()"
-                                        name="sub_account88" id="sub_account88">
-                                    <label for="">Make this a sub-account</label>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div99" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent99()"
-                                        name="sub_account99" id="sub_account99">
-                                    <label for="">Make this a sub-account</label>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div100" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent100()"
-                                        name="sub_account100" id="sub_account100">
-                                    <label for="">Make this a sub-account</label>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div111" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent111()"
-                                        name="sub_account111" id="sub_account111">
-                                    <label for="">Make this a sub-account</label>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="sub_div222" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for=""></label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="checkbox" class=" text-dark bg-light" onclick="show_parent222()"
-                                        name="sub_account222" id="sub_account222">
-                                    <label for="">Make this a sub-account</label>
-                                </div>
-                            </div>
-                        </div>
-         -->
-        
-        
-        
-                        <!-- ..........................  checkbox ............................. -->
-        
-                        <!-- <div id="parent_div" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account" id="parent_account">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Other Current
-                                            Assets
-                                        </option>
-                                        <option value="" selected></option>
-                                        <option value="Advance Tax">Advance Tax</option>
-                                        <option value="Employee Advance">Employee Advance</option>
-                                        <option value="Prepaid Expenses">Prepaid Expenses</option>
-                                        <option value="GST TCS Receivable">GST TCS Receivable</option>
-                                        <option value="GST TDS Receivable">GST TCS Receivable</option>
-                                        <option value="Input Tax Credits">Input Tax Credits</option>
-                                        <option value="Input CGST">&nbsp; &nbsp;&nbsp;Input CGST</option>
-                                        <option value="Input IGST"> &nbsp; &nbsp;&nbsp;Input IGST</option>
-                                        <option value="Input SGST">&nbsp; &nbsp;&nbsp;Input SGST</option>
-        
-        
-                                        <option value="Reverse Charge Tax Input but no due">Reverse Charge Tax Input but no
-                                            due
-                                        </option>
-                                        <option value="Sales to Customers(Cash)">Sales to Customers(Cash)</option>
-        
-        
-                                        <option value="TDS Receivable">TDS Receivable</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="parent_div22" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account22"
-                                        id="parent_account22">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Cash</option>
-                                        <option value="" class="bg-dark text-light text-center" selected></option>
-        
-                                        <option value="Petty Cash">Petty Cash</option>
-                                        <option value="Undeposited Fund">Undeposited Fund</option>
-        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div id="parent_div33" style="display:none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account33"
-                                        id="parent_account33">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Fixed Asset
-                                        </option>
-                                        <option value="" class="bg-dark text-light text-center" selected></option>
-        
-                                        <option value="Furniture and Equipment">Furniture and Equipment</option>
-        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-        
-                        <div id="parent_div44" style="display:none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account44"
-                                        id="parent_account44">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Stock</option>
-                                        <option value="" class="bg-dark text-light text-center" selected></option>
-        
-                                        <option value="Inventory Asset">Inventory Asset</option>
-        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="parent_div55" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account55"
-                                        id="parent_account55">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Other Current
-                                            Liability
-                                        </option>
-                                        <option value="" class="bg-dark text-light text-center" selected></option>
-        
-                                        <option value="Employee Reimbursements">Employee Reimbursements</option>
-                                        <option value="Opening Balance Adjustments">Opening Balance Adjustments</option>
-                                        <option value="Tax Payable">Tax Payable</option>
-                                        <option value="Unearned Revenue">Unearned Revenue</option>
-                                        <option value="GST Payable">GST Payable</option>
-                                        <option value="Output CGST">&nbsp;&nbsp;&nbsp;Output CGST</option>
-                                        <option value="Output IGST">&nbsp;&nbsp;&nbsp;Output IGST</option>
-                                        <option value="Output SGST">&nbsp;&nbsp;&nbsp;Output SGST</option>
-                                        <option value="TDS Payable">TDS Payable</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="parent_div66" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <select class="form-control text-dark bg-light" name="parent_account66"
-                                        id="parent_account66">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Long Term Liability
-                                        </option>
-                                        <option value="" selected></option>
-                                        <option value="Construction Loans">Construction Loans</option>
-                                        <option value="Mortgages">Mortgages</option>
-        
-        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="parent_div77" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <select class="form-control text-dark bg-light" name="parent_account77"
-                                        id="parent_account77">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Other Liability
-                                        </option>
-                                        <option value="" selected></option>
-                                        <option value="Tag Adjustments">Tag Adjustments</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="parent_div88" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account88"
-                                        id="parent_account88">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Equity</option>
-                                        <option value="" selected></option>
-                                        <option value="Drawings">Drawings</option>
-                                        <option value="Opening Balance Offset">Opening Balance Offset</option>
-                                        <option value="Owner's Equity">Owner's Equity</option>
-                                        <option value="Retained Earnings">Retained Earnings</option>
-                                        <option value="Capital Stock">Capital Stock</option>
-                                        <option value="Distributions">Distributions</option>
-                                        <option value="Dividends Paid">Dividends Paid</option>
-                                        <option value="Investments">Investments</option>
-        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="parent_div99" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <select class="form-control text-dark bg-light" name="parent_account99"
-                                        id="parent_account99">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Income</option>
-                                        <option value="" selected></option>
-                                        <option value="Discount">Discount</option>
-                                        <option value="General Income">General Income</option>
-                                        <option value="Interest Income">Interest Income</option>
-                                        <option value="Late Fee Income">Late Fee Income</option>
-                                        <option value="Other Charges">Other Charges</option>
-                                        <option value="sales">sales</option>
-                                        <option value="Shipping Charge">Shipping Charge</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-        
-                        <div id="parent_div100" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <select class="form-control text-dark bg-light" name="parent_account100"
-                                        id="parent_account100">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Expense</option>
-                                        <option value="" selected></option>
-                                        <option value="Discount">Discount</option>
-                                        <option value="Advertising and Marketing">Advertising and Marketing</option>
-                                        <option value="Automobile Expense">Automobile Expense</option>
-                                        <option value="Bad Debt">Bad Debt</option>
-                                        <option value="Bank Fees and Charges">Bank Fees and Charges</option>
-                                        <option value="Consultant Expense">Consultant Expense</option>
-                                        <option value="Credit Card Charges">Credit Card Charges</option>
-                                        <option value="Depreciation Expense">Depreciation Expense</option>
-                                        <option value="IT and Internet Expenses">IT and Internet Expenses</option>
-                                        <option value="Ganitorial Expense">Ganitorial Expense</option>
-                                        <option value="Lodging">Lodging</option>
-                                        <option value="Meals and Entertainment">Meals and Entertainment</option>
-                                        <option value="Office Supplies">Office Supplies</option>
-                                        <option value="Other Expenses">Other Expenses</option>
-                                        <option value="Postage">Postage</option>
-                                        <option value="Printing and Stationery">Printing and Stationery</option>
-                                        <option value="Rent Expense">Rent Expense</option>
-                                        <option value="Repairs and Maintenance">Repairs and Maintenance</option>
-                                        <option value="Salaries and Employee Wages">Salaries and Employee Wages</option>
-                                        <option value="Telephone Expense">Telephone Expense</option>
-                                        <option value="Travel Expense">Travel Expense</option>
-                                        <option value="Uncategorized">Uncategorized</option>
-                                        <option value="Contract Assets">Contract Assets</option>
-                                        <option value="Depreciation And Amortisation">Depreciation And Amortisation</option>
-                                        <option value="Merchandise">Merchandise</option>
-                                        <option value="Raw Materials And Consumables">Raw Materials And Consumables</option>
-                                        <option value="Transportation Expense">Uncategorized</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-        
-                        <div id="parent_div111" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account111"
-                                        id="parent_account111">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Cost Of Goods Sold
-                                        </option>
-                                        <option value="" selected></option>
-                                        <option value="Cost Of Goods Sold">Cost Of Goods Sold</option>
-                                        <option value="Job Costing">Job Costing</option>
-                                        <option value="Labor">Labor</option>
-                                        <option value="Materials">Materials</option>
-                                        <option value="Subcontractor">Subcontractor</option>
-        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                        <div id="parent_div222" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <label for="">Parent Account:</label>
-                                </div>
-                                <div class="col-sm-8">
-        
-                                    <select class="form-control text-dark bg-light" name="parent_account222"
-                                        id="parent_account222">
-                                        <option value="" class="bg-dark text-light text-center" disabled>Other Expense
-                                        </option>
-                                        <option value="" selected></option>
-                                        <option value="Cost Of Goods Sold">Exchange Gain or Loss</option>
-        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        
-         -->
-        
-        
-        
+   <!-- ...................   checkbox............................. -->
+   <div id="sub_div" style="display: none;">
+
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+
+        <div class="col-sm-8">
+
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent()"
+                name="sub_account" id="sub_account">
+
+            <label for="">Make this a sub-account</label>
+
+        </div>
+    </div>
+</div>
+
+<div id="sub_div22" style="display: none;">
+
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+
+        <div class="col-sm-8">
+
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent22()"
+                name="sub_account22" id="sub_account22">
+
+            <label for="">Make this a sub-account</label>
+
+        </div>
+    </div>
+</div>
+
+<div id="sub_div33" style="display: none;">
+
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+
+        <div class="col-sm-8">
+
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent33()"
+                name="sub_account33" id="sub_account33">
+
+            <label for="">Make this a sub-account</label>
+
+        </div>
+    </div>
+</div>
+
+<div id="sub_div44" style="display: none;">
+
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+
+        <div class="col-sm-8">
+
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent44()"
+                name="sub_account44" id="sub_account44">
+
+            <label for="">Make this a sub-account</label>
+
+        </div>
+    </div>
+</div>
+
+<div id="sub_div55" style="display: none;">
+
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+
+        <div class="col-sm-8">
+
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent55()"
+                name="sub_account55" id="sub_account55">
+
+            <label for="">Make this a sub-account</label>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="sub_div66" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+        <div class="col-sm-8">
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent66()"
+                name="sub_account66" id="sub_account66">
+            <label for="">Make this a sub-account</label>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="sub_div77" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+        <div class="col-sm-8">
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent77()"
+                name="sub_account77" id="sub_account77">
+            <label for="">Make this a sub-account</label>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="sub_div88" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+        <div class="col-sm-8">
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent88()"
+                name="sub_account88" id="sub_account88">
+            <label for="">Make this a sub-account</label>
+        </div>
+    </div>
+</div>
+
+<div id="sub_div99" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+        <div class="col-sm-8">
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent99()"
+                name="sub_account99" id="sub_account99">
+            <label for="">Make this a sub-account</label>
+        </div>
+    </div>
+</div>
+
+<div id="sub_div100" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+        <div class="col-sm-8">
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent100()"
+                name="sub_account100" id="sub_account100">
+            <label for="">Make this a sub-account</label>
+        </div>
+    </div>
+</div>
+
+<div id="sub_div111" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+        <div class="col-sm-8">
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent111()"
+                name="sub_account111" id="sub_account111">
+            <label for="">Make this a sub-account</label>
+        </div>
+    </div>
+</div>
+
+<div id="sub_div222" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for=""></label>
+        </div>
+        <div class="col-sm-8">
+            <input type="checkbox" class=" text-dark bg-light" onclick="show_parent222()"
+                name="sub_account222" id="sub_account222">
+            <label for="">Make this a sub-account</label>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- ..........................  checkbox ............................. -->
+
+<div id="parent_div" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account" id="parent_account">
+                <option value="" class="bg-dark text-light text-center"  disabled>Other Current
+                    Assets
+                </option>
+                <option value="" selected></option>
+                <option value="Advance Tax">Advance Tax</option>
+                <option value="Employee Advance">Employee Advance</option>
+                <option value="Prepaid Expenses">Prepaid Expenses</option>
+                <option value="GST TCS Receivable">GST TCS Receivable</option>
+                <option value="GST TDS Receivable">GST TCS Receivable</option>
+                <option value="Input Tax Credits">Input Tax Credits</option>
+                <option value="Input CGST">&nbsp; &nbsp;&nbsp;Input CGST</option>
+                <option value="Input IGST"> &nbsp; &nbsp;&nbsp;Input IGST</option>
+                <option value="Input SGST">&nbsp; &nbsp;&nbsp;Input SGST</option>
+
+
+                <option value="Reverse Charge Tax Input but no due">Reverse Charge Tax Input but no
+                    due
+                </option>
+                <option value="Sales to Customers(Cash)">Sales to Customers(Cash)</option>
+
+
+                <option value="TDS Receivable">TDS Receivable</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="parent_div22" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account22"
+                id="parent_account22">
+                <option value="" class="bg-dark text-light text-center" disabled>Cash</option>
+                <option value="" class="bg-dark text-light text-center" selected></option>
+
+                <option value="Petty Cash">Petty Cash</option>
+                <option value="Undeposited Fund">Undeposited Fund</option>
+                <option value="Cash Account">Cash Account</option>
+
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="parent_div33" style="display:none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account33"
+                id="parent_account33">
+                <option value="" class="bg-dark text-light text-center" disabled>Fixed Asset
+                </option>
+                <option value="" class="bg-dark text-light text-center" selected></option>
+
+                <option value="Furniture and Equipment">Furniture and Equipment</option>
+
+            </select>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="parent_div44" style="display:none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account44"
+                id="parent_account44">
+                <option value="" class="bg-dark text-light text-center" disabled>Stock</option>
+                <option value="" class="bg-dark text-light text-center" selected></option>
+
+                <option value="Inventory Asset">Inventory Asset</option>
+
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="parent_div55" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account55"
+                id="parent_account55">
+                <option value="" class="bg-dark text-light text-center" disabled>Other Current
+                    Liability
+                </option>
+                <option value="" class="bg-dark text-light text-center" selected></option>
+
+                <option value="Employee Reimbursements">Employee Reimbursements</option>
+                <option value="Opening Balance Adjustments">Opening Balance Adjustments</option>
+                <option value="Tax Payable">Tax Payable</option>
+                <option value="Unearned Revenue">Unearned Revenue</option>
+                <option value="GST Payable">GST Payable</option>
+                <option value="Output CGST">&nbsp;&nbsp;&nbsp;Output CGST</option>
+                <option value="Output IGST">&nbsp;&nbsp;&nbsp;Output IGST</option>
+                <option value="Output SGST">&nbsp;&nbsp;&nbsp;Output SGST</option>
+                <option value="TDS Payable">TDS Payable</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="parent_div66" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account66"
+                id="parent_account66">
+                <option value="" class="bg-dark text-light text-center" disabled>Long Term Liability
+                </option>
+                <option value="" selected></option>
+                <option value="Construction Loans">Construction Loans</option>
+                <option value="Mortgages">Mortgages</option>
+
+
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="parent_div77" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account77"
+                id="parent_account77">
+                <option value="" class="bg-dark text-light text-center" disabled>Other Liability
+                </option>
+                <option value="" selected></option>
+                <option value="Tag Adjustments">Tag Adjustments</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="parent_div88" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account88"
+                id="parent_account88">
+                <option value="" class="bg-dark text-light text-center" disabled>Equity</option>
+                <option value="" selected></option>
+                <option value="Drawings">Drawings</option>
+                <option value="Opening Balance Offset">Opening Balance Offset</option>
+                <option value="Owner's Equity">Owner's Equity</option>
+                <option value="Retained Earnings">Retained Earnings</option>
+                <option value="Capital Stock">Capital Stock</option>
+                <option value="Distributions">Distributions</option>
+                <option value="Dividends Paid">Dividends Paid</option>
+                <option value="Investments">Investments</option>
+
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="parent_div99" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account99"
+                id="parent_account99">
+                <option value="" class="bg-dark text-light text-center" disabled>Income</option>
+                <option value="" selected></option>
+                <option value="Discount">Discount</option>
+                <option value="General Income">General Income</option>
+                <option value="Interest Income">Interest Income</option>
+                <option value="Late Fee Income">Late Fee Income</option>
+                <option value="Other Charges">Other Charges</option>
+                <option value="sales">sales</option>
+                <option value="Shipping Charge">Shipping Charge</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="parent_div100" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account100"
+                id="parent_account100">
+                <option value="" class="bg-dark text-light text-center" disabled>Expense</option>
+                <option value="" selected></option>
+                <option value="Discount">Discount</option>
+                <option value="Advertising and Marketing">Advertising and Marketing</option>
+                <option value="Automobile Expense">Automobile Expense</option>
+                <option value="Bad Debt">Bad Debt</option>
+                <option value="Bank Fees and Charges">Bank Fees and Charges</option>
+                <option value="Consultant Expense">Consultant Expense</option>
+                <option value="Credit Card Charges">Credit Card Charges</option>
+                <option value="Depreciation Expense">Depreciation Expense</option>
+                <option value="IT and Internet Expenses">IT and Internet Expenses</option>
+                <option value="Ganitorial Expense">Ganitorial Expense</option>
+                <option value="Lodging">Lodging</option>
+                <option value="Meals and Entertainment">Meals and Entertainment</option>
+                <option value="Office Supplies">Office Supplies</option>
+                <option value="Other Expenses">Other Expenses</option>
+                <option value="Postage">Postage</option>
+                <option value="Printing and Stationery">Printing and Stationery</option>
+                <option value="Rent Expense">Rent Expense</option>
+                <option value="Repairs and Maintenance">Repairs and Maintenance</option>
+                <option value="Salaries and Employee Wages">Salaries and Employee Wages</option>
+                <option value="Telephone Expense">Telephone Expense</option>
+                <option value="Travel Expense">Travel Expense</option>
+                <option value="Uncategorized">Uncategorized</option>
+                <option value="Contract Assets">Contract Assets</option>
+                <option value="Depreciation And Amortisation">Depreciation And Amortisation</option>
+                <option value="Merchandise">Merchandise</option>
+                <option value="Raw Materials And Consumables">Raw Materials And Consumables</option>
+                <option value="Transportation Expense">Uncategorized</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="parent_div111" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account111"
+                id="parent_account111">
+                <option value="" class="bg-dark text-light text-center" disabled>Cost Of Goods Sold
+                </option>
+                <option value="" selected></option>
+                <option value="Cost Of Goods Sold">Cost Of Goods Sold</option>
+                <option value="Job Costing">Job Costing</option>
+                <option value="Labor">Labor</option>
+                <option value="Materials">Materials</option>
+                <option value="Subcontractor">Subcontractor</option>
+
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="parent_div222" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <label for="">Parent Account:</label>
+        </div>
+        <div class="col-sm-8">
+
+            <select class="form-control text-dark bg-light" style="width: 70%;" name="parent_account222"
+                id="parent_account222">
+                <option value="" class="bg-dark text-light text-center" disabled>Other Expense
+                </option>
+                <option value="" selected></option>
+                <option value="Cost Of Goods Sold">Exchange Gain or Loss</option>
+
+            </select>
+        </div>
+    </div>
+</div>
+
+<script>
+    function message() {
+
+        var vals = document.getElementById('soValue1').value
+        console.log(vals)
+        if (vals == "Other Assets") {
+            document.getElementById('message_hd').innerHTML = "Assets"
+            document.getElementById('message').innerHTML = "Track special assets like goodwill and other intangible assets"
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("cr_div").style.display = "none";
+
+        } else if (vals == "Other Current Assets") {
+            document.getElementById('message_hd').innerHTML = "Assets"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account").checked = false;
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "block";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+
+            $('#message').append(
+                `Any short term asset that can be converted into cash or cash equivalents easily 
+          <ul><li>Prepaid expenses</li> <li>Stocks and Mutual Funds</li></ul>`
+            )
+
+        } else if (vals == "Cash") {
+            document.getElementById('message_hd').innerHTML = "Assets"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account22").checked = false;
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div22").style.display = "block";
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            $('#message').append(
+                `To keep track of cash and other cash equivalents like petty cash, undeposited funds, etc.`
+            )
+
+        } else if (vals == "Bank") {
+            document.getElementById('message_hd').innerHTML = "Assets"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("cr_div").style.display = "block";
+            document.getElementById("acc_bo_div").style.display = "block";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+
+            $('#message').append(
+                `To keep track of bank accounts like Savings, Checking, and Money Market accounts`
+            )
+
+        } else if (vals == "Fixed Asset") {
+            document.getElementById('message_hd').innerHTML = "Assets"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account33").checked = false;
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div33").style.display = "block";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            $('#message').append(
+                `Any long term investment or an asset that cannot be converted into cash easily like: 
+          <ul><li>Land and Buildings</li> <li>Plant, Machinery and Equipment</li> <li>Computers</li> <li>Furniture</li></ul>`
+            )
+
+        } else if (vals == "Stock") {
+            document.getElementById('message_hd').innerHTML = "Assets"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account44").checked = false;
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div44").style.display = "block";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("cr_div").style.display = "none";
+            $('#message').append(
+                `To keep track of your inventory assets.`
+            )
+
+        } else if (vals == "Payment Clearing") {
+            document.getElementById('message_hd').innerHTML = "Assets"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+            $('#message').append(
+                `To keep track of funds moving in and out via payment processors like Stripe, PayPal, etc.`
+            )
+
+        } else if (vals == "Other Current Liability") {
+            document.getElementById('message_hd').innerHTML = "Liability"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account55").checked = false;
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "block";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+
+            $('#message').append(
+                `Any short term liability like:
+          <ul><li>Customer Deposits</li> <li>Tax Payable</li></ul>`
+            )
+
+        } else if (vals == "Credit Card") {
+            document.getElementById('message_hd').innerHTML = "Liability"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("cr_div").style.display = "block";
+            document.getElementById("acc_bo_div").style.display = "none";
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+            $('#message').append(
+                `Create a trail of all your credit card transactions by creating a credit card account`
+            )
+
+        } else if (vals == "Long Term Liability") {
+            document.getElementById('message_hd').innerHTML = "Liability"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account66").checked = false;
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("sub_div66").style.display = "block";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+
+            document.getElementById("acc_bo_div").style.display = "none";
+
+            $('#message').append(
+                `Liabilities that mature after a minimum period of one year like Notes Payable, Debentures, and Long Term Loans`
+            )
+
+        } else if (vals == "Other Liability") {
+            document.getElementById('message_hd').innerHTML = "Liability"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account77").checked = false;
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div77").style.display = "block";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+
+
+            $('#message').append(
+                `Obligation of an entity arising from past transactions or events which would require repayment.<ul><li>Tax to be paid</li> <li>Loan to be Repaid</li> <li>Accounts Payable etc</li> </ul>`
+            )
+
+        } else if (vals == "Overseas Tax Payable") {
+            document.getElementById('message_hd').innerHTML = "Liability"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+
+            $('#message').append(
+                `Track your taxes in this account if your business sells digital services to foreign customers.`
+            )
+
+        } else if (vals == "Equity") {
+            document.getElementById('message_hd').innerHTML = "Equity"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account88").checked = false;
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "block";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+            document.getElementById("acc_bo_div").style.display = "none";
+
+            $('#message').append(
+                `Owners or stakeholders interest on the assets of the business after deducting all the liabilities`
+            )
+
+        } else if (vals == "Income") {
+            document.getElementById('message_hd').innerHTML = "Income"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account99").checked = false;
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "block";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+
+            document.getElementById("acc_bo_div").style.display = "none";
+
+            $('#message').append(
+                `Income or Revenue earned from normal business activities like sale of goods and services to customers`
+            )
+
+        } else if (vals == "Other Income") {
+            document.getElementById('message_hd').innerHTML = "Income"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+            $('#message').append(
+                `Income or revenue earned from activties not directly related to your business like :<ul><li>Interest Earned</li> <li>Dividend Earned</li></ul>`
+            )
+
+        } else if (vals == "Expense") {
+            document.getElementById('message_hd').innerHTML = "Expense"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account100").checked = false;
+
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div100").style.display = "block";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+            $('#message').append(
+                `Reflects expenses incurred for running normal business operations, such as :<ul><li>Advertisements and Marketing</li> <li>Business Travel Expenses</li><li>License Fees</li><li>Utility Expenses</li></ul>`
+            )
+
+        } else if (vals == "Cost Of Goods Sold") {
+            document.getElementById('message_hd').innerHTML = "Expense"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account111").checked = false;
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div222").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div111").style.display = "block";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+            document.getElementById("sub_div222").style.display = "none";
+
+            $('#message').append(
+                `This indicates the direct costs attributable to the production of the goods sold by a company such as:<ul><li>Material and Labor costs</li> <li>Cost of obtaining raw materials</li></ul>`
+            )
+
+        } else if (vals == "Other Expense") {
+            document.getElementById('message_hd').innerHTML = "Expense"
+            document.getElementById('message').innerHTML = ""
+            document.getElementById("sub_account222").checked = false;
+
+            document.getElementById("cr_div").style.display = "none";
+            document.getElementById("name").style.display = "block";
+            document.getElementById("credit").style.display = "none";
+            document.getElementById("acc_bo_div").style.display = "none";
+            document.getElementById("parent_div").style.display = "none";
+            document.getElementById("parent_div22").style.display = "none";
+            document.getElementById("parent_div33").style.display = "none";
+            document.getElementById("parent_div44").style.display = "none";
+            document.getElementById("parent_div55").style.display = "none";
+            document.getElementById("parent_div66").style.display = "none";
+            document.getElementById("parent_div77").style.display = "none";
+            document.getElementById("parent_div88").style.display = "none";
+            document.getElementById("parent_div99").style.display = "none";
+            document.getElementById("parent_div100").style.display = "none";
+            document.getElementById("parent_div111").style.display = "none";
+
+            document.getElementById("sub_div").style.display = "none";
+            document.getElementById("sub_div22").style.display = "none";
+            document.getElementById("sub_div33").style.display = "none";
+            document.getElementById("sub_div44").style.display = "none";
+            document.getElementById("sub_div55").style.display = "none";
+            document.getElementById("sub_div66").style.display = "none";
+            document.getElementById("sub_div77").style.display = "none";
+            document.getElementById("sub_div88").style.display = "none";
+            document.getElementById("sub_div222").style.display = "block";
+            document.getElementById("sub_div100").style.display = "none";
+            document.getElementById("sub_div111").style.display = "none";
+            document.getElementById("sub_div99").style.display = "none";
+
+            $('#message').append(
+                `Reflects expenses incurred for activities unrelated to primary business operations like :<ul><li>Bad debts</li> <li>Contributions Towards Charity</li><li>Insurance</li></ul>`
+            )
+
+        }
+
+
+
+
+    };
+</script>
+
+
+
+
                         <div class="row mt-3">
                             <div class="col-sm-4">
                                 <label for="">Account Code:</label>
@@ -893,7 +1607,7 @@
 <div  style="top: 7rem; margin-left: 20rem; margin-right: 2rem; margin-top: 5%;">
    
 </section>
-<script>
+<!-- <script>
     function message() {
 
         var vals = document.getElementById('soValue1').value
@@ -1616,7 +2330,7 @@
 
 
     };
-</script>
+</script> -->
 
 <script>
     function filterFunction1() {
@@ -1983,11 +2697,6 @@
 
 
 </script>
-
-
-
-
-
 
 
 
