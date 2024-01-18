@@ -34,7 +34,7 @@ urlpatterns = [
         path('shareItemToEmail/<int:pt>',views.shareItemToEmail,name='shareItemToEmail'),
         path('deleteitem/<int:pl>',views.deleteitem,name='deleteitem'),
         path('add_item_comment/<int:pc>',views.add_item_comment,name='add_item_comment'),
-        path('delete_item_comment/<int:ph>',views.delete_item_comment,name='delete_item_comment'),
+        
         path('add_unit',views.add_unit,name='add_unit'),
         path('unit_dropdown',views.unit_dropdown,name = 'unit_dropdown'),
         path('downloadItemSampleImportFile',views.downloadItemSampleImportFile,name='downloadItemSampleImportFile'),
@@ -57,7 +57,7 @@ urlpatterns = [
         path('acc_status_edit/<int:pv>',views.acc_status_edit,name='acc_status_edit'),
         path('add_account_comment/<int:pc>',views.add_account_comment,name='add_account_comment'),
     
-        path('delete_account_comment/<int:ph>',views.delete_account_comment,name='delete_account_comment'),
+      
         path('add_account',views.add_account,name='add_account'),
         path('account_dropdown',views.account_dropdown,name = 'account_dropdown'),
         path('account_view_sort_by_name/<int:pk>',views.account_view_sort_by_name,name='account_view_sort_by_name'),
@@ -68,4 +68,19 @@ urlpatterns = [
 
 
          #------------------------- TINTO Chartof accounts urls  ENDS----------------------
+
+           path('delete_account_comment/<int:ph>/<int:pr>',views.delete_account_comment,name='delete_account_comment'),
+           path('delete_item_comment/<int:ph>/<int:pr>',views.delete_item_comment,name='delete_item_comment'),
+           path('accounts_asset_filter',views.accounts_asset_filter,name='accounts_asset_filter'),
+            path('accounts_liability_filter',views.accounts_liability_filter,name='accounts_liability_filter'),
+             path('accounts_equity_filter',views.accounts_equity_filter,name='accounts_equity_filter'),
+              path('accounts_income_filter',views.accounts_income_filter,name='accounts_income_filter'),
+               path('accounts_expense_filter',views.accounts_expense_filter,name='accounts_expense_filter'),
+
+
+           
+           
+           
+           
+          
 ]

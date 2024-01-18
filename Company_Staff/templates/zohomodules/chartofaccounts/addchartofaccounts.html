@@ -136,7 +136,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Dashboard</a></li>
               <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Accounts</a></li>
-              <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Chart of Accounts</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'chartofaccounts' %}" class="text-warning-emphasis">Chart of Accounts</a></li>
               <!-- <li class="breadcrumb-item" aria-current="page" class="text-warning-emphasis"></li> -->
               <li class="breadcrumb-item" aria-current="page">New Chart of Accounts</li>
             </ol>
@@ -876,8 +876,7 @@
             document.getElementById("credit").style.display = "none";
 
             $('#message').append(
-                `Any short term asset that can be converted into cash or cash equivalents easily 
-          <ul><li>Prepaid expenses</li> <li>Stocks and Mutual Funds</li></ul>`
+                `Any short term asset that can be converted into cash or cash equivalents easily<ul style='list-style-type: disc;'><li>Prepaid expenses</li><li>Stocks and Mutual Funds</li></ul>`
             )
 
         } else if (vals == "Cash") {
@@ -992,7 +991,7 @@
             document.getElementById("acc_bo_div").style.display = "none";
             $('#message').append(
                 `Any long term investment or an asset that cannot be converted into cash easily like: 
-          <ul><li>Land and Buildings</li> <li>Plant, Machinery and Equipment</li> <li>Computers</li> <li>Furniture</li></ul>`
+                <ul style='list-style-type: disc;'><li>Land and Buildings</li> <li>Plant, Machinery and Equipment</li> <li>Computers</li> <li>Furniture</li></ul>`
             )
 
         } else if (vals == "Stock") {
@@ -1108,7 +1107,7 @@
 
             $('#message').append(
                 `Any short term liability like:
-          <ul><li>Customer Deposits</li> <li>Tax Payable</li></ul>`
+                <ul style='list-style-type: disc;'><li>Customer Deposits</li> <li>Tax Payable</li></ul>`
             )
 
         } else if (vals == "Credit Card") {
@@ -1227,7 +1226,7 @@
 
 
             $('#message').append(
-                `Obligation of an entity arising from past transactions or events which would require repayment.<ul><li>Tax to be paid</li> <li>Loan to be Repaid</li> <li>Accounts Payable etc</li> </ul>`
+                `Obligation of an entity arising from past transactions or events which would require repayment.<ul style='list-style-type: disc;'><li>Tax to be paid</li> <li>Loan to be Repaid</li> <li>Accounts Payable etc</li> </ul>`
             )
 
         } else if (vals == "Overseas Tax Payable") {
@@ -1384,7 +1383,7 @@
             document.getElementById("sub_div222").style.display = "none";
 
             $('#message').append(
-                `Income or revenue earned from activties not directly related to your business like :<ul><li>Interest Earned</li> <li>Dividend Earned</li></ul>`
+                `Income or revenue earned from activties not directly related to your business like :<ul style='list-style-type: disc;'><li>Interest Earned</li> <li>Dividend Earned</li></ul>`
             )
 
         } else if (vals == "Expense") {
@@ -1423,7 +1422,7 @@
             document.getElementById("sub_div222").style.display = "none";
 
             $('#message').append(
-                `Reflects expenses incurred for running normal business operations, such as :<ul><li>Advertisements and Marketing</li> <li>Business Travel Expenses</li><li>License Fees</li><li>Utility Expenses</li></ul>`
+                `Reflects expenses incurred for running normal business operations, such as :<ul style='list-style-type: disc;'><li>Advertisements and Marketing</li> <li>Business Travel Expenses</li><li>License Fees</li><li>Utility Expenses</li></ul>`
             )
 
         } else if (vals == "Cost Of Goods Sold") {
@@ -1461,7 +1460,7 @@
             document.getElementById("sub_div222").style.display = "none";
 
             $('#message').append(
-                `This indicates the direct costs attributable to the production of the goods sold by a company such as:<ul><li>Material and Labor costs</li> <li>Cost of obtaining raw materials</li></ul>`
+                `This indicates the direct costs attributable to the production of the goods sold by a company such as:<ul style='list-style-type: disc;'><li>Material and Labor costs</li> <li>Cost of obtaining raw materials</li></ul>`
             )
 
         } else if (vals == "Other Expense") {
@@ -1499,7 +1498,7 @@
             document.getElementById("sub_div99").style.display = "none";
 
             $('#message').append(
-                `Reflects expenses incurred for activities unrelated to primary business operations like :<ul><li>Bad debts</li> <li>Contributions Towards Charity</li><li>Insurance</li></ul>`
+                `Reflects expenses incurred for activities unrelated to primary business operations like :<ul style='list-style-type: disc;'><li>Bad debts</li> <li>Contributions Towards Charity</li><li>Insurance</li></ul>`
             )
 
         }

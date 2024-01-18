@@ -15,6 +15,10 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ez8n5b/9F3JpKCEY6zIp+Hg7IbU8d7Q5ST78iEiRaP2mNPjkDps8I+1i0fblDOoh" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
      .modal {
     z-index: 9999;
@@ -80,7 +84,7 @@
                       
                       <div class="dropdown-menu m-1" style="background-color: black; color: white;">
                           <a class="dropdown-item text-white" href="{% url 'chartofaccountsoverview' selacc.id %}">All</a>
-                          <a class="dropdown-item text-white" href="{% url 'account_view_sort_by_name' selacc.id %}">Item Name</a>
+                          <a class="dropdown-item text-white" href="{% url 'account_view_sort_by_name' selacc.id %}">Account Name</a>
                       </div>
                   </div>
               </div>
@@ -94,10 +98,19 @@
                       <div class="dropdown-menu m-1">
                         <a class="dropdown-item" onclick="applyFilter('All')">All</a>
                         <a class="dropdown-item" onclick="applyFilter('Active')">Active</a>
-                        <a class="dropdown-item" onclick="applyFilter('Inactive')">Inactive</a>
+                        <a class="dropdown-item" onclick="applyFilter('inactive')">Inactive</a>
                       </div>
                   </div>
               </div>
+              <script>
+                  function applyFilter(currentFilter) {
+                              var rows = $("#table2 tbody tr");
+                              rows.show();
+                              if (currentFilter === "Active" || currentFilter === "inactive") {
+                                rows.filter(":not(:contains('" + currentFilter + "'))").hide();
+                              }
+                            }
+              </script>
               
               <div class="col-md-3" style="padding-left: 120PX;">
                   <a class="btn btn btn-outline-warning text-right mt-2" style="height: 38px; padding-top: 12px; padding-left: 17px;" href="{% url 'addchartofaccounts'%}">
@@ -128,14 +141,16 @@
                 {% for i in acc %}
                   <tr class="clickable" id="{{i.id}}">
                     <td class="justify-content-between align-items-center ">
-                      <b ><a class="text-white"  href="{% url 'chartofaccountsoverview'  i.id%}">{{i.account_name}} </a></b>{{i.account_type}}<br>
+                      <b ><a class="text-white"  href="{% url 'chartofaccountsoverview'  i.id%}">{{i.account_name}} </a></b>
+                      <br>
+                      <a class="text-white"  href="{% url 'chartofaccountsoverview'  i.id%}">{{i.account_type}}</a><br>
                  
                     </td>
                     
                     <td>
-                      <label class="text-end d-block">{{i.status}}</label>
+                      <label class="text-end d-block"><a class="text-white"  href="{% url 'chartofaccountsoverview'  i.id%}">{{i.status}}</a></label>
                       <br>
-                      <label class="text-end d-block">{{i.account_code}}</label>
+                      <label class="text-end d-block"><a class="text-white"  href="{% url 'chartofaccountsoverview'  i.id%}">{{i.account_code}}</a></label>
                     </td>
                   </tr></a>
                 {% endfor %}
@@ -303,13 +318,16 @@
         
         <!-- Delete Button -->
         <a href="{% url 'deleteaccount' selacc.id %}" class="delete fa fa-trash btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="DELETE" onclick="return confirm('Do you want to Delete this creditnote?');"></a>
-        <div class="dropdown btn-margin">
+        <!-- <div class="dropdown btn-margin">
           <a href=" " class="btn btn-outline-warning py-2 fas fa-comment-dots dropdown-toggle text-warning" data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"></a>
           <div class="dropdown-menu" aria-labelledby="attachmentDropdown" style="background-color: rgb(46, 45, 45); color: white;">
               <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmnts"><i class="fa-solid fa fa-plus"></i>Add</a>
               <a class="dropdown-item text-white" style="cursor: pointer;" data-toggle="modal" data-target="#cmt_list"><i class="fas fa-list"></i>&nbsp;View List</a>
           </div>
-      </div>
+      </div> -->
+      <a class="btn btn-outline-warning" href="" data-toggle="modal" data-target="#commentModal" data-toggle="tooltip" title="comment">
+        <i class="far fa-comment"></i>
+      </a>
         <!-- Share Button -->
         <!-- <div class="dropdown btn-margin">
             <a class="btn text-center btn-outline-warning" id="sortbutton" data-bs-toggle="dropdown" role="button">
@@ -341,7 +359,10 @@
         </div>
          -->
         <!-- History Button -->
-        <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" data-toggle="modal" data-target="#history">History</a> 
+        <!-- <a class="btn btn-outline-warning py-2 btn-margin" style="cursor: pointer;" data-toggle="modal" data-target="#history">History</a>  -->
+        <a class="btn btn-outline-warning" href="" data-toggle="modal" data-target="#commentModal2" data-toggle="tooltip" title="history">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </a>
         <a href="{% url 'chartofaccounts'%}" class="delete fa fa-times  btn btn-outline-warning text-warning px-2 py-2 btn-margin" style="width:80px;" data-toggle="tooltip" title="back" ></a>
         
          </div>
@@ -450,8 +471,8 @@
 
 
     </div>
-    <div class="col-sm-1 " style="margin-left: -1%;">
-      <div class="col-md-6 d-flex justify-content-between align-items-center">
+    <div class="col-sm-1 " style="margin-left: -10%;">
+      <div class="col-md-1 d-flex justify-content-between align-items-center">
   
           <!-- Edit Button -->
           <!-- <a href="{% url 'editchartofaccounts' selacc.id %}" class="btn btn-outline-warning py-2 text-warning btn-margin" title="save this draft"><i class="fas fa-pencil-alt"></i></a> -->
@@ -732,122 +753,15 @@ function exportToExcel() {
 <!-- history modal -->
 
 
-<div class="modal fade" id="history" >
-<div class="modal-dialog modal-xl" >
-  <div class="modal-content" style="background: #1f1f1ffd;border-radius: 20px;">
-    <div class="modal-header" style="background: #1f1f1ffd;">
-      <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #e1e1e1;">Transaction History</h5>
-      <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-    </div>
-    <div class="modal-body" style="background: #1f1f1ffd;;">
-      <div class="card p-3 m-3" style="background-color: #000;">
-      
-        <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
-          <thead class="text-white">
-              <tr>
-                  <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Action</b></th>
-                  <th style="color: rgb(244, 244, 244); padding-bottom: 10px;"><b>Date</b></th>
-                  <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Name</b></th>
-              </tr>
-              <tr>
-                  <td colspan="3" style="border-bottom: 2px solid white; margin-bottom: 10px;"></td>
-              </tr>
-          </thead>
-      
-          <tbody style="background-color: black; padding-top: 20px;"> <!-- Adjusted padding-top for spacing -->
-              {% for i in latest_item_id %}
-                  <tr style="background-color: black;height: 40px;">
-                      <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.action }}</td>            
-                      <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.Date }}</td>
-                      <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.logindetails.first_name }}&nbsp;{{ i.logindetails.last_name }}</td>
-                  </tr>
-              {% endfor %}
-          </tbody>
-      </table>
-      
-      </div>
-  </div>
-  
-</div>
-</div></div>
+
 </div>
 </div>
 
 <!-- comment modal -->
-<div class="modal fade" id="cmnts">
-<div class="modal-dialog modal-xl">
-  <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
-    <div class="modal-header" style="background: rgb(32, 35, 37);">
-      <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #fefefe;">Comments</h5>
-      <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-    </div>
-    <div class="modal-body" style="background: rgb(32, 35, 37);">
-      <div class="card p-3 m-3">
-        <form action="{% url 'add_account_comment' selacc.id %}" method="post" class="needs-validation"
-          id="share_to_email_form" autocomplete="off">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="emailIds" style="color: #000;">Enter Comment</label>
-            <textarea class="form-control text-dark"  style="color: #000;" name="comment" id="comment" rows="5"
-              placeholder="MEnter your comment here" required></textarea>
-          </div>
-         
-   
-      </div>
-      <div class="modal-footer d-flex justify-content-center" style="border-top: 1px solid #ffff;">
-        <!-- <button type="submit">submit</button> -->
-        <input type="submit" id="share_with_email"
-          class="submitShareEmailBtn rounded-pill text-grey w-50 my-4 mx-3" value="Save">
-      </div>
-    </div>
-  </form>
-  </div>
-</div>
-</div>
 
 
-<div class="modal fade" id="cmt_list">
-<div class="modal-dialog modal-xl">
-  <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
-    <div class="modal-header" style="background: rgb(32, 35, 37);">
-      <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Comments</h5>
-      <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-    </div>
-    <div class="modal-body" style="background: rgb(32, 35, 37);">
-      <div class="card p-3 m-3" style="background-color: #000;">
-      
-        <table style="background-color: #000; margin-right: 10px; border-radius: 5px;">
-          <thead class="text-white">
-              <tr>
-                  <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Comments</b></th>
-                  <th style="color: rgb(244, 244, 244); padding-bottom: 10px;"><b></b></th>
-                  <th style="color: rgb(250, 247, 242); padding-bottom: 10px;"><b>Delete</b></th>
-              </tr>
-              <tr>
-                  <td colspan="3" style="border-bottom: 2px solid white; margin-bottom: 10px;"></td>
-              </tr>
-          </thead>
-      
-          <tbody style="background-color: black; padding-top: 20px;"> <!-- Adjusted padding-top for spacing -->
-            {% for i in est_comments %}
-                  <tr style="background-color: black;height: 40px;">
-                      <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;">{{ i.comments }}</td>            
-                      <td class="text-white" style="color: rgb(0, 0, 0); background-color: black; padding-bottom: 10px;"></td>
-                      <td class="text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'delete_item_comment' i.id %}">Delete</a></td>
-                  </tr>
-              {% endfor %}
-          </tbody>
-      </table>
 
 
-  </div>
-</div>
-</div>
-</div>
-</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -903,5 +817,98 @@ $(document).ready(function() {
 </div>
 </div>
 
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  aria-hidden="true" style="margin-top: 8vh;">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content" style="background-color: #3b3b3b;">
+      <div class="modal-header">
+        <h3 class="modal-title text-light" id="exampleModalLabel">Add Comments</h3>
+        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="font-size: x-large;">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'add_account_comment' selacc.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <textarea type="text" class="form-control text-light" name="comment"></textarea>
+          <div class="container-fluid">
+            <table class="table  text-white">
+              <thead>
+                <tr>
+                  <th style="text-align: center; font-size: large;">sl no.</th>
+                  <th style="text-align: center; font-size: large;">Comments</th>
+                  <th style="text-align: center; font-size: large;">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for c in est_comments %}
+                  <tr class="table-row">
+                    <td style="text-align: center;">{{forloop.counter }}</td>
+                    <td style="text-align: center;">{{c.comments}}</td>
+                    <td style="text-align: center;">
+                      <a class="text-danger" href="{% url 'delete_account_comment' c.id selacc.id %}"><i class="fa fa-trash" style="font-size:20px;"></i></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-outline-warning">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
+<div class="modal fade" id="commentModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  aria-hidden="true" style="margin-top: 8vh;width: 100%;">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content" style="background-color: #3b3b3b;">
+      <div class="modal-header">
+        <h3 class="modal-title text-light" id="exampleModalLabel">HISTORY</h3>
+        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="font-size: x-large;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="container " >
+        <table class="table text-light table-borderless " style="margin:3px; background-color: #000000;width: 100%;">
+          <thead>
+            <tr>
+              <th>
+                sl
+              </th>
+              <th>
+                Date
+              </th>
+              <th>
+                Action
+              </th>
+              <th>
+                By
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in latest_item_id %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{i.Date}}</td>
+              <td>{{i.action}}</td>
+              <td>{{ i.logindetails.first_name }}&nbsp;{{ i.logindetails.last_name }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}

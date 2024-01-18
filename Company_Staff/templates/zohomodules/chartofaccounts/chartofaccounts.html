@@ -65,14 +65,15 @@
                               All
                           </a>
                           <div class="dropdown-menu  m-1 btn-outline-warning" aria-labelledby="accountTypeFilter" style="background-color: black;color: aliceblue;">
-                            <a class="dropdown-item" href="#" style="background-color: black;color: aliceblue;" data-filter="All">All</a>
-                            <a class="dropdown-item" href="#" style="background-color: black;color: aliceblue;" data-filter="Assets">Assets</a>
+                            <a class="dropdown-item" href="{% url 'chartofaccounts' %}" style="background-color: black;color: aliceblue;">All</a>
+                            <a class="dropdown-item" href="{% url 'accounts_asset_filter' %}" style="background-color: black;color: aliceblue;">Assets</a>
+                            <!-- <a class="dropdown-item" href="#" style="background-color: black;color: aliceblue;" data-filter="Other Current Assets">Other Current Asset</a> -->
                             
                             
-                            <a class="dropdown-item" href="#" style="background-color: black;color: aliceblue;" data-filter="Liability">Liability</a>
-                            <a class="dropdown-item" href="#" style="background-color: black;color: aliceblue;" data-filter="Equity">Equity</a>
-                            <a class="dropdown-item" href="#" style="background-color: black;color: aliceblue;" data-filter="Income">Income</a>
-                            <a class="dropdown-item" href="#" style="background-color: black;color: aliceblue;" data-filter="Expense">Expense</a>
+                            <a class="dropdown-item" href="{% url 'accounts_liability_filter' %}" style="background-color: black;color: aliceblue;" >Liability</a>
+                            <a class="dropdown-item" href="{% url 'accounts_equity_filter' %}" style="background-color: black;color: aliceblue;" >Equity</a>
+                            <a class="dropdown-item" href="{% url 'accounts_income_filter' %}" style="background-color: black;color: aliceblue;" >Income</a>
+                            <a class="dropdown-item" href="{% url 'accounts_expense_filter' %}" style="background-color: black;color: aliceblue;" >Expense</a>
                           </div>
                       </div>
                      

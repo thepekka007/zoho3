@@ -579,137 +579,6 @@ def itemsoverview(request,pk):                                                  
     return render(request, 'zohomodules/items/itemsoverview.html')
 
 
-def edititems(request, pr):                                                                #new by tinto mt
-    if 'login_id' in request.session:
-        login_id = request.session['login_id']
-        if 'login_id' not in request.session:
-            return redirect('/')
-    
-    # Retrieve the chart of accounts entry
-    item = get_object_or_404(Items, id=pr)
-    
-
-    # Check if 'company_id' is in the session
-
-    log_user = LoginDetails.objects.get(id=login_id)
-    if log_user.user_type == 'Company':
-      
-     
-        dash_details = CompanyDetails.objects.get(login_details=log_user)
-        units = Unit.objects.filter(company=dash_details)
-        allmodules= ZohoModules.objects.get(company=dash_details,status='New')
-        item = get_object_or_404(Items, id=pr)
-        accounts=Chart_of_Accounts.objects.filter(company=dash_details)
-        units = Unit.objects.filter(company=dash_details)
-        context = {
-                    'item': item,
-                    'units':units,
-                    'details': dash_details,
-                   'accounts': accounts,
-                    'allmodules': allmodules,
-            }
-       
-    
-        
-        if request.method=='POST':
-   
-            b=Item_Transaction_History()
-            # c = CompanyDetails.objects.get(login_details=company_id)
-            b.company=dash_details
-            b.logindetails=log_user
-            b.action="Edited"
-            b.Date=date.today()
-            item.login_details=log_user
-            item.company=dash_details
-            item.item_type = request.POST.get("type",None)
-            item.item_name = request.POST.get("name",None)
-            unit_id = request.POST.get("unit")
-            unit_instance = get_object_or_404(Unit, id=unit_id)
-            item.unit = unit_instance
-            item.hsn_code = request.POST.get("hsn",None)
-            item.tax_reference = request.POST.get("radio",None)
-            if request.POST.get("radio",None) == 'taxable':
-
-                item.intrastate_tax = request.POST.get("intra",None)
-                item.interstate_tax= request.POST.get("inter",None)
-            elif request.POST.get("radio",None) == 'None-Taxable':
-                item.intrastate_tax = 0
-                item.interstate_tax= 0
-            item.selling_price = request.POST.get("sel_price",None)
-            item.sales_account = request.POST.get("sel_acc",None)
-            item.sales_description = request.POST.get("sel_desc",None)
-            item.purchase_price = request.POST.get("cost_price",None)
-            item.purchase_account = request.POST.get("cost_acc",None)
-            item.purchase_description = request.POST.get("pur_desc",None)
-            item.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
-            item.activation_tag = request.POST.get("status",None)
-            item.inventory_account = request.POST.get("invacc",None)
-            item.opening_stock = request.POST.get("openstock",None)
-            item.opening_stock_per_unit = request.POST.get("rate",None)
-            
-            
-            # Save the changes
-            item.save()
-            t=Items.objects.get(id=item.id)
-            b.items=t
-            b.save()
-            # Redirect to another page after successful update
-            return redirect('itemsoverview', pr)
-        return render(request, 'zohomodules/items/edititems.html',context)
-    if log_user.user_type == 'Staff':
-        dash_details = StaffDetails.objects.get(login_details=log_user)
-                
-        allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
-        item = get_object_or_404(Items, id=pr)
-        units = Unit.objects.filter(company=dash_details.company)
-        accounts=Chart_of_Accounts.objects.filter(company=dash_details.company)
-        context = {
-                    'item': item,
-                    'units':units,
-                    'details': dash_details,
-                   
-                    'allmodules': allmodules,
-            }
- 
-        if request.method=='POST':
-            a=Items()
-            b=Item_Transaction_History()
-
-            c=dash_details.company
-            b.company=c
-            b.logindetails=log_user
-            b.action="Edited"
-            b.Date=date.today()
-            a.login_details=log_user
-            a.company=c
-            item.item_type = request.POST.get("type",None)
-            item.item_name = request.POST.get("name",None)
-            unit_id = request.POST.get("unit")
-            unit_instance = get_object_or_404(Unit, id=unit_id)
-            item.unit = unit_instance
-            item.hsn_code = request.POST.get("hsn",None)
-            item.tax_reference = request.POST.get("radio",None)
-            item.intrastate_tax = request.POST.get("intra",None)
-            item.interstate_tax= request.POST.get("inter",None)
-            item.selling_price = request.POST.get("sel_price",None)
-            item.sales_account = request.POST.get("sel_acc",None)
-            item.sales_description = request.POST.get("sel_desc",None)
-            item.purchase_price = request.POST.get("cost_price",None)
-            item.purchase_account = request.POST.get("cost_acc",None)
-            item.purchase_description = request.POST.get("pur_desc",None)
-            item.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
-            item.activation_tag = request.POST.get("status",None)
-            item.inventory_account = request.POST.get("invacc",None)
-            item.opening_stock = request.POST.get("openstock",None)
-            item.save()
-            t=Items.objects.get(id=item.id)
-            b.items=t
-            b.save()
-
-            return redirect('itemsoverview', pr)
- 
-        return render(request, 'zohomodules/items/edititems.html', context)
-   
 def item_status_edit(request, pv):                                                                #new by tinto mt
     
     selitem = Items.objects.get(id=pv)
@@ -771,11 +640,7 @@ def deleteitem(request,pl):                                                     
     
     return redirect(items_list)
 
-def delete_item_comment(request,ph):                                                                #new by tinto mt
-    items=Items_comments.objects.filter(id=ph)
-    items.delete()
-    
-    return redirect(items_list)
+
 
 
 def add_item_comment(request,pc):                                                                #new by tinto mt
@@ -1038,7 +903,7 @@ def chartofaccounts(request):                                                   
         log_details= LoginDetails.objects.get(id=log_id)
         if log_details.user_type == 'Staff':
                 dash_details = StaffDetails.objects.get(login_details=log_details)
-                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,status="inactive")
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company)
                 allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
                 content = {
                         'details': dash_details,
@@ -1274,6 +1139,111 @@ def create_account(request):                                                    
             a.account_name = request.POST.get("account_name",None)
             a.account_code = request.POST.get("account_code",None)
             a.description = request.POST.get("description",None)
+            if a.account_type=="Other Current Assets":
+
+                a.sub_account = request.POST.get("sub_account",None)
+                a.parent_account = request.POST.get("parent_account",None)
+               
+
+            if a.account_type=="Cash":
+             
+                a.sub_account = request.POST.get("sub_account22",None)
+                a.parent_account = request.POST.get("parent_account22",None)
+               
+
+            if a.account_type=="Fixed Assets":
+            
+                a.sub_account = request.POST.get("sub_account33",None)
+                a.parent_account = request.POST.get("parent_account33",None)
+               
+            
+            if a.account_type=="Stock":
+               
+                a.sub_account = request.POST.get("sub_account44",None)
+                a.parent_account = request.POST.get("parent_account44",None)
+             
+            
+            if a.account_type=="Other Current Liability":
+             
+                a.sub_account = request.POST.get("sub_account55",None)
+                a.parent_account = request.POST.get("parent_account55",None)
+               
+            if a.account_type=="Long Term Liability":
+            
+                a.sub_account = request.POST.get("sub_account66",None)
+                a.parent_account = request.POST.get("parent_account66",None)
+              
+            
+            if a.account_type=="Other Liability":
+              
+                a.sub_account = request.POST.get("sub_account77",None)
+                a.parent_account = request.POST.get("parent_account77",None)
+              
+            if a.account_type=="Equity":
+            
+                a.sub_account = request.POST.get("sub_account88",None)
+                a.parent_account = request.POST.get("parent_account88",None)
+            
+            
+            if a.account_type=="Income":
+             
+                a.sub_account = request.POST.get("sub_account99",None)
+                a.parent_account = request.POST.get("parent_account99",None)
+              
+            
+            if a.account_type=="Expense":
+             
+                a.sub_account = request.POST.get("sub_account100",None)
+                a.parent_account = request.POST.get("parent_account100",None)
+              
+            if a.account_type=="Cost Of Goods Sold":
+              
+                a.sub_account = request.POST.get("sub_account111",None)
+                a.parent_account = request.POST.get("parent_account111",None)
+             
+            if a.account_type=="Other Expense":
+             
+                a.sub_account = request.POST.get("sub_account222",None)
+                a.parent_account = request.POST.get("parent_account222",None)
+               
+            account_type=request.POST.get("account_type",None)
+            if account_type == 'Other Assets':
+                a.description = 'Track special assets like goodwill and other intangible assets'
+            if account_type == 'Other Current Assets':
+                a.description = 'Any short term asset that can be converted into cash or cash equivalents easily Prepaid expenses Stocks and Mutual Funds'
+            if account_type == 'Cash':
+                a.description = 'To keep track of cash and other cash equivalents like petty cash, undeposited funds, etc., use an organized accounting system  financial software'
+            if account_type == 'Bank':
+                a.description = 'To keep track of bank accounts like Savings, Checking, and Money Market accounts.'
+            if account_type == 'Fixed Asset':
+                a.description = 'Any long-term investment or asset that cannot be easily converted into cash includes: Land and Buildings, Plant, Machinery, and Equipment, Computers, Furniture.'
+            if account_type == 'Stock':
+                a.description = 'To keep track of your inventory assets.'
+            if account_type == 'Payment Clearing':
+                a.description = 'To keep track of funds moving in and out via payment processors like Stripe, PayPal, etc.'
+            if account_type == 'Other Liability':
+                a.description = 'Obligation of an entity arising from past transactions or events which would require repayment.Tax to be paid Loan to be Repaid Accounts Payableetc.'
+            if account_type == 'Other Current Liability':
+                a.description = 'Any short term liability like: Customer Deposits Tax Payable'
+            if account_type == 'Credit Card':
+                a.description = 'Create a trail of all your credit card transactions by creating a credit card account.'
+            if account_type == 'Long Term Liability':
+                a.description = 'Liabilities that mature after a minimum period of one year like: Notes Payable Debentures Long Term Loans '
+            if account_type == 'Overseas Tax Payable':
+                a.description = 'Track your taxes in this account if your business sells digital services to foreign customers.'
+            if account_type == 'Equity':
+                a.description = 'Owners or stakeholders interest on the assets of the business after deducting all the liabilities.'
+            if account_type == 'Income':
+                a.description = 'Income or Revenue earned from normal business activities like sale of goods and services to customers.'
+            if account_type == 'Other Income':
+                a.description = 'Income or revenue earned from activities not directly related to your business like : Interest Earned Dividend Earned'
+            if account_type == 'Expense':
+                a.description = 'Reflects expenses incurred for running normal business operations, such as : Advertisements and Marketing Business Travel Expenses License Fees Utility Expenses'
+            if account_type == 'Cost Of Goods Sold':
+                a.description = 'This indicates the direct costs attributable to the production of the goods sold by a company such as: Material and Labor costs Cost of obtaining raw materials'
+            if account_type == 'Other Expense':
+                a.description = 'Track miscellaneous expenses incurred for activities other than primary business operations or create additional accounts to track default expenses like insurance or contribution towards charity.'
+       
     
             a.Create_status="active"
             ac_name=request.POST.get("account_name",None)
@@ -1512,11 +1482,6 @@ def add_account_comment(request,pc):                                            
             return redirect('chartofaccountsoverview',pc)
 
 
-def delete_account_comment(request,ph):                                                                #new by tinto mt
-    acc=chart_of_accounts_comments.objects.filter(id=ph)
-    acc.delete()
-    
-    return redirect(chartofaccounts)
 
 from django.db.models import Max
 
@@ -1572,3 +1537,949 @@ def shareaccountToEmail(request,pt):                                            
             return redirect(chartofaccountsoverview,pt) 
         
         #--------------------------------------------------- TINTO VIEW CHART OF ACCOUNTS END-------------------------------------------
+
+
+
+
+
+
+
+
+        
+
+
+
+def filter_item_view_Active(request,pk): 
+        if 'login_id' in request.session:
+            login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=login_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                items=Items.objects.filter(activation_tag='Active',company=dash_details.company)  
+                selitem=Items.objects.get(id=pk)
+                est_comments=Items_comments.objects.filter(Items=pk)
+                stock_value=selitem.opening_stock*selitem.purchase_price  
+                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                context = {
+                        'details': dash_details,
+                        'items':items,
+                        'selitem':selitem,
+                        'stock_value':stock_value,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/items/itemsoverview.html',context)
+        if log_details.user_type == 'Company':
+                dash_details = CompanyDetails.objects.get(login_details=log_details)
+                items=Items.objects.filter(activation_tag='Active',company=dash_details)  
+                selitem=Items.objects.get(id=pk)
+                est_comments=Items_comments.objects.filter(Items=pk)
+                stock_value=selitem.opening_stock*selitem.purchase_price  
+                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+      
+                allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+                context = {
+                        'details': dash_details,
+                        'items':items,
+                        'selitem':selitem,
+                        'stock_value':stock_value,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                        'allmodules': allmodules,
+                }
+        return render(request,'zohomodules/items/itemsoverview.html',context)
+
+                                                                  #new by tinto mt
+
+def filter_item_view_inActive(request,pk): 
+        if 'login_id' in request.session:
+            login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=login_id)
+        if log_details.user_type == 'Staff':
+                items=Items.objects.filter(activation_tag='inactive',company=dash_details.company)  
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                selitem=Items.objects.get(id=pk)
+                est_comments=Items_comments.objects.filter(Items=pk)
+                stock_value=selitem.opening_stock*selitem.purchase_price  
+                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                context = {
+                        'details': dash_details,
+                        'items':items,
+                        'selitem':selitem,
+                        'stock_value':stock_value,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/items/itemsoverview.html',context)
+        if log_details.user_type == 'Company':
+                dash_details = CompanyDetails.objects.get(login_details=log_details)
+                items=Items.objects.filter(activation_tag='inactive',company=dash_details)  
+                selitem=Items.objects.get(id=pk)
+                est_comments=Items_comments.objects.filter(Items=pk)
+                stock_value=selitem.opening_stock*selitem.purchase_price  
+                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+      
+                allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+                context = {
+                        'details': dash_details,
+                        'items':items,
+                        'selitem':selitem,
+                        'stock_value':stock_value,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                        'allmodules': allmodules,
+                }
+        return render(request,'zohomodules/items/itemsoverview.html',context)                                                               #new by tinto mt
+
+def create_item(request):                                                                #new by tinto mt
+    
+    login_id = request.session['login_id']
+    if 'login_id' not in request.session:
+        return redirect('/')
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+        company_id = request.session['login_id']
+        
+        if request.method=='POST':
+            a=Items()
+            b=Item_Transaction_History()
+            c = CompanyDetails.objects.get(login_details=company_id)
+            b.company=c
+            b.logindetails=log_user
+            a.login_details=log_user
+            a.company=c
+            b.Date=date.today()
+            a.item_type = request.POST.get("type",None)
+            a.item_name = request.POST.get("name",None)
+            unit_id = request.POST.get("unit")
+            uid=Unit.objects.get(id=unit_id)
+            # unit_instance = get_object_or_404(Unit, id=unit_id)
+            a.unit = uid
+            a.hsn_code = request.POST.get("hsn",None)
+            a.tax_reference = request.POST.get("radio",None)
+            a.intrastate_tax = request.POST.get("intra",None)
+            a.interstate_tax= request.POST.get("inter",None)
+            a.selling_price = request.POST.get("sel_price",None)
+            a.sales_account = request.POST.get("sel_acc",None)
+            a.sales_description = request.POST.get("sel_desc",None)
+            a.purchase_price = request.POST.get("cost_price",None)
+            a.purchase_account = request.POST.get("cost_acc",None)
+            a.purchase_description = request.POST.get("pur_desc",None)
+            a.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
+            a.activation_tag = 'Active'
+            a.type = 'Opening Stock'
+            a.inventory_account = request.POST.get("invacc",None)
+            a.opening_stock = request.POST.get("openstock",None)
+            a.opening_stock_per_unit = request.POST.get("rate",None)
+            
+            a.save()    
+            t=Items.objects.get(id=a.id)
+            b.items=t
+            b.save()
+            return redirect('items_list')
+    elif log_user.user_type == 'Staff':
+        staff_id = request.session['login_id']
+        if request.method=='POST':
+            a=Items()
+            b=Item_Transaction_History()
+            staff = LoginDetails.objects.get(id=staff_id)
+            sf = StaffDetails.objects.get(login_details=staff)
+            c=sf.company
+            b.Date=date.today()
+            b.company=c
+            b.logindetails=log_user
+            a.login_details=log_user
+            a.company=c
+            a.item_type = request.POST.get("type",None)
+            a.item_name = request.POST.get("name",None)
+            unit_id = request.POST.get("unit")
+            unit_instance = get_object_or_404(Unit, id=unit_id)
+            a.unit = unit_instance
+            a.hsn_code = request.POST.get("hsn",None)
+            a.tax_reference = request.POST.get("radio",None)
+            a.intrastate_tax = request.POST.get("intra",None)
+            a.interstate_tax= request.POST.get("inter",None)
+            a.selling_price = request.POST.get("sel_price",None)
+            a.sales_account = request.POST.get("sel_acc",None)
+            a.sales_description = request.POST.get("sel_desc",None)
+            a.purchase_price = request.POST.get("cost_price",None)
+            a.purchase_account = request.POST.get("cost_acc",None)
+            a.purchase_description = request.POST.get("pur_desc",None)
+            a.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
+            a.activation_tag = request.POST.get("status",None)
+            a.inventory_account = request.POST.get("invacc",None)
+            a.opening_stock = request.POST.get("openstock",None)
+        
+        
+
+        
+            a.save()    
+            t=Items.objects.get(id=a.id)
+            b.items=t
+            b.save()
+            return redirect('items_list')
+    return redirect('items_list')
+
+
+
+def chartofaccounts(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc=Chart_of_Accounts.objects.filter(company=dash_details)
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+
+    
+def create_account(request):                                                                #new by tinto mt
+    login_id = request.session['login_id']
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+        company_id = request.session['login_id']
+        if request.method=='POST':
+            a=Chart_of_Accounts()
+            b=Chart_of_Accounts_History()
+            account=Chart_of_Accounts.objects.all()
+            c = CompanyDetails.objects.get(login_details=company_id)
+            b.company=c
+            b.logindetails=log_user
+            b.action="Created"
+            b.Date=date.today()
+            a.login_details=log_user
+            a.company=c
+          
+        
+            a.account_type = request.POST.get("account_type",None)
+            a.account_name = request.POST.get("account_name",None)
+            a.account_code = request.POST.get("account_code",None)
+            a.account_number = request.POST.get("account_number2",None)
+            a.account_description = request.POST.get("description",None)
+            if a.account_type=="Other Current Assets":
+
+                a.sub_account = request.POST.get("sub_account",None)
+                a.parent_account = request.POST.get("parent_account",None)
+               
+
+            if a.account_type=="Cash":
+             
+                a.sub_account = request.POST.get("sub_account22",None)
+                a.parent_account = request.POST.get("parent_account22",None)
+               
+
+            if a.account_type=="Fixed Assets":
+            
+                a.sub_account = request.POST.get("sub_account33",None)
+                a.parent_account = request.POST.get("parent_account33",None)
+               
+            
+            if a.account_type=="Stock":
+               
+                a.sub_account = request.POST.get("sub_account44",None)
+                a.parent_account = request.POST.get("parent_account44",None)
+             
+            
+            if a.account_type=="Other Current Liability":
+             
+                a.sub_account = request.POST.get("sub_account55",None)
+                a.parent_account = request.POST.get("parent_account55",None)
+               
+            if a.account_type=="Long Term Liability":
+            
+                a.sub_account = request.POST.get("sub_account66",None)
+                a.parent_account = request.POST.get("parent_account66",None)
+              
+            
+            if a.account_type=="Other Liability":
+              
+                a.sub_account = request.POST.get("sub_account77",None)
+                a.parent_account = request.POST.get("parent_account77",None)
+              
+            if a.account_type=="Equity":
+            
+                a.sub_account = request.POST.get("sub_account88",None)
+                a.parent_account = request.POST.get("parent_account88",None)
+            
+            
+            if a.account_type=="Income":
+             
+                a.sub_account = request.POST.get("sub_account99",None)
+                a.parent_account = request.POST.get("parent_account99",None)
+              
+            
+            if a.account_type=="Expense":
+             
+                a.sub_account = request.POST.get("sub_account100",None)
+                a.parent_account = request.POST.get("parent_account100",None)
+              
+            if a.account_type=="Cost Of Goods Sold":
+              
+                a.sub_account = request.POST.get("sub_account111",None)
+                a.parent_account = request.POST.get("parent_account111",None)
+             
+            if a.account_type=="Other Expense":
+             
+                a.sub_account = request.POST.get("sub_account222",None)
+                a.parent_account = request.POST.get("parent_account222",None)
+               
+            account_type=request.POST.get("account_type",None)
+            if account_type == 'Other Assets':
+                a.description = 'Track special assets like goodwill and other intangible assets'
+            if account_type == 'Other Current Assets':
+                a.description = 'Any short term asset that can be converted into cash or cash equivalents easily Prepaid expenses Stocks and Mutual Funds'
+            if account_type == 'Cash':
+                a.description = 'To keep track of cash and other cash equivalents like petty cash, undeposited funds, etc., use an organized accounting system  financial software'
+            if account_type == 'Bank':
+                a.description = 'To keep track of bank accounts like Savings, Checking, and Money Market accounts.'
+            if account_type == 'Fixed Asset':
+                a.description = 'Any long-term investment or asset that cannot be easily converted into cash includes: Land and Buildings, Plant, Machinery, and Equipment, Computers, Furniture.'
+            if account_type == 'Stock':
+                a.description = 'To keep track of your inventory assets.'
+            if account_type == 'Payment Clearing':
+                a.description = 'To keep track of funds moving in and out via payment processors like Stripe, PayPal, etc.'
+            if account_type == 'Other Liability':
+                a.description = 'Obligation of an entity arising from past transactions or events which would require repayment.Tax to be paid Loan to be Repaid Accounts Payableetc.'
+            if account_type == 'Other Current Liability':
+                a.description = 'Any short term liability like: Customer Deposits Tax Payable'
+            if account_type == 'Credit Card':
+                a.description = 'Create a trail of all your credit card transactions by creating a credit card account.'
+            if account_type == 'Long Term Liability':
+                a.description = 'Liabilities that mature after a minimum period of one year like: Notes Payable Debentures Long Term Loans '
+            if account_type == 'Overseas Tax Payable':
+                a.description = 'Track your taxes in this account if your business sells digital services to foreign customers.'
+            if account_type == 'Equity':
+                a.description = 'Owners or stakeholders interest on the assets of the business after deducting all the liabilities.'
+            if account_type == 'Income':
+                a.description = 'Income or Revenue earned from normal business activities like sale of goods and services to customers.'
+            if account_type == 'Other Income':
+                a.description = 'Income or revenue earned from activities not directly related to your business like : Interest Earned Dividend Earned'
+            if account_type == 'Expense':
+                a.description = 'Reflects expenses incurred for running normal business operations, such as : Advertisements and Marketing Business Travel Expenses License Fees Utility Expenses'
+            if account_type == 'Cost Of Goods Sold':
+                a.description = 'This indicates the direct costs attributable to the production of the goods sold by a company such as: Material and Labor costs Cost of obtaining raw materials'
+            if account_type == 'Other Expense':
+                a.description = 'Track miscellaneous expenses incurred for activities other than primary business operations or create additional accounts to track default expenses like insurance or contribution towards charity.'
+       
+
+            
+    
+            a.Create_status="active"
+            ac_name=request.POST.get("account_name",None)
+            if Chart_of_Accounts.objects.filter(account_name=ac_name,company=c).exists():
+                error='yes'
+                messages.error(request,'Account with same name exsits !!!')
+                return redirect('addchartofaccounts')
+            else:
+                a.save()
+                t=Chart_of_Accounts.objects.get(id=a.id)
+                b.chart_of_accounts=t
+                b.save()
+                return redirect('chartofaccounts')
+    elif log_user.user_type == 'Staff':
+        staff_id = request.session['login_id']
+        if request.method=='POST':
+            a=Chart_of_Accounts()
+            b=Chart_of_Accounts_History()
+            staff = LoginDetails.objects.get(id=staff_id)
+            sf = StaffDetails.objects.get(login_details=staff)
+            c=sf.company
+            b.Date=date.today()
+            b.company=c
+            b.logindetails=log_user
+            a.login_details=log_user
+            a.company=c
+          
+        
+            a.account_type = request.POST.get("account_type",None)
+            a.account_name = request.POST.get("account_name",None)
+            a.account_code = request.POST.get("account_code",None)
+            a.description = request.POST.get("description",None)
+            if a.account_type=="Other Current Assets":
+
+                a.sub_account = request.POST.get("sub_account",None)
+                a.parent_account = request.POST.get("parent_account",None)
+               
+
+            if a.account_type=="Cash":
+             
+                a.sub_account = request.POST.get("sub_account22",None)
+                a.parent_account = request.POST.get("parent_account22",None)
+               
+
+            if a.account_type=="Fixed Assets":
+            
+                a.sub_account = request.POST.get("sub_account33",None)
+                a.parent_account = request.POST.get("parent_account33",None)
+               
+            
+            if a.account_type=="Stock":
+               
+                a.sub_account = request.POST.get("sub_account44",None)
+                a.parent_account = request.POST.get("parent_account44",None)
+             
+            
+            if a.account_type=="Other Current Liability":
+             
+                a.sub_account = request.POST.get("sub_account55",None)
+                a.parent_account = request.POST.get("parent_account55",None)
+               
+            if a.account_type=="Long Term Liability":
+            
+                a.sub_account = request.POST.get("sub_account66",None)
+                a.parent_account = request.POST.get("parent_account66",None)
+              
+            
+            if a.account_type=="Other Liability":
+              
+                a.sub_account = request.POST.get("sub_account77",None)
+                a.parent_account = request.POST.get("parent_account77",None)
+              
+            if a.account_type=="Equity":
+            
+                a.sub_account = request.POST.get("sub_account88",None)
+                a.parent_account = request.POST.get("parent_account88",None)
+            
+            
+            if a.account_type=="Income":
+             
+                a.sub_account = request.POST.get("sub_account99",None)
+                a.parent_account = request.POST.get("parent_account99",None)
+              
+            
+            if a.account_type=="Expense":
+             
+                a.sub_account = request.POST.get("sub_account100",None)
+                a.parent_account = request.POST.get("parent_account100",None)
+              
+            if a.account_type=="Cost Of Goods Sold":
+              
+                a.sub_account = request.POST.get("sub_account111",None)
+                a.parent_account = request.POST.get("parent_account111",None)
+             
+            if a.account_type=="Other Expense":
+             
+                a.sub_account = request.POST.get("sub_account222",None)
+                a.parent_account = request.POST.get("parent_account222",None)
+               
+            account_type=request.POST.get("account_type",None)
+            if account_type == 'Other Assets':
+                a.description = 'Track special assets like goodwill and other intangible assets'
+            if account_type == 'Other Current Assets':
+                a.description = 'Any short term asset that can be converted into cash or cash equivalents easily Prepaid expenses Stocks and Mutual Funds'
+            if account_type == 'Cash':
+                a.description = 'To keep track of cash and other cash equivalents like petty cash, undeposited funds, etc., use an organized accounting system  financial software'
+            if account_type == 'Bank':
+                a.description = 'To keep track of bank accounts like Savings, Checking, and Money Market accounts.'
+            if account_type == 'Fixed Asset':
+                a.description = 'Any long-term investment or asset that cannot be easily converted into cash includes: Land and Buildings, Plant, Machinery, and Equipment, Computers, Furniture.'
+            if account_type == 'Stock':
+                a.description = 'To keep track of your inventory assets.'
+            if account_type == 'Payment Clearing':
+                a.description = 'To keep track of funds moving in and out via payment processors like Stripe, PayPal, etc.'
+            if account_type == 'Other Liability':
+                a.description = 'Obligation of an entity arising from past transactions or events which would require repayment.Tax to be paid Loan to be Repaid Accounts Payableetc.'
+            if account_type == 'Other Current Liability':
+                a.description = 'Any short term liability like: Customer Deposits Tax Payable'
+            if account_type == 'Credit Card':
+                a.description = 'Create a trail of all your credit card transactions by creating a credit card account.'
+            if account_type == 'Long Term Liability':
+                a.description = 'Liabilities that mature after a minimum period of one year like: Notes Payable Debentures Long Term Loans '
+            if account_type == 'Overseas Tax Payable':
+                a.description = 'Track your taxes in this account if your business sells digital services to foreign customers.'
+            if account_type == 'Equity':
+                a.description = 'Owners or stakeholders interest on the assets of the business after deducting all the liabilities.'
+            if account_type == 'Income':
+                a.description = 'Income or Revenue earned from normal business activities like sale of goods and services to customers.'
+            if account_type == 'Other Income':
+                a.description = 'Income or revenue earned from activities not directly related to your business like : Interest Earned Dividend Earned'
+            if account_type == 'Expense':
+                a.description = 'Reflects expenses incurred for running normal business operations, such as : Advertisements and Marketing Business Travel Expenses License Fees Utility Expenses'
+            if account_type == 'Cost Of Goods Sold':
+                a.description = 'This indicates the direct costs attributable to the production of the goods sold by a company such as: Material and Labor costs Cost of obtaining raw materials'
+            if account_type == 'Other Expense':
+                a.description = 'Track miscellaneous expenses incurred for activities other than primary business operations or create additional accounts to track default expenses like insurance or contribution towards charity.'
+       
+    
+            a.Create_status="active"
+            ac_name=request.POST.get("account_name",None)
+            if Chart_of_Accounts.objects.filter(account_name=ac_name,company=c).exists():
+                error='yes'
+                messages.error(request,'Account with same name exsits')
+                return redirect('addchartofaccounts')
+            else:
+                a.save()
+                t=Chart_of_Accounts.objects.get(id=a.id)
+                b.chart_of_accounts=t
+                b.save()
+                return redirect('chartofaccounts')
+
+    return redirect('addchartofaccounts')
+
+def chartofaccountsoverview(request,pk):                                                                #new by tinto mt
+       if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=login_id)
+        if log_details.user_type == 'Staff':
+                    dash_details = StaffDetails.objects.get(login_details=log_details)
+
+                    allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                
+                    acc=Chart_of_Accounts.objects.filter(company=dash_details.company)  
+                    selacc=Chart_of_Accounts.objects.get(id=pk)  
+                    est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
+                    latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                    filtered_data = Chart_of_Accounts_History.objects.filter(Date=latest_date, chart_of_accounts_id=pk)
+                    context = {
+                        'details': dash_details,
+                    
+                        'allmodules': allmodules,
+                        'acc':acc,
+                        'selacc':selacc,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                    }
+                    return render(request, 'zohomodules/chartofaccounts/chartofaccountsoverview.html',context)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+       
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            acc=Chart_of_Accounts.objects.filter(company=dash_details)  
+            selacc=Chart_of_Accounts.objects.get(id=pk)  
+            est_comments=chart_of_accounts_comments.objects.filter(chart_of_accounts=pk)
+            latest_date = Chart_of_Accounts_History.objects.filter(chart_of_accounts_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+            filtered_data = Chart_of_Accounts_History.objects.filter(Date=latest_date, chart_of_accounts_id=pk)
+            context = {
+                        'details': dash_details,
+                    
+                        'allmodules': allmodules,
+                        'acc':acc,
+                        'selacc':selacc,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                    }
+    
+            return render(request, 'zohomodules/chartofaccounts/chartofaccountsoverview.html',context)
+
+
+
+
+
+
+def create_item(request):                                                                #new by tinto mt
+    
+    login_id = request.session['login_id']
+    if 'login_id' not in request.session:
+        return redirect('/')
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+        company_id = request.session['login_id']
+        
+        if request.method=='POST':
+            a=Items()
+            b=Item_Transaction_History()
+            c = CompanyDetails.objects.get(login_details=company_id)
+            b.company=c
+            b.logindetails=log_user
+            a.login_details=log_user
+            a.company=c
+            a.item_type = request.POST.get("type",None)
+            a.item_name = request.POST.get("name",None)
+            unit_id = request.POST.get("unit")
+            uid=Unit.objects.get(id=unit_id)
+            # unit_instance = get_object_or_404(Unit, id=unit_id)
+            a.unit = uid
+            a.hsn_code = request.POST.get("hsn",None)
+            a.tax_reference = request.POST.get("radio",None)
+            a.intrastate_tax = request.POST.get("intra",None)
+            a.interstate_tax= request.POST.get("inter",None)
+            a.selling_price = request.POST.get("sel_price",None)
+            a.sales_account = request.POST.get("sel_acc",None)
+            a.sales_description = request.POST.get("sel_desc",None)
+            a.purchase_price = request.POST.get("cost_price",None)
+            a.purchase_account = request.POST.get("cost_acc",None)
+            a.purchase_description = request.POST.get("pur_desc",None)
+            minstock=request.POST.get("minimum_stock",None)
+            if minstock != "":
+                a.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
+            else:
+                a.minimum_stock_to_maintain = 0
+            a.activation_tag = 'Active'
+            a.type = 'Opening Stock'
+            a.inventory_account = request.POST.get("invacc",None)
+            a.opening_stock = request.POST.get("openstock",None)
+            a.opening_stock_per_unit = request.POST.get("rate",None)
+            
+            a.save()    
+            t=Items.objects.get(id=a.id)
+            b.items=t
+            b.save()
+            return redirect('items_list')
+    elif log_user.user_type == 'Staff':
+        staff_id = request.session['login_id']
+        if request.method=='POST':
+            a=Items()
+            b=Item_Transaction_History()
+            staff = LoginDetails.objects.get(id=staff_id)
+            sf = StaffDetails.objects.get(login_details=staff)
+            c=sf.company
+            b.Date=date.today()
+            b.company=c
+            b.logindetails=log_user
+            a.login_details=log_user
+            a.company=c
+            a.item_type = request.POST.get("type",None)
+            a.item_name = request.POST.get("name",None)
+            unit_id = request.POST.get("unit")
+            unit_instance = get_object_or_404(Unit, id=unit_id)
+            a.unit = unit_instance
+            a.hsn_code = request.POST.get("hsn",None)
+            a.tax_reference = request.POST.get("radio",None)
+            a.intrastate_tax = request.POST.get("intra",None)
+            a.interstate_tax= request.POST.get("inter",None)
+            a.selling_price = request.POST.get("sel_price",None)
+            a.sales_account = request.POST.get("sel_acc",None)
+            a.sales_description = request.POST.get("sel_desc",None)
+            a.purchase_price = request.POST.get("cost_price",None)
+            a.purchase_account = request.POST.get("cost_acc",None)
+            a.purchase_description = request.POST.get("pur_desc",None)
+            minstock=request.POST.get("minimum_stock",None)
+            if minstock != "":
+                a.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
+            else:
+                a.minimum_stock_to_maintain = 0
+            # a.activation_tag = request.POST.get("status",None)
+            a.inventory_account = request.POST.get("invacc",None)
+            a.opening_stock = request.POST.get("openstock",None)
+        
+        
+
+        
+            a.save()    
+            t=Items.objects.get(id=a.id)
+            b.items=t
+            b.save()
+            return redirect('items_list')
+    return redirect('items_list')
+
+
+
+
+
+
+def delete_account_comment(request,ph,pr):                                                                #new by tinto mt
+    acc=chart_of_accounts_comments.objects.filter(id=ph)
+    acc.delete()
+    ac=Chart_of_Accounts.objects.get(id=pr)
+    
+    return redirect(chartofaccountsoverview,ac.id)
+
+def delete_item_comment(request,ph,pr):                                                                #new by tinto mt
+    items=Items_comments.objects.filter(id=ph)
+    items.delete()
+    ac=Items.objects.get(id=pr)
+    
+    return redirect(itemsoverview,ac.id)
+
+from django.db.models import Q
+def accounts_asset_filter(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,account_type__in=["Other Current Asset", "Fixed Asset","Other Asset"])
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc = Chart_of_Accounts.objects.filter(company=dash_details,account_type__in=["Other Current Asset", "Fixed Asset","Other Asset"])
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        
+
+def accounts_liability_filter(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,account_type__in=["Other Current Liability", "Other Liability","Long Term Liability","Credit card","Overseas Tax Payable"])
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc = Chart_of_Accounts.objects.filter(company=dash_details,account_type__in=["Other Current Liability", "Other Liability","Long Term Liability","Credit card","Overseas Tax Payable"])
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+
+
+def accounts_equity_filter(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,account_type__in=["Equity"])
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc = Chart_of_Accounts.objects.filter(company=dash_details,account_type__in=["Equity"])
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        
+
+def accounts_income_filter(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,account_type__in=["Income","Other Income"])
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc = Chart_of_Accounts.objects.filter(company=dash_details,account_type__in=["Income","Other Income"])
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+def accounts_expense_filter(request):                                                                #new by tinto mt
+     if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Staff':
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                acc=Chart_of_Accounts.objects.filter(company=dash_details.company,account_type__in=["Expense","Other Expense","Cost of Goods Sold"])
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                content = {
+                        'details': dash_details,
+                        'acc':acc,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details)
+            acc = Chart_of_Accounts.objects.filter(company=dash_details,account_type__in=["Expense","Other Expense","Cost of Goods Sold"])
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            content = {
+                    'details': dash_details,
+                    'acc': acc,
+                    'allmodules': allmodules,
+            }   
+            return render(request,'zohomodules/chartofaccounts/chartofaccounts.html',content)
+
+
+def edititems(request, pr):                                                                #new by tinto mt
+    if 'login_id' in request.session:
+        login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+    
+    # Retrieve the chart of accounts entry
+    item = get_object_or_404(Items, id=pr)
+    
+
+    # Check if 'company_id' is in the session
+
+    log_user = LoginDetails.objects.get(id=login_id)
+    if log_user.user_type == 'Company':
+      
+     
+        dash_details = CompanyDetails.objects.get(login_details=log_user)
+        units = Unit.objects.filter(company=dash_details)
+        allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+        item = get_object_or_404(Items, id=pr)
+        accounts=Chart_of_Accounts.objects.filter(company=dash_details)
+        units = Unit.objects.filter(company=dash_details)
+        context = {
+                    'item': item,
+                    'units':units,
+                    'details': dash_details,
+                   'accounts': accounts,
+                    'allmodules': allmodules,
+            }
+       
+    
+        
+        if request.method=='POST':
+   
+            b=Item_Transaction_History()
+            # c = CompanyDetails.objects.get(login_details=company_id)
+            b.company=dash_details
+            b.logindetails=log_user
+            b.action="Edited"
+            b.Date=date.today()
+            item.login_details=log_user
+            item.company=dash_details
+            item.item_type = request.POST.get("type",None)
+            item.item_name = request.POST.get("name",None)
+            unit_id = request.POST.get("unit")
+            unit_instance = get_object_or_404(Unit, id=unit_id)
+            item.unit = unit_instance
+            item.hsn_code = request.POST.get("hsn",None)
+            item.tax_reference = request.POST.get("radio",None)
+            if request.POST.get("radio",None) == 'taxable':
+
+                item.intrastate_tax = request.POST.get("intra",None)
+                item.interstate_tax= request.POST.get("inter",None)
+            elif request.POST.get("radio",None) == 'None-Taxable':
+                item.intrastate_tax = 0
+                item.interstate_tax= 0
+            item.selling_price = request.POST.get("sel_price",None)
+            item.sales_account = request.POST.get("sel_acc",None)
+            item.sales_description = request.POST.get("sel_desc",None)
+            item.purchase_price = request.POST.get("cost_price",None)
+            item.purchase_account = request.POST.get("cost_acc",None)
+            item.purchase_description = request.POST.get("pur_desc",None)
+            item.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
+            item.activation_tag = request.POST.get("status",None)
+            item.inventory_account = request.POST.get("invacc",None)
+            item.opening_stock = request.POST.get("openstock",None)
+            item.opening_stock_per_unit = request.POST.get("rate",None)
+            
+            
+            # Save the changes
+            item.save()
+            t=Items.objects.get(id=item.id)
+            b.items=t
+            b.save()
+            # Redirect to another page after successful update
+            return redirect('itemsoverview', pr)
+        return render(request, 'zohomodules/items/edititems.html',context)
+    if log_user.user_type == 'Staff':
+        dash_details = StaffDetails.objects.get(login_details=log_user)
+                
+        allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+        item = get_object_or_404(Items, id=pr)
+        units = Unit.objects.filter(company=dash_details.company)
+        accounts=Chart_of_Accounts.objects.filter(company=dash_details.company)
+        context = {
+                    'item': item,
+                    'units':units,
+                    'details': dash_details,
+                    'accounts': accounts,
+                   
+                    'allmodules': allmodules,
+            }
+ 
+        if request.method=='POST':
+            a=Items()
+            b=Item_Transaction_History()
+
+            c=dash_details.company
+            b.company=c
+            b.logindetails=log_user
+            b.action="Edited"
+            b.Date=date.today()
+            a.login_details=log_user
+            a.company=c
+            item.item_type = request.POST.get("type",None)
+            item.item_name = request.POST.get("name",None)
+            unit_id = request.POST.get("unit")
+            unit_instance = get_object_or_404(Unit, id=unit_id)
+            item.unit = unit_instance
+            item.hsn_code = request.POST.get("hsn",None)
+            item.tax_reference = request.POST.get("radio",None)
+            item.intrastate_tax = request.POST.get("intra",None)
+            item.interstate_tax= request.POST.get("inter",None)
+            item.selling_price = request.POST.get("sel_price",None)
+            item.sales_account = request.POST.get("sel_acc",None)
+            item.sales_description = request.POST.get("sel_desc",None)
+            item.purchase_price = request.POST.get("cost_price",None)
+            item.purchase_account = request.POST.get("cost_acc",None)
+            item.purchase_description = request.POST.get("pur_desc",None)
+            item.minimum_stock_to_maintain = request.POST.get("minimum_stock",None)
+            item.activation_tag = request.POST.get("status",None)
+            item.inventory_account = request.POST.get("invacc",None)
+            item.opening_stock = request.POST.get("openstock",None)
+            item.save()
+            t=Items.objects.get(id=item.id)
+            b.items=t
+            b.save()
+
+            return redirect('itemsoverview', pr)
+ 
+        return render(request, 'zohomodules/items/edititems.html', context)
+   
