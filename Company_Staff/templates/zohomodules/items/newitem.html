@@ -44,7 +44,7 @@ input {
     .select2-container--open .select2-dropdown{left:0;color: rgb(255, 255, 255);background-color: #000000;border-color: #f2e8e8;}
 
     .select2-hidden-accessible{background-color: #000000;border:2px !important;clip:rect(0 0 0 0) !important;-webkit-clip-path:inset(50%) !important;clip-path:inset(50%) !important;height:0px !important;padding:0 !important;position:absolute !important;width:1px !important;white-space:nowrap !important;color: rgb(250, 250, 250)} 
-    .select2-container--default .select2-selection--single{background-color:#000000;border:1px solid #000000;border-radius:4px;color: rgb(0, 0, 0);background-color: #ede4e4;}
+    /* .select2-container--default .select2-selection--single{background-color:#000000;border:1px solid #000000;border-radius:4px;color: rgb(0, 0, 0);background-color: #ede4e4;} */
 /* .select2-hidden-accessible{background-color: #fff;border:0 !important;clip:rect(0 0 0 0) !important;-webkit-clip-path:inset(50%) !important;clip-path:inset(50%) !important;height:1px !important;overflow:hidden !important;padding:0 !important;position:absolute !important;width:1px !important;white-space:nowrap !important;color: black}  */
 .select2-container--default .select2-selection--single:focus, .select2-container--default .select2-selection--single .select2-search__field:focus, .typeahead:focus, .tt-query:focus, .tt-hint:focus {
     border: 1px solid rgba(250, 250, 250, 0.5);
@@ -230,9 +230,10 @@ li{
                 <fieldset class="form-group" >
                     <div class="row">
                       <hr>
-                        <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Type  &nbsp;&nbsp;<i
-                                class="fa fa-question-circle"></i></label>
+                     
                         <div class="col-12 col-md-10">
+                          <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Type  &nbsp;&nbsp;<i
+                            class="fa fa-question-circle"></i></label>
                             <div class="form-check form-check-inline">
                                 <input required class="form-check-input" type="radio" name="type" id="gridRadios1" value="Goods">
                                 <label class="form-check-label text-white" for="gridRadios1">Goods</label>
@@ -283,8 +284,9 @@ li{
                 <br>
                 <fieldset class="form-group" >
                     <div class="row">
-                        <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Tax Preference: &nbsp;&nbsp;</label>
+                  
                         <div class="col-12 col-md-10">
+                          <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Tax Preference: &nbsp;&nbsp;</label>
                             <div class="form-check form-check-inline">
                                 <input required class="form-check-input" type="radio" name="radio" id="gridRadios1" onclick="showAllSelect()" value="taxable">
                                 <label class="form-check-label text-white" for="gridRadios1">Taxable</label>
@@ -350,7 +352,7 @@ li{
                         <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Account *</label>
                         <div class="col-sm-10 col-md-7 col-9 ml-5">
                           <select name="sel_acc" class="form-control " style="background-color: black; color: white;">
-                            <option >--Select Account--</option>
+                            <option value=" ">--Select Account--</option>
                             <option value="General Income">General Income</option>
                             <option value="Interest Income">Interest Income</option>
                             <option value="Late Fee  Income">Late Fee  Income</option>  
@@ -391,7 +393,7 @@ li{
                         <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account*</label>
                         <div class="col-sm-10 col-md-7 col-5">
                             <div class="d-flex align-items-center">
-                                <select name="cost_acc" class="form-control " id="myaccount" style="color: #fefefe;background-color: #000;">
+                                <select name="cost_acc" class="form-control " id="myaccount" style="color: #fefefe;background-color: #000;" required>
                                   <option value="">--Select Account--</option>
                                   <optgroup id="expensesel" label="Expense">
                              
@@ -399,7 +401,7 @@ li{
       
                                   {% if i.account_type == 'Expense' %}
                                 
-                                    <option value="i.account_name">{{i.account_name}}</option>
+                                    <option value="{{i.account_name}}">{{i.account_name}}</option>
                             
                                   {% endif %}
                                   {% endfor %}
@@ -408,7 +410,7 @@ li{
                                   {% for i in accounts %}
                                   {% if i.account_type == 'Cost Of Goods Sold' %}
                             
-                                    <option value="i.account_name">{{i.account_name}}</option>
+                                    <option value="{{i.account_name}}">{{i.account_name}}</option>
                                     
                                     {% endif %}
                                     {% endfor %}
@@ -417,7 +419,7 @@ li{
                                   {% for i in accounts %}
                                   {% if i.account_type == 'Other Expense' %}
                             
-                                    <option value="i.account_name">{{i.account_name}}</option>
+                                    <option value="{{i.account_name}}">{{i.account_name}}</option>
                                     
                                     {% endif %}
                                     {% endfor %}
