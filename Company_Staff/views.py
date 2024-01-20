@@ -1596,52 +1596,7 @@ def filter_item_view_Active(request,pk):
         return render(request,'zohomodules/items/itemsoverview.html',context)
 
                                                                   #new by tinto mt
-
-def filter_item_view_inActive(request,pk): 
-        if 'login_id' in request.session:
-            login_id = request.session['login_id']
-        if 'login_id' not in request.session:
-            return redirect('/')
-        log_details= LoginDetails.objects.get(id=login_id)
-        if log_details.user_type == 'Staff':
-                items=Items.objects.filter(activation_tag='inactive',company=dash_details.company)  
-                dash_details = StaffDetails.objects.get(login_details=log_details)
-                selitem=Items.objects.get(id=pk)
-                est_comments=Items_comments.objects.filter(Items=pk)
-                stock_value=selitem.opening_stock*selitem.purchase_price  
-                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
-                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
-                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
-                context = {
-                        'details': dash_details,
-                        'items':items,
-                        'selitem':selitem,
-                        'stock_value':stock_value,
-                        'latest_item_id':filtered_data,
-                        'est_comments':est_comments,
-                        'allmodules': allmodules,
-                }
-                return render(request,'zohomodules/items/itemsoverview.html',context)
-        if log_details.user_type == 'Company':
-                dash_details = CompanyDetails.objects.get(login_details=log_details)
-                items=Items.objects.filter(activation_tag='inactive',company=dash_details)  
-                selitem=Items.objects.get(id=pk)
-                est_comments=Items_comments.objects.filter(Items=pk)
-                stock_value=selitem.opening_stock*selitem.purchase_price  
-                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
-                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
-      
-                allmodules= ZohoModules.objects.get(company=dash_details,status='New')
-                context = {
-                        'details': dash_details,
-                        'items':items,
-                        'selitem':selitem,
-                        'stock_value':stock_value,
-                        'latest_item_id':filtered_data,
-                        'est_comments':est_comments,
-                        'allmodules': allmodules,
-                }
-        return render(request,'zohomodules/items/itemsoverview.html',context)                                                               #new by tinto mt
+                                                #new by tinto mt
 
 def create_item(request):                                                                #new by tinto mt
     
@@ -2483,3 +2438,57 @@ def edititems(request, pr):                                                     
  
         return render(request, 'zohomodules/items/edititems.html', context)
    
+
+
+
+#    update
+    
+
+
+    
+def filter_item_view_inActive(request,pk): 
+        if 'login_id' in request.session:
+            login_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=login_id)
+        if log_details.user_type == 'Staff':
+           
+                dash_details = StaffDetails.objects.get(login_details=log_details)
+                items=Items.objects.filter(activation_tag='inactive',company=dash_details.company)  
+                selitem=Items.objects.get(id=pk)
+                est_comments=Items_comments.objects.filter(Items=pk)
+                stock_value=selitem.opening_stock*selitem.purchase_price  
+                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+                allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+                context = {
+                        'details': dash_details,
+                        'items':items,
+                        'selitem':selitem,
+                        'stock_value':stock_value,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                        'allmodules': allmodules,
+                }
+                return render(request,'zohomodules/items/itemsoverview.html',context)
+        if log_details.user_type == 'Company':
+                dash_details = CompanyDetails.objects.get(login_details=log_details)
+                items=Items.objects.filter(activation_tag='inactive',company=dash_details)  
+                selitem=Items.objects.get(id=pk)
+                est_comments=Items_comments.objects.filter(Items=pk)
+                stock_value=selitem.opening_stock*selitem.purchase_price  
+                latest_date = Item_Transaction_History.objects.filter(items_id=pk).aggregate(latest_date=Max('Date'))['latest_date']    
+                filtered_data = Item_Transaction_History.objects.filter(Date=latest_date, items_id=pk)
+      
+                allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+                context = {
+                        'details': dash_details,
+                        'items':items,
+                        'selitem':selitem,
+                        'stock_value':stock_value,
+                        'latest_item_id':filtered_data,
+                        'est_comments':est_comments,
+                        'allmodules': allmodules,
+                }
+        return render(request,'zohomodules/items/itemsoverview.html',context)               
