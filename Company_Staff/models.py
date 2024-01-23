@@ -50,6 +50,8 @@ class Items(models.Model):
 
     type=models.CharField(max_length=255,blank=True,null=True,)
 
+    track_inventory=models.IntegerField(blank=True,null=True)  
+
 class Item_Transaction_History(models.Model):
     company=models.ForeignKey(CompanyDetails,on_delete=models.CASCADE)
     logindetails=models.ForeignKey(LoginDetails,on_delete=models.CASCADE)
@@ -75,7 +77,7 @@ class Chart_of_Accounts(models.Model):
 
     account_description = models.CharField(max_length=255,null=True,blank=True)
 
-    account_number = models.CharField(max_length=255,null=True,blank=True)
+    account_number = models.TextField(max_length=255,null=True,blank=True)
     
     account_code = models.CharField(max_length=255,null=True,blank=True)
     description = models.CharField(max_length=255,null=True,blank=True)

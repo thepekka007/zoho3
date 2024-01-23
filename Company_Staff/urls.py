@@ -79,7 +79,13 @@ urlpatterns = [
 
 
            
+
+             path('account_view_sort_by_namelist',views.account_view_sort_by_namelist,name='account_view_sort_by_namelist'),
            
+            path('account_view_filterActive/<int:ph>',views.account_view_filterActive,name='account_view_filterActive'),
+             path('account_view_filterinActive/<int:ph>',views.account_view_filterinActive,name='account_view_filterinActive'),
+
+
            
            
           

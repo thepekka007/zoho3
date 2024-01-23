@@ -455,23 +455,9 @@ li{
                         </div>
                       </div>
                       <br>
-                      <fieldset class="form-group" >
-                        <div class="row">
-                            <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Activation tag  &nbsp;&nbsp;<i
-                                    class="fa fa-question-circle"></i></label>
-                            <div class="col-12 col-md-10">
-                                <div class="form-check form-check-inline">
-                                    <input required class="form-check-input" type="radio" name="status" id="gridRadios1" value="Active"  style="margin-left:5px;"  {% if item.activation_tag == "Active" %}checked{% endif %}>
-                                    <label class="form-check-label text-white" for="gridRadios1" >Activate</label>
-                                </div> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
-                                <div class="form-check form-check-inline ml-md-3">
-                                    <input required class="form-check-input" type="radio" name="status" id="gridRadios2" value="Inactive" style="margin-left:50px;"  {% if item.activation_tag == "Inactive" %}checked{% endif %}>
-                                    <label class="form-check-label text-white" for="gridRadios2">Non-Activate</label>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
+                
                     <br><br>
+
                     <div class="row" >
                       <div class="col-md-10">
                         {% comment %} <label style="color: aliceblue;"><input type="checkbox" value="trackstate" name="trackstate" onclick="toggleForm()" style="display: none;">
@@ -479,7 +465,7 @@ li{
                         {% comment %} <input type="hidden" name="trackState" id="trackState" value="" unchecked> {% endcomment %}
                         <label style="color: aliceblue;">
                        
-                          <input type="checkbox" name="trackstate" value="trackstate" class=" "  onclick="toggleFormFields()" checked>
+                          <input type="checkbox" {% if item.track_inventory == 1 %}checked{% endif %} name="trackstate" value="trackstate" class=" "   onclick="toggleFormFields()">
                           Track Inventory for this item
                         </label>   <br>   <br>
                         <div id="formFields" > 
@@ -590,16 +576,22 @@ li{
       
        <!-- TRACK INVENTORY SCRIPT -->
        <script>
-          function toggleFormFields() {
-            var formFields = document.getElementById("formFields");
-            var checkbox = document.querySelector("input[name=trackstate]");
-      
-            if (checkbox.checked) {
-              formFields.style.display = "block";
-            } else {
-              formFields.style.display = "none";
-            }
-          }
+        function toggleFormFields() {
+    var formFields = document.getElementById("formFields");
+    var checkbox = document.querySelector("input[name=trackstate]");
+
+    if (checkbox.checked) {
+        formFields.style.display = "block";
+    } else {
+        formFields.style.display = "none";
+    }
+}
+
+// Trigger the click event on page load
+window.onload = function() {
+    // Use the same function that is called on the checkbox click event
+    toggleFormFields();
+};
         </script>
       
          <!-- TRACK INVENTORY SCRIPT END -->

@@ -53,8 +53,8 @@
                                 <i class="fas fa-sort m-1"></i>
                             </a>
                             <div class="dropdown-menu m-1" style="background-color: black; color: white;">
-                                <a class="dropdown-item" href="" style="color: azure;">All</a>
-                                <a class="dropdown-item" href="javascript:handleDropdownItemClick(0)" style="color: azure;">Account Name </a>
+                                <a class="dropdown-item" href="{% url 'chartofaccounts' %}" style="color: azure;">All</a>
+                                <a class="dropdown-item text-white" href="{% url 'account_view_sort_by_namelist' %}">Account Name</a>
                             </div>
                         </div>
                         </div>

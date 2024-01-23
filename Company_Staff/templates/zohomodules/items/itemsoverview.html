@@ -247,7 +247,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Dashboard</a></li>
-              <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Items</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'items_list' %}" class="text-warning-emphasis">Items</a></li>
               <li class="breadcrumb-item" aria-current="page">Overview</li>
             </ol>
         </nav>
@@ -315,7 +315,7 @@
                <div class="scrollable-table" style="width: 85%;margin-left: 20px;">
                  <div class="row">
                    <div class="col-md-12">
-                     <input type="text"  id="searchInput" class="form-control text-white" style="border-color: rgb(201, 200, 199);background-color: #fefefe;" placeholder="Search...">
+                     <input type="text"  id="searchInput" class="form-control text-black" style="border-color: rgb(201, 200, 199);background-color: #fefefe;" placeholder="Search...">
  
  
                    </div>
@@ -330,16 +330,19 @@
                  {% for i in items %}
                    <tr class="clickable" id="{{i.id}}">
                      <td class="justify-content-between align-items-center ">
-                       <b ><a class="text-white"  href="">{{i.item_name}} </a></b>
+                       <!-- <b ><a class="text-white"  href="">{{i.item_name}} </a></b>
                        <br>
-                       <a class="text-white"  href="">{{i.activation_tag}}</a><br>
+                       <a class="text-white"  href="">{{i.hsn_code}}</a><br> -->
+                       <label class="text-left d-block"><a class="text-white"  href="{% url 'itemsoverview' i.id %}">{{i.item_name}} </a></label>
+                       <br>
+                       <label class="text-left d-block"><a class="text-white"  href="{% url 'itemsoverview' i.id %}">{{i.hsn_code}}</a></label>
                   
                      </td>
                      
                      <td>
-                       <label class="text-end d-block"><a class="text-white"  href="">{{i.hsn_code}}</a></label>
+                       <label class="text-end d-block"><a class="text-white"  href="{% url 'itemsoverview' i.id %}">{{i.activation_tag}}</a></label>
                        <br>
-                       <label class="text-end d-block"><a class="text-white"  href="">{{i.current_stock}}</a></label>
+                       <label class="text-end d-block"><a class="text-white"  href="{% url 'itemsoverview' i.id %}">{{i.current_stock}}</a></label>
                      </td>
                    </tr></a>
                  {% endfor %}
@@ -873,7 +876,7 @@
         <tr style="color: black;">  
           <td style="text-align: center;">{{forloop.counter}}1</td>
           <td style="text-align: center;">{{selitem.type}}</td>
-          <td style="text-align: center;">{{selitem.item_name}}</td>
+          <td style="text-align: center;"></td>
           <td style="text-align: center;">{{ selitem.date|date:"Y-m-d" }}</td>
   
           <td style="text-align: center;">{{selitem.opening_stock}}</td>

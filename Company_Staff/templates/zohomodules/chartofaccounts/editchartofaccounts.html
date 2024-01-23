@@ -135,8 +135,8 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Dashboard</a></li>
-              <li class="breadcrumb-item"><a href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Accounts</a></li>
-              <li class="breadcrumb-item"><a href="{% url 'chartofaccounts' %}" class="text-warning-emphasis">Chart of Accounts</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'chartofaccounts' %}" class="text-warning-emphasis">Accounts</a></li>
+              <!-- <li class="breadcrumb-item"><a href="{% url 'chartofaccounts' %}" class="text-warning-emphasis">Chart of Accounts</a></li> -->
               <!-- <li class="breadcrumb-item" aria-current="page" class="text-warning-emphasis"></li> -->
               <li class="breadcrumb-item" aria-current="page">Edit Chart of Accounts</li>
             </ol>
@@ -808,8 +808,8 @@
                               <label for="">Description:</label>
                           </div>
                           <div class="col-sm-8">
-                              <textarea name="description" value="{{acc.description}}"  class="form-control text-dark bg-light" id="description"
-                               style="width: 70%;">{{acc.description}}</textarea>
+                              <textarea name="description" value="{{acc.account_description}}"  class="form-control text-dark bg-light" id="description"
+                               style="width: 70%;">{{acc.account_description}}</textarea>
                           </div>
                       </div>
             

@@ -127,7 +127,7 @@
                   <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'itemsoverview'  i.id %}">{{ i.selling_price }}</a></td>
                   <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'itemsoverview'  i.id %}">{{ i.purchase_price }}</a></td>
                   <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'itemsoverview'  i.id %}">{{ i.opening_stock }}</a></td>
-                  <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'itemsoverview'  i.id %}">{{ i.minimum_stock_to_maintain }}</a></td>
+                  <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'itemsoverview'  i.id %}">{{ i.current_stock }}</a></td>
                   <td class="bg-dark text-white" style="color: rgb(0, 0, 0); background-color: black;"><a href="{% url 'itemsoverview'  i.id %}">{{ i.activation_tag }}</a></td>
               </tr>
             {% endfor %}

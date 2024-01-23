@@ -220,7 +220,9 @@ li{
                 </div>
              <br>
             <div class="container-fluid"> 
-      
+              {% for m in messages %}
+              <p style="color: chocolate;">{{m}}</p>
+              {% endfor %}
       
               <form action="{% url 'create_item'%}" method="POST" id="add" style="padding-left: 20px;">
                 {% csrf_token%}
@@ -466,10 +468,10 @@ li{
                       <div class="col-md-10">
                         {% comment %} <label style="color: aliceblue;"><input type="checkbox" value="trackstate" name="trackstate" onclick="toggleForm()" style="display: none;">
                        Track Inventory for this item</label> {% endcomment %}
-                        {% comment %} <input type="hidden" name="trackState" id="trackState" value="" unchecked> {% endcomment %}
+                        <!-- {% comment %} <input type="checkbox" name="trackState" id="trackStateCheckbox">{% endcomment %} -->
                         <label style="color: aliceblue;">
                        
-                          <input type="checkbox" name="trackstate" value="trackstate" class=" "  onclick="toggleFormFields()">
+                          <input type="checkbox" name="trackstate" class=" "  onclick="toggleFormFields()">
                           Track Inventory for this item
                         </label>   <br>   <br>
                         <div id="formFields" style="display: none;"> 
@@ -477,7 +479,7 @@ li{
                             <label class="col-sm-2 col-form-label" style="color: aliceblue;">Inventory Account *</label>
                             <div class="col-sm-10 col-md-7 col-9" style="margin-left: -1rem;">
                               <select class="form-select form-select-sm mt-3 " name="invacc" style="background-color: black; color: white;">
-                                <option>Choose..</option>
+                                <option value="">Choose..</option>
                                 <option value="inventory assets">Inventory Asset</option>
                               </select>
                             </div>
@@ -779,7 +781,7 @@ li{
         <div class="modal-dialog modal-xl">
           <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
             <div class="modal-header" style="background: rgb(32, 35, 37);">
-              <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">New Account</h5>
+              <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;"><b>New Account</b></h5>
               <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
                   aria-hidden="true">&times;</span></button>
             </div>
@@ -815,7 +817,7 @@ li{
                                               </div>
                                               <ul class="options1" style="color: #000000;">
                                                   <div class="opt" style="color: #000000;">
-                                                      <span style="font-weight: bold;">Assets</span>
+                                                      <span style="font-weight: bold;color: #000;">Assets</span>
                                                       <li style="color: #000000;">Other Assets</li>
                                                       <li>Other Current Assets</li>
                                                       <li>Cash</li>
@@ -826,7 +828,7 @@ li{
                                                   </div>
               
                                                   <div class="opt">
-                                                      <span style="font-weight: bold;">Liability</span>
+                                                      <span style="font-weight: bold;color: #000;">Liability</span>
                                                       <li>Other Liability</li>
                                                       <li>Other Current Liability</li>
                                                       <li>Credit Card</li>
@@ -835,18 +837,18 @@ li{
                                                   </div>
               
                                                   <div class="opt">
-                                                      <span style="font-weight: bold;">Equity</span>
+                                                      <span style="font-weight: bold;color: #000;">Equity</span>
                                                       <li>Equity</li>
                                                   </div>
               
                                                   <div class="opt">
-                                                      <span style="font-weight: bold;">Income</span>
+                                                      <span style="font-weight: bold;color: #000;">Income</span>
                                                       <li>Income</li>
                                                       <li>Other Income</li>
                                                   </div>
               
                                                   <div class="opt">
-                                                      <span style="font-weight: bold;">Expense</span>
+                                                      <span style="font-weight: bold;color: #000;">Expense</span>
                                                       <li>Expense</li>
                                                       <li>Cost Of Goods Sold</li>
                                                       <li>Other Expense</li>
