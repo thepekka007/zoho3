@@ -96,7 +96,7 @@
                       </a>
               
                       <div class="dropdown-menu m-1">
-                        <a class="dropdown-item" onclick="applyFilter('All')">All</a>
+                        <a class="dropdown-item" href="{% url 'chartofaccountsoverview' selacc.id %}">All</a>
                         <a class="dropdown-item" href="{% url 'account_view_filterActive' selacc.id %}">Active</a>
                         <a class="dropdown-item" href="{% url 'account_view_filterinActive' selacc.id %}">Inactive</a>
                       </div>
