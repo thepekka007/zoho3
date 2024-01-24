@@ -755,9 +755,11 @@
               <hr>
             </h2>
           </div>    
+          
           <div class="row" id="div-to-print"
           style="background-color: #c4c1c1fd;  height: auto; margin-left:1px; margin-right: 1rem;width: 100%; ">
           <div class="row mt-3">
+
             <div class="col-md-6">
                 <label class="text-dark bold" for="">Item Name:</label>
                 <p class="bold text-dark d-inline" style="max-width: 15rem; word-wrap: break-word; font-weight: bold;">{{selitem.item_name}}</p>
@@ -1119,7 +1121,7 @@
     content.style.color = 'black';
   
     var heading = document.createElement('h1');
-    heading.textContent = '{{selitem.item_name}}' + '  ' + 'Transactions';
+    // heading.textContent = '{{selitem.item_name}}' + '  ' + 'Transactions';
     heading.style.textAlign = 'center';
     heading.style.marginTop = '50px';
     heading.style.marginBottom = '20px';
